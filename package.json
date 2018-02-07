@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/chungweileong94/KDURUM/issues"
   },
-  "homepage": "https://github.com/chungweileong94/KDURUM#readme"
+  "homepage": "https://github.com/chungweileong94/KDURUM#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }
