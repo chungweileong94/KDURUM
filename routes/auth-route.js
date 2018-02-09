@@ -1,9 +1,18 @@
 const router = require("express").Router();
 const passport = require("passport");
 
-router.get("/login", (req, res) => {
-    res.send("Login");
-});
+
+router.get("/login",
+    (req, res, next) => {
+        if (req.user) {
+            res.redirect("/");
+        } else {
+            next();
+        }
+    }, (req, res) => {
+        res.render("login");
+    }
+);
 
 router.get("/logout", (req, res) => {
     req.logout();

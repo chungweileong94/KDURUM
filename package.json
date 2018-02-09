@@ -19,6 +19,7 @@
   "homepage": "https://github.com/chungweileong94/KDURUM#readme",
   "dependencies": {
     "cookie-session": "^2.0.0-beta.3",
+    "ejs": "^2.5.7",
     "express": "^4.16.2",
     "mongoose": "^5.0.3",
     "passport": "^0.4.0",

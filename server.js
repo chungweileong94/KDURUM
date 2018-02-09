@@ -17,6 +17,12 @@ mongoose.connect(keys.mongodb.databaseUri, () => {
 
 let app = express();
 
+app.use(express.static("./public"));
+
+//setup view engine
+app.set("views", path.join(__dirname, "/public/views"))
+app.set("view engine", "ejs");
+
 //setup cookie session
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000, //expire in 1 day
