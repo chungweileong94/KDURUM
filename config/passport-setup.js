@@ -18,7 +18,7 @@ passport.use(
         clientID: keys.facebook.clientId,
         clientSecret: keys.facebook.clientSecret,
         callbackURL: "/auth/facebook/callback",
-        profileFields: ["email", "gender", "picture"]
+        profileFields: ["displayName", "email", "gender", "picture"]
     }, (accessToken, refreshToken, profile, cb) => {
         //console.log(profile);
         User.findOne({ facebookId: profile.id })
@@ -30,7 +30,7 @@ passport.use(
                 } else {
                     //if not, create user in database
                     new User({
-                        username: profile.displayName,
+                        name: profile.displayName,
                         facebookId: profile.id,
                         gender: profile.gender,
                         email: profile._json.email,

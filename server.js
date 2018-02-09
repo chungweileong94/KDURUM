@@ -6,7 +6,7 @@ const cookieSession = require("cookie-session");
 const passportSetup = require("./config/passport-setup");
 const keys = require("./config/keys");
 const authRoute = require("./routes/auth-route");
-const forumRoute = require("./routes/forum-route");
+const homeRoute = require("./routes/home-route");
 
 const PORT = process.env.PORT || process.env.port || 8888;
 
@@ -34,12 +34,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //setup route
+app.use("/", homeRoute);
 app.use("/auth", authRoute);
-app.use("/forum", forumRoute);
-
-app.get("/", (req, res) => {
-    res.redirect("/forum");
-});
 
 app.listen(PORT, () => {
     console.log(`Listening to port: ${PORT}`);
