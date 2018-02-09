@@ -1,0 +1,50 @@
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-target="#bs-example-navbar-collapse-2" data-toggle="collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">KDURUM</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">
+                        <img class="img-circle" src="<%= user.thumnail %>" style="max-width: 40px; margin: -10px 7px;">
+                        <%= user.name %>
+                            <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <h6 style="padding: 3px 20px;">
+                                <b>
+                                    <% switch(user.role){
+                                        case 0: %>
+                                            Administrator
+                                    <%      break; 
+                                        case 1: %>
+                                            Lecture
+                                    <%      break; 
+                                        case 2: %>
+                                            Student
+                                    <%      break; 
+                                        } %>
+                                </b>
+                            </h6>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="/auth/logout">
+                                <span class="glyphicon glyphicon-log-out"></span>&nbsp;&nbsp;Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
