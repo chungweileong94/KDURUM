@@ -16,13 +16,9 @@ mongoose.connect(keys.mongodb.databaseUri, () => {
 });
 
 let app = express();
-
-app.use(express.static(path.join(__dirname, "../client/dist")));
 app.use("/dist", express.static(path.join(__dirname, "../client/dist")));
 
-//setup view engine
-app.set("views", path.join(__dirname, "/views"))
-app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "../client/views"));
 
 //setup cookie session
 app.use(cookieSession({

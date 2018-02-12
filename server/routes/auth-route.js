@@ -18,7 +18,7 @@ router.get("/login",
             next();
         }
     }, (req, res) => {
-        res.render("login");
+        res.sendFile(path.join(__dirname, "../../client/views/login.html"));
     }
 );
 
