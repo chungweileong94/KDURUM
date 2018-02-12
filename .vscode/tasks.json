@@ -14,6 +14,30 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Install package 1",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/client"
+            },
+            "command": "npm install",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Install package 2",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/server"
+            },
+            "command": "npm install",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }
