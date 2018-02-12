@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const path = require("path");
 
 //auth check middleware
 const authCheck = (req, res, next) => {
@@ -10,7 +11,7 @@ const authCheck = (req, res, next) => {
 }
 
 router.get("/", authCheck, (req, res) => {
-    res.render("home", { user: req.user });
+    res.render("index");
 });
 
 module.exports = router;

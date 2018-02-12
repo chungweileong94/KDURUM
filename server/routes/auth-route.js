@@ -1,6 +1,14 @@
 const router = require("express").Router();
+const path = require("path");
 const passport = require("passport");
 
+router.get("/user", (req, res) => {
+    if (req.user) {
+        res.json(req.user);
+    } else {
+        null;
+    }
+});
 
 router.get("/login",
     (req, res, next) => {

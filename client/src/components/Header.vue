@@ -1,4 +1,5 @@
-<nav class="navbar navbar-inverse">
+<template>
+  <nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
             <button class="navbar-toggle collapsed" type="button" data-target="#bs-example-navbar-collapse-2" data-toggle="collapse">
@@ -14,26 +15,14 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">
-                        <img class="img-circle" src="<%= user.thumnail %>" style="max-width: 40px; margin: -10px 7px;">
-                        <%= user.name %>
-                            <span class="caret"></span>
+                        <img id="profileImage" class="img-circle" v-bind:src="user.thumnail">
+                        {{ user.name }}
+                        <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
                         <li>
-                            <h6 style="padding: 3px 20px;">
-                                <b>
-                                    <% switch(user.role){
-                                        case 0: %>
-                                            Administrator
-                                    <%      break; 
-                                        case 1: %>
-                                            Lecture
-                                    <%      break; 
-                                        case 2: %>
-                                            Student
-                                    <%      break; 
-                                        } %>
-                                </b>
+                            <h6>
+                                <b>{{ user.role }}</b>
                             </h6>
                         </li>
                         <li class="divider"></li>
@@ -48,3 +37,60 @@
         </div>
     </div>
 </nav>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      user: {
+        name: "",
+        thumnail: "",
+        role: ""
+      }
+    };
+  },
+  created() {
+    this.$http.get("/auth/user").then(data => {
+      console.log(data);
+      this.user.name = data.body.name;
+      this.user.thumnail = data.body.thumnail;
+      switch (data.body.role) {
+        case 0:
+          this.user.role = "Administrator";
+          break;
+
+        case 1:
+          this.user.role = "Lecture";
+          break;
+
+        case 2:
+          this.user.role = "Student";
+          break;
+      }
+    });
+  }
+};
+</script>
+
+<style scoped>
+.navbar-inverse .navbar-toggle .icon-bar {
+  background-color: white !important;
+}
+
+img#profileImage {
+  max-width: 40px;
+  margin: -10px 7px;
+}
+
+ul li h6 {
+  padding: 3px 20px;
+}
+
+@media (max-width: 991px) {
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > h6 {
+    color: #b2dbfb;
+  }
+}
+</style>
+
