@@ -16,7 +16,7 @@
             }
         },
         {
-            "label": "Install package 1",
+            "label": "Install package - client",
             "type": "shell",
             "options": {
                 "cwd": "${workspaceRoot}/client"
@@ -28,7 +28,7 @@
             }
         },
         {
-            "label": "Install package 2",
+            "label": "Install package - server",
             "type": "shell",
             "options": {
                 "cwd": "${workspaceRoot}/server"
