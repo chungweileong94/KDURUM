@@ -28,15 +28,19 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" v-on:click="deleteCancelClick">&times;</button>
                         <h4 class="modal-title">Delete Account</h4>
                     </div>
                     <div class="modal-body">
-                        <p>WARNING! This action will permanent delete your account including your data.</p>
+                        <p><b>WARNING! This action will permanent delete your account including your data.</b></p>
+                        <div class="form-group">
+                            <label class="control-label" for="deleteNameInput">Please enter your name</label>
+                            <input class="form-control" id="deleteNameInput" type="text" v-model="deleteNameInput">
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-danger" type="button">Delete</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal" v-on:click="deleteCancelClick">Cancel</button>
+                        <button class="btn btn-danger" type="button" v-bind:disabled="!(deleteNameInput == user.name)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -46,7 +50,17 @@
 
 <script>
 export default {
-  props: ["user"]
+  props: ["user"],
+  data() {
+    return {
+      deleteNameInput: ""
+    };
+  },
+  methods: {
+    deleteCancelClick: function() {
+      this.deleteNameInput = "";
+    }
+  }
 };
 </script>
 
