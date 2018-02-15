@@ -21,7 +21,8 @@ export default {
       user: {
         name: "",
         thumnail: "",
-        role: -1
+        role: "",
+        roleIndex: -1
       }
     };
   },
@@ -29,6 +30,7 @@ export default {
     this.$http.get("/auth/user").then(data => {
       this.user.name = data.body.name;
       this.user.thumnail = data.body.thumnail;
+      this.user.roleIndex = data.body.role;
       switch (data.body.role) {
         case 0:
           this.user.role = "Administrator";
