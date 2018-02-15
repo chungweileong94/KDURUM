@@ -7,6 +7,7 @@ const passportSetup = require("./config/passport-setup");
 const keys = require("./config/keys");
 const authRoute = require("./routes/auth-route");
 const homeRoute = require("./routes/home-route");
+const coursesRoute = require("./routes/courses-route");
 
 const PORT = process.env.PORT || process.env.port || 8888;
 
@@ -33,6 +34,7 @@ app.use(passport.session());
 //setup route
 app.use("/", homeRoute);
 app.use("/auth", authRoute);
+app.use("/courses", coursesRoute);
 
 app.listen(PORT, () => {
     console.log(`Listening to port: ${PORT}`);
