@@ -4,6 +4,7 @@
             <span class="glyphicon glyphicon-plus"></span>
         </button>
 
+        <!-- add course dialog -->
         <div id="addCourseModal" class="modal fade" v-if="user.roleIndex==0">
             <div class="modal-dialog">
                 <div class="modal-content">
