@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const path = require("path");
 const mongoose = require("mongoose");
 const passport = require("passport");
@@ -20,6 +21,10 @@ let app = express();
 app.use("/dist", express.static(path.join(__dirname, "../client/dist")));
 
 app.set("views", path.join(__dirname, "../client/views"));
+
+//setup parser
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //setup cookie session
 app.use(cookieSession({

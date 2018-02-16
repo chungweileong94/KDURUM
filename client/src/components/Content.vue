@@ -15,7 +15,9 @@
 
         <!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade" v-bind:class="{in:user.roleIndex!=0,active:user.roleIndex!=0}" v-if="user.roleIndex!=0" id="enrollment">Enrollment</div>
+            <div role="tabpanel" class="tab-pane fade" v-bind:class="{in:user.roleIndex!=0,active:user.roleIndex!=0}" v-if="user.roleIndex!=0" id="enrollment">
+                <content-enrollment></content-enrollment>
+            </div>
             <div role="tabpanel" class="tab-pane fade" v-bind:class="{in:user.roleIndex==0,active:user.roleIndex==0}" id="courses">
                 <content-courses v-bind:user="user"></content-courses>
             </div>
@@ -29,11 +31,13 @@
 <script>
 import Profile from "./Profile.vue";
 import Courses from "./Courses.vue";
+import Enrollment from "./Enrollment.vue";
 
 export default {
   components: {
     "content-profile": Profile,
-    "content-courses": Courses
+    "content-courses": Courses,
+    "content-enrollment": Enrollment
   },
   props: ["user"]
 };

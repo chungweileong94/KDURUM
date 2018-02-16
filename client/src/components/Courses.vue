@@ -1,5 +1,15 @@
 <template>
     <div class="container-fluid">
+        <div class="flex-container">
+            <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in allCourse">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {{ c.title }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <button class="btn btn-success btn-lg roundButton" v-if="user.roleIndex==0" type="button" data-toggle="modal" data-target="#addCourseModal">
             <span class="glyphicon glyphicon-plus"></span>
         </button>
@@ -19,14 +29,14 @@
                                     <b>Title</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="courseTitleInput" type="text" v-model="course.title">
+                                    <input class="form-control" id="courseTitleInput" type="text" v-model="courseTitleInput">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" v-bind:disabled="course.title.trim().length==0">Add</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal" v-bind:disabled="courseTitleInput.trim().length==0" v-on:click="addCourse">Add</button>
                     </div>
                 </div>
             </div>
@@ -35,42 +45,97 @@
 </template>
 
 <script>
-    export default {
-        props: ["user"],
-        data() {
-            return {
-                course: {
-                    title: ""
-                }
-            };
-        },
-        methods: {
-            addCourse: function () {
-                if (this.user.roleIndex == 0) {
-                    //this.$http.post("")
-                } else {
-                    alert("Permission Deniel");
-                }
-            }
-        },
-        created() {
-            this.$http.get("/courses/all").then(data => {
-                console.log(data);
-            });
-        }
+export default {
+  props: ["user"],
+  data() {
+    return {
+      courses: [],
+      courseTitleInput: ""
     };
+  },
+  methods: {
+    getAllCourses: function() {
+      this.$http
+        .get("/courses/all")
+        .then(data => {
+          return data.json();
+        })
+        .then(data => {
+          let coursesArray = [];
+          for (let key in data) {
+            coursesArray.push(data[key]);
+          }
+          this.courses = coursesArray;
+        });
+    },
+    addCourse: function() {
+      if (this.user.roleIndex == 0) {
+        this.$http
+          .post("/courses/add", {
+            title: this.courseTitleInput
+          })
+          .then(data => {
+            return data.status;
+          })
+          .then(status => {
+            if (status == 200) {
+              alert("Course added");
+              this.getAllCourses();
+            } else {
+              alert("Error");
+            }
+          });
+      } else {
+        alert("Permission Deniel");
+      }
+    }
+  },
+  created() {
+    this.getAllCourses();
+  },
+  computed: {
+    allCourse: function() {
+      return this.courses;
+    }
+  }
+};
 </script>
 
 <style scoped>
-    .roundButton {
-        position: fixed;
-        right: 30px;
-        bottom: 30px;
-        height: 50px;
-        width: 50px;
-        border-radius: 100%;
-        padding: 0;
-        padding-top: 2px;
-        padding-left: 2px;
-    }
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.courseItem {
+  margin: 0;
+  padding: 8px;
+  text-align: center;
+}
+
+.courseItem .panel {
+  margin: 0;
+  transition: background-color 0.2s, color 0.2s;
+  line-height: 150px;
+  font-weight: bold;
+}
+
+.courseItem .panel:hover {
+  background-color: #0c84e4;
+  color: white;
+}
+
+.roundButton {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  padding: 0;
+  padding-top: 2px;
+  padding-left: 2px;
+}
 </style>
