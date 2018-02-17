@@ -15,7 +15,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">
-                        <img id="profileImage" class="img-circle" v-bind:src="user.thumnail">
+                        <img id="profileImage" class="img-circle" :src="user.thumnail">
                         {{ user.name }}
                         <span class="caret"></span>
                     </a>

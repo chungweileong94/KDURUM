@@ -1,8 +1,8 @@
 <template>
   <div>
-    <app-header v-bind:user="user"></app-header>
+    <app-header :user="user"></app-header>
     <section class="container" style="margin-top: 70px;">
-        <app-content v-bind:user="user"></app-content>
+        <app-content :user="user"></app-content>
     </section>
   </div>
 </template>

@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12">
-                <img class="img-circle center-block" style="width:100px;" v-bind:src="user.thumnail">
+                <img class="img-circle center-block" style="width:100px;" :src="user.thumnail">
             </div>
         </div>
         <div class="row">
@@ -41,7 +41,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal" v-on:click="deleteCancelClick">Cancel</button>
-                        <button class="btn btn-danger" type="button" v-bind:disabled="!(deleteNameInput == user.name)">Delete</button>
+                        <button class="btn btn-danger" type="button" :disabled="!(deleteNameInput == user.name)">Delete</button>
                     </div>
                 </div>
             </div>

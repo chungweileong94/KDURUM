@@ -6,7 +6,7 @@
                     <small>Welcome to</small> KDURUM</h2>
                 <hr>
                 <a class="btn btn-lg btn-primary" href="/auth/facebook">
-                    <img v-bind:src="facebookLogoImg" aria-hidden="true">&nbsp;&nbsp;
+                    <img :src="facebookLogoImg" aria-hidden="true">&nbsp;&nbsp;
                     <p style="vertical-align: middle; display: inline;">Login with Facebook</p>
                 </a>
             </div>
