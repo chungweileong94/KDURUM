@@ -5,8 +5,10 @@
         <div class="panel panel-default">
           <div class="panel-body">
             <h5>{{ c.title }}</h5>
-            <a href="#" class="btn btn-md btn-primary" v-if="user.roleIndex==0">Join</a>
-            <div class="btn-group">
+
+            <!-- non-admin buttons -->
+            <a href="#" class="btn btn-md btn-primary" v-if="user.roleIndex!=0">Join</a>
+            <div class="btn-group" v-if="user.roleIndex!=0">
               <a href="#" class="btn btn-success">Explore</a>
               <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <span class="caret"></span>
