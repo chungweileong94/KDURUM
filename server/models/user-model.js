@@ -7,7 +7,8 @@ const userSchema = new Schema({
     gender: String,
     email: String,
     thumnail: String,
-    role: Number //0: admin, 1: lecture, 2: student
+    role: Number, //0: admin, 1: lecture, 2: student
+    enrollment: [String]
 });
 
 const User = mongoose.model("user", userSchema);

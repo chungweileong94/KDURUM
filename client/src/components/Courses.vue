@@ -1,146 +1,165 @@
 <template>
-  <div class="container-fluid">
-    <div class="flex-container">
-      <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in courses">
-        <div class="panel panel-default">
-          <div class="panel-body">
-            <h5>{{ c.title }}</h5>
+	<div class="container-fluid">
+		<div class="flex-container">
+			<div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in courses">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<h5>{{ c.title }}</h5>
 
-            <!-- non-admin buttons -->
-            <a href="#" class="btn btn-md btn-primary" v-if="user.roleIndex!=0">Join</a>
-            <div class="btn-group" v-if="user.roleIndex!=0">
-              <a href="#" class="btn btn-success">Explore</a>
-              <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="#">Leave</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+						<!-- non-admin buttons -->
+						<a :href="c.joinLink" class="btn btn-md btn-primary" v-if="user.roleIndex!=0" v-on:click="joinCourses">Join</a>
+						<div class="btn-group" v-if="user.roleIndex!=0">
+							<a href="#" class="btn btn-success">Explore</a>
+							<a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								<span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#">Leave</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <button class="btn btn-success btn-lg roundButton" v-if="user.roleIndex==0" type="button" data-toggle="modal" data-target="#addCourseModal">
-      <span class="glyphicon glyphicon-plus"></span>
-    </button>
+		<button class="btn btn-success btn-lg roundButton" v-if="user.roleIndex==0" type="button" data-toggle="modal" data-target="#addCourseModal">
+			<span class="glyphicon glyphicon-plus"></span>
+		</button>
 
-    <!-- add course dialog -->
-    <div id="addCourseModal" class="modal fade" v-if="user.roleIndex==0">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Add Course</h4>
-          </div>
-          <div class="modal-body">
-            <div class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-2 control-label" for="courseTitleInput">
-                  <b>Title</b>
-                </label>
-                <div class="col-sm-10">
-                  <input class="form-control" id="courseTitleInput" type="text" v-model="courseTitleInput">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-            <button class="btn btn-success" type="button" data-dismiss="modal" v-bind:disabled="courseTitleInput.trim().length==0" v-on:click="addCourse">Add</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+		<!-- add course dialog -->
+		<div id="addCourseModal" class="modal fade" v-if="user.roleIndex==0">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Add Course</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-horizontal">
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="courseTitleInput">
+									<b>Title</b>
+								</label>
+								<div class="col-sm-10">
+									<input class="form-control" id="courseTitleInput" type="text" v-model="courseTitleInput">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+						<button class="btn btn-success" type="button" data-dismiss="modal" v-bind:disabled="courseTitleInput.trim().length==0" v-on:click="addCourse">Add</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script>
-  export default {
-    props: ["user", "courses"],
-    data() {
-      return {
-        courseTitleInput: ""
-      };
+export default {
+  props: ["user", "courses"],
+  data() {
+    return {
+      courseTitleInput: ""
+    };
+  },
+  methods: {
+    getAllCourses: function() {
+      this.$http
+        .get("/courses/all")
+        .then(data => {
+          return data.json();
+        })
+        .then(data => {
+          let coursesArray = [];
+          for (let key in data) {
+            data[key].joinLink = `/courses/join/${data[key]._id}`;
+            console.log(data[key]);
+            coursesArray.push(data[key]);
+          }
+          this.courses = coursesArray;
+        });
     },
-    methods: {
-      getAllCourses: function () {
+    addCourse: function() {
+      if (this.user.roleIndex == 0) {
         this.$http
-          .get("/courses/all")
-          .then(data => {
-            return data.json();
+          .post("/courses/add", {
+            title: this.courseTitleInput
           })
           .then(data => {
-            let coursesArray = [];
-            for (let key in data) {
-              coursesArray.push(data[key]);
+            return data.status;
+          })
+          .then(status => {
+            if (status == 200) {
+              alert("Course added");
+              this.getAllCourses();
+            } else {
+              alert("Error");
             }
-            this.courses = coursesArray;
           });
-      },
-      addCourse: function () {
-        if (this.user.roleIndex == 0) {
-          this.$http
-            .post("/courses/add", {
-              title: this.courseTitleInput
-            })
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
-                alert("Course added");
-                this.getAllCourses();
-              } else {
-                alert("Error");
-              }
-            });
-        } else {
-          alert("Permission Deniel");
-        }
+      } else {
+        alert("Permission Deniel");
       }
     },
-    created() {
-      this.getAllCourses();
+    joinCourses: function(event) {
+      if (event) event.preventDefault();
+      console.log(event);
+
+      this.$http
+        .put(event.target.href)
+        .then(data => {
+          return data.status;
+        })
+        .then(status => {
+          if (status == 200) {
+            alert("Joined course");
+          } else {
+            alert("Error");
+          }
+        });
     }
-  };
+  },
+  created() {
+    this.getAllCourses();
+  }
+};
 </script>
 
 <style scoped>
-  .flex-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 8px;
-  }
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
 
-  .courseItem {
-    margin: 0;
-    padding: 8px;
-    text-align: center;
-  }
+.courseItem {
+  margin: 0;
+  padding: 8px;
+  text-align: center;
+}
 
-  .courseItem .panel {
-    margin: 0;
-    transition: background-color 0.2s, color 0.2s;
-  }
+.courseItem .panel {
+  margin: 0;
+  transition: background-color 0.2s, color 0.2s;
+}
 
-  .courseItem h5 {
-    font-weight: 300;
-  }
+.courseItem h5 {
+  font-weight: 300;
+}
 
-  .roundButton {
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
-    height: 50px;
-    width: 50px;
-    border-radius: 100%;
-    padding: 0;
-    padding-top: 2px;
-    padding-left: 2px;
-  }
+.roundButton {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  padding: 0;
+  padding-top: 2px;
+  padding-left: 2px;
+}
 </style>
