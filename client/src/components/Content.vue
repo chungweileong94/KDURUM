@@ -16,13 +16,13 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex!=0,active:user.roleIndex!=0}" v-if="user.roleIndex!=0" id="enrollment">
-                <content-enrollment></content-enrollment>
+                <!-- <content-enrollment></content-enrollment> -->
             </div>
             <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex==0,active:user.roleIndex==0}" id="courses">
-                <content-courses :user="user" :courses="courses"></content-courses>
+                <content-courses></content-courses>
             </div>
             <div role="tabpanel" class="tab-pane fade" id="profile">
-                <content-profile :user="user"></content-profile>
+                <content-profile></content-profile>
             </div>
         </div>
     </div>
@@ -39,11 +39,18 @@ export default {
     "content-courses": Courses,
     "content-enrollment": Enrollment
   },
-  props: ["user"],
-  data() {
-    return {
-      courses: []
-    };
+  methods: {
+    getAllCourses: function() {
+      this.$store.dispatch("getAllCourses");
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
+  },
+  created() {
+    this.getAllCourses();
   }
 };
 </script>

@@ -41,6 +41,21 @@ app.use("/", homeRoute);
 app.use("/auth", authRoute);
 app.use("/courses", coursesRoute);
 
+//test
+const User = require("./models/user-model");
+app.get("/test/:no", (req, res) => {
+    console.log(req.user);
+    if (req.user) {
+        User.findOne({ _id: req.user._id }, (err, user) => {
+            user.role = req.params.no;
+            user.save((err, result) => {
+                if (err) throw err;
+                res.send("OK");
+            });
+        });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Listening to port: ${PORT}`);
     console.log(`Navigate to http://localhost:${PORT}/`);

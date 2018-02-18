@@ -51,7 +51,6 @@
 
 <script>
 export default {
-  props: ["user"],
   data() {
     return {
       deleteNameInput: ""
@@ -60,6 +59,11 @@ export default {
   methods: {
     deleteCancelClick: function() {
       this.deleteNameInput = "";
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
     }
   }
 };

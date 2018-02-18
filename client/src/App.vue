@@ -2,7 +2,7 @@
   <div>
     <app-header :user="user"></app-header>
     <section class="container" style="margin-top: 70px;">
-        <app-content :user="user"></app-content>
+        <app-content></app-content>
     </section>
   </div>
 </template>
@@ -16,37 +16,14 @@ export default {
     "app-header": Header,
     "app-content": Content
   },
-  data() {
-    return {
-      user: {
-        name: "",
-        thumnail: "",
-        role: "",
-        roleIndex: -1,
-        enrollment: []
-      }
-    };
+  methods: {
+    getUserData: function() {
+      this.$store.dispatch("getUserData");
+    },
+    
   },
   created() {
-    this.$http.get("/auth/user").then(data => {
-      this.user.name = data.body.name;
-      this.user.thumnail = data.body.thumnail;
-      this.user.roleIndex = data.body.role;
-      this.user.enrollment = data.body.enrollment;
-      switch (data.body.role) {
-        case 0:
-          this.user.role = "Administrator";
-          break;
-
-        case 1:
-          this.user.role = "Lecture";
-          break;
-
-        case 2:
-          this.user.role = "Student";
-          break;
-      }
-    });
+    this.getUserData();
   }
 };
 </script>

@@ -7,7 +7,7 @@
 						<h5>{{ c.title }}</h5>
 
 						<!-- non-admin buttons -->
-						<a :href="c.joinLink" class="btn btn-md btn-primary" v-if="user.roleIndex!=0 && !c.isJoined" v-on:click="joinCourses">Join</a>
+						<a href="#" :name="c._id" class="btn btn-md btn-primary" v-if="user.roleIndex!=0 && !c.isJoined" v-on:click="joinCourse">Join</a>
 						<div class="btn-group" v-if="user.roleIndex!=0 && c.isJoined">
 							<a href="#" class="btn btn-success">Explore</a>
 							<a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -15,7 +15,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li>
-									<a :href="c.leaveLink" v-on:click="leaveCourses">Leave</a>
+									<a href="#" :name="c._id" v-on:click="leaveCourse">Leave</a>
 								</li>
 							</ul>
 						</div>
@@ -60,85 +60,61 @@
 
 <script>
 export default {
-  props: ["user", "courses"],
   data() {
     return {
       courseTitleInput: ""
     };
   },
   methods: {
-    getAllCourses: function() {
-      this.$http
-        .get("/courses/all")
-        .then(data => {
-          return data.json();
-        })
-        .then(data => {
-          let coursesArray = [];
-          for (let key in data) {
-            if (this.user.roleIndex != 0) {
-              data[key].joinLink = `/courses/join/${data[key]._id}`;
-              data[key].leaveLink = `/courses/leave/${data[key]._id}`;
-              data[key].isJoined = this.user.enrollment.includes(data[key]._id);
-            }
-            coursesArray.push(data[key]);
-          }
-          this.courses = coursesArray;
-        });
-    },
     addCourse: function() {
-      if (this.user.roleIndex == 0) {
-        this.$http
-          .post("/courses/add", {
-            title: this.courseTitleInput
-          })
-          .then(data => {
-            return data.status;
-          })
-          .then(status => {
-            if (status == 200) {
-              alert("Course added");
-              this.getAllCourses();
-            } else {
-              alert("Error");
-            }
-          });
-      } else {
-        alert("Permission Deniel");
-      }
-    },
-    joinCourses: function(event) {
-      if (event) event.preventDefault();
-
-      let link = event.target.href;
-
       this.$http
-        .put(link)
+        .post("/courses/add", {
+          title: this.courseTitleInput
+        })
         .then(data => {
           return data.status;
         })
         .then(status => {
           if (status == 200) {
-            this.toggleJoinStatus(link.substring(link.lastIndexOf("/") + 1), true);
+            alert("Course added");
+            this.$store.dispatch("getAllCourses");
+          } else {
+            alert("Error");
+          }
+        });
+    },
+    joinCourse: function(event) {
+      if (event) event.preventDefault();
+
+      let id = event.target.name;
+
+      this.$http
+        .put(`/courses/join/${id}`)
+        .then(data => {
+          return data.status;
+        })
+        .then(status => {
+          if (status == 200) {
+            this.toggleJoinStatus(id, true);
             alert("Joined course");
           } else {
             alert("Error");
           }
         });
     },
-    leaveCourses: function(event) {
+    leaveCourse: function(event) {
       if (event) event.preventDefault();
 
-      let link = event.target.href;
+      let id = event.target.name;
 
       this.$http
-        .put(link)
+        .put(`/courses/leave/${id}`)
         .then(data => {
           return data.status;
         })
         .then(status => {
           if (status == 200) {
-            this.toggleJoinStatus(link.substring(link.lastIndexOf("/") + 1), false);
+            this.toggleJoinStatus(id, false);
             alert("Left course");
           } else {
             alert("Error");
@@ -154,8 +130,13 @@ export default {
       }
     }
   },
-  created() {
-    this.getAllCourses();
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+    courses() {
+      return this.$store.state.courses;
+    }
   }
 };
 </script>
