@@ -35,7 +35,8 @@ passport.use(
                         gender: profile.gender,
                         email: profile._json.email,
                         thumnail: profile._json.picture.data.url,
-                        role: 2
+                        role: 2,
+                        enrollment: []
                     }).save().then((newUser) => {
                         console.log(`New user created: ${newUser}`);
                         cb(null, newUser);

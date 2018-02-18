@@ -6,7 +6,7 @@
                 <a class="text-center" href="#enrollment" aria-controls="enrollment" role="tab" data-toggle="tab">Enrollment</a>
             </li>
             <li role="presentation" :class="{active:user.roleIndex==0, adminMode:user.roleIndex==0}">
-                <a class="text-center" href="#courses" aria-controls="courses" role="tab" data-toggle="tab">Courses Catalog</a>
+                <a class="text-center" href="#courses" aria-controls="courses" role="tab" data-toggle="tab">Catalog</a>
             </li>
             <li role="presentation" :class="{adminMode:user.roleIndex==0}">
                 <a class="text-center" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a>

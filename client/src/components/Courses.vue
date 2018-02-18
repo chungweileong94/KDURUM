@@ -7,15 +7,15 @@
 						<h5>{{ c.title }}</h5>
 
 						<!-- non-admin buttons -->
-						<a :href="c.joinLink" class="btn btn-md btn-primary" v-if="user.roleIndex!=0" v-on:click="joinCourses">Join</a>
-						<div class="btn-group" v-if="user.roleIndex!=0">
+						<a :href="c.joinLink" class="btn btn-md btn-primary" v-if="user.roleIndex!=0 && !c.isJoined" v-on:click="joinCourses">Join</a>
+						<div class="btn-group" v-if="user.roleIndex!=0 && c.isJoined">
 							<a href="#" class="btn btn-success">Explore</a>
 							<a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 								<span class="caret"></span>
 							</a>
 							<ul class="dropdown-menu">
 								<li>
-									<a href="#">Leave</a>
+									<a :href="c.leaveLink" v-on:click="leaveCourses">Leave</a>
 								</li>
 							</ul>
 						</div>
@@ -76,8 +76,11 @@ export default {
         .then(data => {
           let coursesArray = [];
           for (let key in data) {
-            data[key].joinLink = `/courses/join/${data[key]._id}`;
-            console.log(data[key]);
+            if (this.user.roleIndex != 0) {
+              data[key].joinLink = `/courses/join/${data[key]._id}`;
+              data[key].leaveLink = `/courses/leave/${data[key]._id}`;
+              data[key].isJoined = this.user.enrollment.includes(data[key]._id);
+            }
             coursesArray.push(data[key]);
           }
           this.courses = coursesArray;
@@ -106,20 +109,49 @@ export default {
     },
     joinCourses: function(event) {
       if (event) event.preventDefault();
-      console.log(event);
+
+      let link = event.target.href;
 
       this.$http
-        .put(event.target.href)
+        .put(link)
         .then(data => {
           return data.status;
         })
         .then(status => {
           if (status == 200) {
+            this.toggleJoinStatus(link.substring(link.lastIndexOf("/") + 1), true);
             alert("Joined course");
           } else {
             alert("Error");
           }
         });
+    },
+    leaveCourses: function(event) {
+      if (event) event.preventDefault();
+
+      let link = event.target.href;
+
+      this.$http
+        .put(link)
+        .then(data => {
+          return data.status;
+        })
+        .then(status => {
+          if (status == 200) {
+            this.toggleJoinStatus(link.substring(link.lastIndexOf("/") + 1), false);
+            alert("Left course");
+          } else {
+            alert("Error");
+          }
+        });
+    },
+    toggleJoinStatus: function(courseId, status) {
+      for (const key in this.courses) {
+        let course = this.courses[key];
+        if (course._id == courseId) {
+          course.isJoined = status;
+        }
+      }
     }
   },
   created() {

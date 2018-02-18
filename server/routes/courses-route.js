@@ -44,4 +44,21 @@ router.put("/join/:id", (req, res) => {
     });
 });
 
+router.put("/leave/:id", (req, res) => {
+    if (!req.user || req.user.role == 0) return res.sendStatus(401);
+    if (!req.params.id) return res.sendStatus(404);
+
+    let courseId = req.params.id;
+
+    User.findOne({ _id: req.user._id }, (err, obj) => {
+        if (err) throw err;
+
+        obj.enrollment.splice(obj.enrollment.indexOf(courseId), 1);
+        obj.save((err, result) => {
+            if (err) throw err;
+            res.sendStatus(200);
+        });
+    });
+});
+
 module.exports = router;

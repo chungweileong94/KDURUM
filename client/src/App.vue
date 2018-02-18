@@ -22,7 +22,8 @@ export default {
         name: "",
         thumnail: "",
         role: "",
-        roleIndex: -1
+        roleIndex: -1,
+        enrollment: []
       }
     };
   },
@@ -31,6 +32,7 @@ export default {
       this.user.name = data.body.name;
       this.user.thumnail = data.body.thumnail;
       this.user.roleIndex = data.body.role;
+      this.user.enrollment = data.body.enrollment;
       switch (data.body.role) {
         case 0:
           this.user.role = "Administrator";
