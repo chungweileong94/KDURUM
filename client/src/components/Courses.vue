@@ -66,6 +66,9 @@ export default {
     };
   },
   methods: {
+    getUserData: function() {
+      this.$store.dispatch("getUserData");
+    },
     addCourse: function() {
       this.$http
         .post("/courses/add", {
@@ -76,8 +79,8 @@ export default {
         })
         .then(status => {
           if (status == 200) {
-            alert("Course added");
             this.$store.dispatch("getAllCourses");
+            alert("Course added");
           } else {
             alert("Error");
           }
@@ -96,6 +99,9 @@ export default {
         .then(status => {
           if (status == 200) {
             this.toggleJoinStatus(id, true);
+
+            this.getUserData();
+
             alert("Joined course");
           } else {
             alert("Error");
@@ -115,6 +121,9 @@ export default {
         .then(status => {
           if (status == 200) {
             this.toggleJoinStatus(id, false);
+
+            this.getUserData();
+
             alert("Left course");
           } else {
             alert("Error");

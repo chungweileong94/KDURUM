@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid">
         <div class="flex-container">
-            <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in filteredCourse">
+            <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in enrollment">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         {{ c.title }}
@@ -15,8 +15,8 @@
 <script>
 export default {
   computed: {
-    filteredCourse: function() {
-      return this.$store.state.courses;
+    enrollment() {
+      return this.$store.state.enrollment;
     }
   }
 };

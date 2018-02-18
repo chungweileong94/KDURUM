@@ -12,7 +12,8 @@ export const store = new Vuex.Store({
             roleIndex: -1,
             enrollment: []
         },
-        courses: []
+        courses: [],
+        enrollment: []
     },
     mutations: {
         getUserData: state => {
@@ -34,6 +35,11 @@ export const store = new Vuex.Store({
                         state.user.role = "Student";
                         break;
                 }
+
+                //refrehs enrollment list
+                let ids = state.user.enrollment.join("|");
+                let regex = new RegExp(ids, "g");
+                state.enrollment = state.courses.filter(c => c._id.match(regex));
             });
         },
         getAllCourses: state => {
@@ -51,6 +57,11 @@ export const store = new Vuex.Store({
                         coursesArray.push(data[key]);
                     }
                     state.courses = coursesArray;
+
+                    //refrehs enrollment list
+                    let ids = state.user.enrollment.join("|");
+                    let regex = new RegExp(ids, "g");
+                    state.enrollment = state.courses.filter(c => c._id.match(regex));
                 });
         }
     },

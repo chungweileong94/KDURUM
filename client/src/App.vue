@@ -19,8 +19,7 @@ export default {
   methods: {
     getUserData: function() {
       this.$store.dispatch("getUserData");
-    },
-    
+    }
   },
   created() {
     this.getUserData();
