@@ -14,9 +14,6 @@
 
 <script>
 export default {
-  created() {
-    this.getAllCourses();
-  },
   computed: {
     filteredCourse: function() {
       return this.$store.state.courses;
