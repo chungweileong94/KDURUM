@@ -16,7 +16,7 @@
         <!-- Tab panes -->
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex!=0,active:user.roleIndex!=0}" v-if="user.roleIndex!=0" id="enrollment">
-                <!-- <content-enrollment></content-enrollment> -->
+                <content-enrollment></content-enrollment>
             </div>
             <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex==0,active:user.roleIndex==0}" id="courses">
                 <content-courses></content-courses>

@@ -14,33 +14,12 @@
 
 <script>
 export default {
-  data() {
-    return {
-      courses: []
-    };
-  },
-  methods: {
-    getAllCourses: function() {
-      this.$http
-        .get("/courses/all")
-        .then(data => {
-          return data.json();
-        })
-        .then(data => {
-          let coursesArray = [];
-          for (let key in data) {
-            coursesArray.push(data[key]);
-          }
-          this.courses = coursesArray;
-        });
-    }
-  },
   created() {
     this.getAllCourses();
   },
   computed: {
     filteredCourse: function() {
-      return this.courses;
+      return this.$store.state.courses;
     }
   }
 };
