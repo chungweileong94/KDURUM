@@ -57,9 +57,13 @@ export const store = new Vuex.Store({
                         }
                         state.courses = coursesArray;
 
-                        let ids = state.user.enrollment.join("|");
-                        let regex = new RegExp(ids, "g");
-                        state.enrollment = state.courses.filter(c => c._id.match(regex));
+                        if (state.user.enrollment.length != 0) {
+                            let ids = state.user.enrollment.join("|");
+                            let regex = new RegExp(ids, "g");
+                            state.enrollment = state.courses.filter(c => c._id.match(regex));
+                        } else {
+                            state.enrollment = [];
+                        }
                         resolve()
                     });
             });
