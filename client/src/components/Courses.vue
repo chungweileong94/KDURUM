@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="flex-container">
-            <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in courses">
+            <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in courses" :key="c._id">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h5>{{ c.title }}</h5>
