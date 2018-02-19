@@ -55,12 +55,6 @@ app.get("/test/:no", (req, res) => {
     }
 });
 
-app.get("/test/user", (req, res) => {
-    User.findOne({ _id: req.user._id }, (err, user) => {
-        res.json(user);
-    });
-});
-
 app.listen(PORT, () => {
     console.log(`Listening to port: ${PORT}`);
     console.log(`Navigate to http://localhost:${PORT}/`);
