@@ -29,7 +29,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" v-on:click="deleteCancelClick">&times;</button>
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCancelClick">&times;</button>
                         <h4 class="modal-title">Delete Account</h4>
                     </div>
                     <div class="modal-body">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="button" data-dismiss="modal" v-on:click="deleteCancelClick">Cancel</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteCancelClick">Cancel</button>
                         <button class="btn btn-danger" type="button" :disabled="!(deleteNameInput == user.name)">Delete</button>
                     </div>
                 </div>

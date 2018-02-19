@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="flex-container">
+        <div class="flex-container" v-if="courses.length!=0">
             <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in courses" :key="c._id">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -8,7 +8,7 @@
 
                         <!-- non-admin buttons -->
                         <div v-if="user.roleIndex!=0">
-                            <a href="#" :name="c._id" class="btn btn-md btn-primary" v-if="!c.isJoined" @click="joinCourse">Join</a>
+                            <a href="#" class="btn btn-md btn-primary" v-if="!c.isJoined" @click="joinCourse((c._id))">Join</a>
                             <div class="btn-group" v-if="c.isJoined">
                                 <a href="#" class="btn btn-success">Explore</a>
                                 <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -16,7 +16,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" :name="c._id" @click="leaveCourse">Leave</a>
+                                        <a href="#" @click="leaveCourse(c._id)">Leave</a>
                                     </li>
                                 </ul>
                             </div>
@@ -24,12 +24,19 @@
 
                         <!-- admin buttons -->
                         <div v-else>
-                            <a href="#" :name="c._id" class="btn btn-md btn-success">Explore</a>
-                            <a href="#" :name="c._id" class="btn btn-md btn-danger" @click="deleteCourse">Delete</a>
+                            <a href="#" class="btn btn-md btn-success">Explore</a>
+                            <a href="#" class="btn btn-md btn-danger" @click="deleteCourseAlert(c)" data-toggle="modal" data-target="#deleteCourseModal">Delete</a>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- empty message -->
+        <div class="text-center" style="padding-top: 150px;" v-else>
+            <h3>Empty</h3>
+            <p class="lead" v-if="user.roleIndex==0">You haven't add any courses yet</p>
+            <p class="lead" v-else>There is no courses available yet</p>
         </div>
 
         <button class="btn btn-success btn-lg roundButton" v-if="user.roleIndex==0" type="button" data-toggle="modal" data-target="#addCourseModal">
@@ -58,7 +65,32 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal" v-bind:disabled="courseTitleInput.trim().length==0" @click="addCourse">Add</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="courseTitleInput.trim().length==0" @click="addCourse">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- delete modal -->
+        <div id="deleteCourseModal" class="modal fade" v-if="user.roleIndex==0">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCourseCancel">&times;</button>
+                        <h4 class="modal-title">Delete "{{ selectedDeleteCourse.title }}"</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <b>WARNING! This action will permanent delete course together with all the forum data.</b>
+                        </p>
+                        <div class="form-group">
+                            <label class="control-label" for="deleteNameInput">Please enter the course title</label>
+                            <input class="form-control" id="deleteNameInput" type="text" v-model="courseTitleDeleteInput">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteCourseCancel">Cancel</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal" :disabled="courseTitleDeleteInput!=selectedDeleteCourse.title" @click="deleteCourse(selectedDeleteCourse.id)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -70,7 +102,12 @@
     export default {
       data() {
         return {
-          courseTitleInput: ""
+          courseTitleInput: "",
+          courseTitleDeleteInput: "",
+          selectedDeleteCourse: {
+            id: "",
+            title: ""
+          }
         };
       },
       methods: {
@@ -96,11 +133,16 @@
               }
             });
         },
-        deleteCourse(event) {
-          if (event) event.preventDefault();
-
-          let id = event.target.name;
-
+        deleteCourseAlert(course) {
+          this.selectedDeleteCourse.id = course._id;
+          this.selectedDeleteCourse.title = course.title;
+        },
+        deleteCourseCancel() {
+          this.selectedDeleteCourse.id = "";
+          this.selectedDeleteCourse.title = "";
+          this.courseTitleDeleteInput = "";
+        },
+        deleteCourse(id) {
           this.$http
             .delete(`/courses/delete/${id}`)
             .then(data => {
@@ -109,17 +151,14 @@
             .then(status => {
               if (status == 200) {
                 this.refresCoursesAdnEnrollment();
+                this.deleteCourseCancel();
                 alert("Course deleted");
               } else {
                 alert("Error");
               }
             });
         },
-        joinCourse(event) {
-          if (event) event.preventDefault();
-
-          let id = event.target.name;
-
+        joinCourse(id) {
           this.$http
             .put(`/courses/join/${id}`)
             .then(data => {
@@ -135,11 +174,7 @@
               }
             });
         },
-        leaveCourse(event) {
-          if (event) event.preventDefault();
-
-          let id = event.target.name;
-
+        leaveCourse(id) {
           this.$http
             .put(`/courses/leave/${id}`)
             .then(data => {

@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="flex-container">
+        <div class="flex-container" v-if="enrollment.length!=0">
             <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in enrollment" :key="c._id">
                 <div class="panel panel-default">
                     <div class="panel-body">
@@ -8,6 +8,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="text-center" style="padding-top: 150px;" v-else>
+            <h3>Empty</h3>
+            <p class="lead">You haven't join any courses yet</p>
         </div>
     </div>
 </template>
