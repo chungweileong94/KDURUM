@@ -12,12 +12,12 @@ import { store } from "./store/store";
 Vue.use(VueResource);
 
 new Vue({
-  el: '#app',
-  store: store,
-  render: h => h(App)
+    el: '#app',
+    store: store,
+    render: h => h(App)
 });
 
 new Vue({
-  el: '#login',
-  render: h => h(Login)
+    el: '#login',
+    render: h => h(Login)
 });

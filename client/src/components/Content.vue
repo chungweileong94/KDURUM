@@ -29,30 +29,30 @@
 </template>
 
 <script>
-import Profile from "./Profile.vue";
-import Courses from "./Courses.vue";
-import Enrollment from "./Enrollment.vue";
+    import Profile from "./Profile.vue";
+    import Courses from "./Courses.vue";
+    import Enrollment from "./Enrollment.vue";
 
-export default {
-  components: {
-    "content-profile": Profile,
-    "content-courses": Courses,
-    "content-enrollment": Enrollment
-  },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    }
-  }
-};
+    export default {
+      components: {
+        "content-profile": Profile,
+        "content-courses": Courses,
+        "content-enrollment": Enrollment
+      },
+      computed: {
+        user() {
+          return this.$store.state.user;
+        }
+      }
+    };
 </script>
 
 <style scoped>
-.nav-tabs li {
-  width: 33.33%;
-}
+    .nav-tabs li {
+      width: 33.33%;
+    }
 
-.nav-tabs li.adminMode {
-  width: 50%;
-}
+    .nav-tabs li.adminMode {
+      width: 50%;
+    }
 </style>

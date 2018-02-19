@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+    <div class="container">
         <div class="row">
             <div class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" style="margin-top: 150px; text-align:center;">
                 <h2 class="text-center">
@@ -26,11 +26,11 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      facebookLogoImg: require("./assets/f-logo.png")
+    export default {
+      data() {
+        return {
+          facebookLogoImg: require("./assets/f-logo.png")
+        };
+      }
     };
-  }
-};
 </script>

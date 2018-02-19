@@ -33,7 +33,9 @@
                         <h4 class="modal-title">Delete Account</h4>
                     </div>
                     <div class="modal-body">
-                        <p><b>WARNING! This action will permanent delete your account including your data.</b></p>
+                        <p>
+                            <b>WARNING! This action will permanent delete your account including your data.</b>
+                        </p>
                         <div class="form-group">
                             <label class="control-label" for="deleteNameInput">Please enter your name</label>
                             <input class="form-control" id="deleteNameInput" type="text" v-model="deleteNameInput">
@@ -50,32 +52,32 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      deleteNameInput: ""
+    export default {
+      data() {
+        return {
+          deleteNameInput: ""
+        };
+      },
+      methods: {
+        deleteCancelClick() {
+          this.deleteNameInput = "";
+        }
+      },
+      computed: {
+        user() {
+          return this.$store.state.user;
+        }
+      }
     };
-  },
-  methods: {
-    deleteCancelClick() {
-      this.deleteNameInput = "";
-    }
-  },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    }
-  }
-};
 </script>
 
 <style scoped>
-.container-fluid {
-  margin-top: 20px;
-}
+    .container-fluid {
+      margin-top: 20px;
+    }
 
-hr {
-  width: 70%;
-  border-color: #adadad;
-}
+    hr {
+      width: 70%;
+      border-color: #adadad;
+    }
 </style>
