@@ -39,18 +39,10 @@ export default {
     "content-courses": Courses,
     "content-enrollment": Enrollment
   },
-  methods: {
-    getAllCourses: function() {
-      this.$store.dispatch("getAllCourses");
-    }
-  },
   computed: {
     user() {
       return this.$store.state.user;
     }
-  },
-  created() {
-    this.getAllCourses();
   }
 };
 </script>

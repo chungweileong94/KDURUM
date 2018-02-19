@@ -66,8 +66,10 @@ export default {
     };
   },
   methods: {
-    getUserData: function() {
-      this.$store.dispatch("getUserData");
+    refresCoursesAdnEnrollment: function() {
+      this.$store.dispatch("getUserData").then(() => {
+        this.$store.dispatch("getCoursesAndEnrollment");
+      });
     },
     addCourse: function() {
       this.$http
@@ -79,7 +81,7 @@ export default {
         })
         .then(status => {
           if (status == 200) {
-            this.$store.dispatch("getAllCourses");
+            this.refresCoursesAdnEnrollment();
             alert("Course added");
           } else {
             alert("Error");
@@ -100,7 +102,7 @@ export default {
           if (status == 200) {
             this.toggleJoinStatus(id, true);
 
-            this.getUserData();
+            this.refresCoursesAdnEnrollment();
 
             alert("Joined course");
           } else {
@@ -122,7 +124,7 @@ export default {
           if (status == 200) {
             this.toggleJoinStatus(id, false);
 
-            this.getUserData();
+            this.refresCoursesAdnEnrollment();
 
             alert("Left course");
           } else {

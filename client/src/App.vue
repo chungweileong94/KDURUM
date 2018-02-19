@@ -17,12 +17,14 @@ export default {
     "app-content": Content
   },
   methods: {
-    getUserData: function() {
-      this.$store.dispatch("getUserData");
+    init: function() {
+      this.$store.dispatch("getUserData").then(() => {
+        this.$store.dispatch("getCoursesAndEnrollment");
+      });
     }
   },
   created() {
-    this.getUserData();
+    this.init();
   }
 };
 </script>
