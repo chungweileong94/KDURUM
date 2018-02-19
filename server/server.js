@@ -9,6 +9,7 @@ const keys = require("./config/keys");
 const authRoute = require("./routes/auth-route");
 const homeRoute = require("./routes/home-route");
 const coursesRoute = require("./routes/courses-route");
+const usersRoute = require("./routes/users-route");
 
 const PORT = process.env.PORT || process.env.port || 8888;
 
@@ -40,6 +41,7 @@ app.use(passport.session());
 app.use("/", homeRoute);
 app.use("/auth", authRoute);
 app.use("/courses", coursesRoute);
+app.use("/users", usersRoute);
 
 //test
 const User = require("./models/user-model");

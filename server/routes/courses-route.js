@@ -7,10 +7,7 @@ router.get("/all", (req, res) => {
     if (!req.user) return res.sendStatus(401);
 
     Course.find({}, (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.sendStatus(500);
-        }
+        if (err) throw err;
 
         res.status(200).json(data);
     });
@@ -40,6 +37,8 @@ router.delete("/delete/:id", (req, res) => {
 
         User.find({ enrollment: id }, (err, users) => {
             if (err) throw err;
+
+            if (users.length == 0) return res.sendStatus(200);
 
             users.forEach(user => {
                 user.enrollment.splice(user.enrollment.indexOf(id), 1);

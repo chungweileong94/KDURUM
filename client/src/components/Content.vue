@@ -2,13 +2,16 @@
     <div>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" :class="{active:user.roleIndex!=0, adminMode:user.roleIndex==0}" v-if="user.roleIndex!=0">
+            <li role="presentation" :class="{active:user.roleIndex!=0}" v-if="user.roleIndex!=0">
                 <a class="text-center" href="#enrollment" aria-controls="enrollment" role="tab" data-toggle="tab">Enrollment</a>
             </li>
-            <li role="presentation" :class="{active:user.roleIndex==0, adminMode:user.roleIndex==0}">
+            <li role="presentation" :class="{active:user.roleIndex==0}">
                 <a class="text-center" href="#courses" aria-controls="courses" role="tab" data-toggle="tab">Catalog</a>
             </li>
-            <li role="presentation" :class="{adminMode:user.roleIndex==0}">
+            <li role="presentation" v-if="user.roleIndex==0">
+                <a class="text-center" href="#users" aria-controls="users" role="tab" data-toggle="tab">Users</a>
+            </li>
+            <li role="presentation">
                 <a class="text-center" href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a>
             </li>
         </ul>
@@ -21,6 +24,9 @@
             <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex==0,active:user.roleIndex==0}" id="courses">
                 <content-courses></content-courses>
             </div>
+            <div role="tabpanel" class="tab-pane fade" v-if="user.roleIndex==0" id="users">
+                <content-users></content-users>
+            </div>
             <div role="tabpanel" class="tab-pane fade" id="profile">
                 <content-profile></content-profile>
             </div>
@@ -32,12 +38,14 @@
     import Profile from "./Profile.vue";
     import Courses from "./Courses.vue";
     import Enrollment from "./Enrollment.vue";
+    import Users from "./Users.vue";
 
     export default {
       components: {
         "content-profile": Profile,
         "content-courses": Courses,
-        "content-enrollment": Enrollment
+        "content-enrollment": Enrollment,
+        "content-users": Users
       },
       computed: {
         user() {
@@ -50,9 +58,5 @@
 <style scoped>
     .nav-tabs li {
       width: 33.33%;
-    }
-
-    .nav-tabs li.adminMode {
-      width: 50%;
     }
 </style>
