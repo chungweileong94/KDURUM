@@ -57,7 +57,7 @@ export default {
     };
   },
   methods: {
-    deleteCancelClick: function() {
+    deleteCancelClick() {
       this.deleteNameInput = "";
     }
   },

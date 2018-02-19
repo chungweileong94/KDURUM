@@ -17,7 +17,7 @@ export default {
     "app-content": Content
   },
   methods: {
-    init: function() {
+    init() {
       this.$store.dispatch("getUserData").then(() => {
         this.$store.dispatch("getCoursesAndEnrollment");
       });

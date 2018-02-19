@@ -66,12 +66,12 @@ export default {
     };
   },
   methods: {
-    refresCoursesAdnEnrollment: function() {
+    refresCoursesAdnEnrollment() {
       this.$store.dispatch("getUserData").then(() => {
         this.$store.dispatch("getCoursesAndEnrollment");
       });
     },
-    addCourse: function() {
+    addCourse() {
       this.$http
         .post("/courses/add", {
           title: this.courseTitleInput
@@ -88,7 +88,7 @@ export default {
           }
         });
     },
-    joinCourse: function(event) {
+    joinCourse(event) {
       if (event) event.preventDefault();
 
       let id = event.target.name;
@@ -100,8 +100,6 @@ export default {
         })
         .then(status => {
           if (status == 200) {
-            this.toggleJoinStatus(id, true);
-
             this.refresCoursesAdnEnrollment();
 
             alert("Joined course");
@@ -110,7 +108,7 @@ export default {
           }
         });
     },
-    leaveCourse: function(event) {
+    leaveCourse(event) {
       if (event) event.preventDefault();
 
       let id = event.target.name;
@@ -122,8 +120,6 @@ export default {
         })
         .then(status => {
           if (status == 200) {
-            this.toggleJoinStatus(id, false);
-
             this.refresCoursesAdnEnrollment();
 
             alert("Left course");
@@ -131,14 +127,6 @@ export default {
             alert("Error");
           }
         });
-    },
-    toggleJoinStatus: function(courseId, status) {
-      for (const key in this.courses) {
-        let course = this.courses[key];
-        if (course._id == courseId) {
-          course.isJoined = status;
-        }
-      }
     }
   },
   computed: {
