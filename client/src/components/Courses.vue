@@ -7,17 +7,25 @@
                         <h5>{{ c.title }}</h5>
 
                         <!-- non-admin buttons -->
-                        <a href="#" :name="c._id" class="btn btn-md btn-primary" v-if="user.roleIndex!=0 && !c.isJoined" v-on:click="joinCourse">Join</a>
-                        <div class="btn-group" v-if="user.roleIndex!=0 && c.isJoined">
-                            <a href="#" class="btn btn-success">Explore</a>
-                            <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="#" :name="c._id" v-on:click="leaveCourse">Leave</a>
-                                </li>
-                            </ul>
+                        <div v-if="user.roleIndex!=0">
+                            <a href="#" :name="c._id" class="btn btn-md btn-primary" v-if="!c.isJoined" v-on:click="joinCourse">Join</a>
+                            <div class="btn-group" v-if="c.isJoined">
+                                <a href="#" class="btn btn-success">Explore</a>
+                                <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#" :name="c._id" v-on:click="leaveCourse">Leave</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- admin buttons -->
+                        <div v-else>
+                            <a href="#" :name="c._id" class="btn btn-md btn-success">Explore</a>
+                            <a href="#" :name="c._id" class="btn btn-md btn-danger">Delete</a>
                         </div>
                     </div>
                 </div>
