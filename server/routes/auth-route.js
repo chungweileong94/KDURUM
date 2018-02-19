@@ -2,6 +2,7 @@ const router = require("express").Router();
 const path = require("path");
 const passport = require("passport");
 
+//get user data
 router.get("/user", (req, res) => {
     if (req.user) {
         res.json(req.user);
@@ -10,6 +11,7 @@ router.get("/user", (req, res) => {
     }
 });
 
+//login
 router.get("/login",
     (req, res, next) => {
         if (req.user) {
@@ -22,6 +24,7 @@ router.get("/login",
     }
 );
 
+//logout
 router.get("/logout", (req, res) => {
     req.logout();
     res.redirect("/");
