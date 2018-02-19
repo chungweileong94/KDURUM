@@ -44,7 +44,6 @@ app.use("/courses", coursesRoute);
 //test
 const User = require("./models/user-model");
 app.get("/test/:no", (req, res) => {
-    console.log(req.user);
     if (req.user) {
         User.findOne({ _id: req.user._id }, (err, user) => {
             user.role = req.params.no;
@@ -54,6 +53,12 @@ app.get("/test/:no", (req, res) => {
             });
         });
     }
+});
+
+app.get("/test/user", (req, res) => {
+    User.findOne({ _id: req.user._id }, (err, user) => {
+        res.json(user);
+    });
 });
 
 app.listen(PORT, () => {

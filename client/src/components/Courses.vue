@@ -8,7 +8,7 @@
 
                         <!-- non-admin buttons -->
                         <div v-if="user.roleIndex!=0">
-                            <a href="#" :name="c._id" class="btn btn-md btn-primary" v-if="!c.isJoined" v-on:click="joinCourse">Join</a>
+                            <a href="#" :name="c._id" class="btn btn-md btn-primary" v-if="!c.isJoined" @click="joinCourse">Join</a>
                             <div class="btn-group" v-if="c.isJoined">
                                 <a href="#" class="btn btn-success">Explore</a>
                                 <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -16,7 +16,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" :name="c._id" v-on:click="leaveCourse">Leave</a>
+                                        <a href="#" :name="c._id" @click="leaveCourse">Leave</a>
                                     </li>
                                 </ul>
                             </div>
@@ -25,7 +25,7 @@
                         <!-- admin buttons -->
                         <div v-else>
                             <a href="#" :name="c._id" class="btn btn-md btn-success">Explore</a>
-                            <a href="#" :name="c._id" class="btn btn-md btn-danger">Delete</a>
+                            <a href="#" :name="c._id" class="btn btn-md btn-danger" @click="deleteCourse">Delete</a>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal" v-bind:disabled="courseTitleInput.trim().length==0" v-on:click="addCourse">Add</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal" v-bind:disabled="courseTitleInput.trim().length==0" @click="addCourse">Add</button>
                     </div>
                 </div>
             </div>
@@ -91,6 +91,25 @@
               if (status == 200) {
                 this.refresCoursesAdnEnrollment();
                 alert("Course added");
+              } else {
+                alert("Error");
+              }
+            });
+        },
+        deleteCourse(event) {
+          if (event) event.preventDefault();
+
+          let id = event.target.name;
+
+          this.$http
+            .delete(`/courses/delete/${id}`)
+            .then(data => {
+              return data.status;
+            })
+            .then(status => {
+              if (status == 200) {
+                this.refresCoursesAdnEnrollment();
+                alert("Course deleted");
               } else {
                 alert("Error");
               }

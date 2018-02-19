@@ -29,6 +29,29 @@ router.post("/add", (req, res) => {
     });
 });
 
+router.delete("/delete/:id", (req, res) => {
+    if (!req.user || req.user.role != 0) return res.sendStatus(401);
+    if (!req.params.id) return res.sendStatus(404);
+
+    let id = req.params.id;
+
+    Course.findByIdAndRemove(id, (err, course) => {
+        if (err) throw err;
+
+        User.find({ enrollment: id }, (err, users) => {
+            if (err) throw err;
+
+            users.forEach(user => {
+                user.enrollment.splice(user.enrollment.indexOf(id), 1);
+                user.save((err, result) => {
+                    if (err) throw err;
+                    res.sendStatus(200);
+                });
+            });
+        })
+    })
+});
+
 //join course
 router.put("/join/:id", (req, res) => {
     if (!req.user || req.user.role == 0) return res.sendStatus(401);
