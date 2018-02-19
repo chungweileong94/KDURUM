@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 1000, //expire in 1 day
     keys: [keys.session.cookieKey]
-}))
+}));
 
 //initialize passport
 app.use(passport.initialize());
