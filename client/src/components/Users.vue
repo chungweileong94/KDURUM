@@ -71,7 +71,32 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
-                        <button class="btn btn-danger" type="button" v-if="selectedUser._id!=user._id">Delete</button>
+                        <button class="btn btn-danger" type="button" v-if="selectedUser._id!=user._id" data-dismiss="modal" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- delete account dialog -->
+        <div id="deleteModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCancelClick">&times;</button>
+                        <h4 class="modal-title">Delete "{{ selectedUser.name }}"</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <b>WARNING! This action will permanent delete the account including the data.</b>
+                        </p>
+                        <div class="form-group">
+                            <label class="control-label" for="deleteNameInput">Please enter the user name</label>
+                            <input class="form-control" id="deleteNameInput" type="text" v-model="deleteNameInput">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteCancelClick">Cancel</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal" :disabled="!(deleteNameInput == selectedUser.name)" @click="deleteUser(selectedUser._id)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -84,7 +109,8 @@
       data() {
         return {
           users: [],
-          selectedUser: {}
+          selectedUser: {},
+          deleteNameInput: ""
         };
       },
       methods: {
@@ -100,6 +126,19 @@
         },
         userSelected(user) {
           this.selectedUser = user;
+        },
+        deleteUser(id) {
+          this.$http.delete(`/users/delete/${id}`).then(data => {
+            if (data.status == 200) {
+              alert("Account deleted");
+              this.getAllusers();
+            } else {
+              alert("Error");
+            }
+          });
+        },
+        deleteCancelClick() {
+          this.deleteNameInput = "";
         }
       },
       computed: {
