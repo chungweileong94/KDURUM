@@ -20,12 +20,12 @@
         <hr>
         <div class="row">
             <div class="col-sm-12" style="text-align: center;">
-                <a class="btn btn-md btn-danger" href="#" data-toggle="modal" data-target="#deleteModal">Delete Account</a>
+                <a class="btn btn-md btn-danger" href="#" data-toggle="modal" data-target="#deleteProfileModal">Delete Account</a>
             </div>
         </div>
 
         <!-- delete account dialog -->
-        <div id="deleteModal" class="modal fade">
+        <div id="deleteProfileModal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
