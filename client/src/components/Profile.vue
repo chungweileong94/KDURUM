@@ -43,7 +43,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteCancelClick">Cancel</button>
-                        <button class="btn btn-danger" type="button" :disabled="!(deleteNameInput == user.name)">Delete</button>
+                        <button class="btn btn-danger" type="button" :disabled="!(deleteNameInput == user.name)" @click="deleteUser(user._id)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -61,6 +61,16 @@
       methods: {
         deleteCancelClick() {
           this.deleteNameInput = "";
+        },
+        deleteUser(id) {
+          this.$http.delete(`/users/delete/${id}`).then(data => {
+            if (data.status == 200) {
+              alert("Account deleted");
+              window.location.href = "/auth/logout";
+            } else {
+              alert("Error");
+            }
+          });
         }
       },
       computed: {
