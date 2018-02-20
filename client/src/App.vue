@@ -2,22 +2,21 @@
     <div>
         <app-header :user="user"></app-header>
         <section class="container" style="margin-top: 70px;">
-            <app-content></app-content>
+            <component :is="currentView"></component>
         </section>
     </div>
 </template>
 
 <script>
     import Header from "./components/Header.vue";
-    import Content from "./components/Content.vue";
 
     export default {
       components: {
-        "app-header": Header,
-        "app-content": Content
+        "app-header": Header
       },
       methods: {
         init() {
+          this.$store.commit("switchView", this.MainView);
           this.$store.dispatch("getUserData").then(() => {
             this.$store.dispatch("getCoursesAndEnrollment");
           });
@@ -25,6 +24,14 @@
       },
       created() {
         this.init();
+      },
+      computed: {
+        MainView() {
+          return this.$store.state.MainView;
+        },
+        currentView() {
+          return this.$store.state.currentView;
+        }
       }
     };
 </script>

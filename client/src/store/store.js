@@ -1,6 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+// components
+import MainView from "./../components/MainView.vue";
+
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
@@ -14,7 +17,14 @@ export const store = new Vuex.Store({
             enrollment: []
         },
         courses: [],
-        enrollment: []
+        enrollment: [],
+        currentView: null,
+        MainView: MainView
+    },
+    mutations: {
+        switchView(state, view) {
+            state.currentView = view;
+        }
     },
     actions: {
         getUserData({ state }) {
