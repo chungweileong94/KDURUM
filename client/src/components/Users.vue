@@ -1,29 +1,90 @@
 <template>
-    <table class="table table-striped table-hover" style="margin-top:8px;">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Role</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="user in users" :key="user._id">
-                <td>{{ user._id }}</td>
-                <td>{{ user.name }}</td>
-                <td>{{ user.role==0?"Administrator":user.role==1?"Lecture":"Student" }}</td>
-                <td>{{ user.email }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container-fluid">
+        <div class="row">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="u in users" :key="u._id" data-toggle="modal" data-target="#userModal" @click="userSelected(u)">
+                        <td>{{ u._id }}</td>
+                        <td>{{ u.name }}</td>
+                        <td>{{ u.role==0?"Administrator":u.role==1?"Lecture":"Student" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- user detail modal -->
+        <div id="userModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">User's Detail</h4>
+                    </div>
+                    <div class="modal-body">
+                        <img class="img-circle center-block" style="width:100px; margin-bottom:10px;" :src="selectedUser.thumnail">
+
+                        <div class="form-horizontal">
+                            <!-- id-->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="userId">
+                                    <b>ID</b>
+                                </label>
+                                <div class="col-sm-9">
+                                    <p class="form-control-static" id="userId">{{ selectedUser._id }}</p>
+                                </div>
+                            </div>
+                            <!-- name-->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="name">
+                                    <b>Name</b>
+                                </label>
+                                <div class="col-sm-9">
+                                    <p class="form-control-static" id="name">{{ selectedUser.name }}</p>
+                                </div>
+                            </div>
+                            <!-- email-->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="email">
+                                    <b>Email</b>
+                                </label>
+                                <div class="col-sm-9">
+                                    <p class="form-control-static" id="email">{{ (!selectedUser.email || selectedUser.email.length==0) ? "-" : selectedUser.email }}</p>
+                                </div>
+                            </div>
+                            <!-- role-->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="role">
+                                    <b>Role</b>
+                                </label>
+                                <div class="col-sm-9">
+                                    <p class="form-control-static" id="role">{{ selectedUser.role==0?"Administrator":selectedUser.role==1?"Lecture":"Student" }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                        <button class="btn btn-danger" type="button" v-if="selectedUser._id!=user._id">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
     export default {
       data() {
         return {
-          users: []
+          users: [],
+          selectedUser: {}
         };
       },
       methods: {
@@ -36,6 +97,14 @@
             .then(data => {
               this.users = data;
             });
+        },
+        userSelected(user) {
+          this.selectedUser = user;
+        }
+      },
+      computed: {
+        user() {
+          return this.$store.state.user;
         }
       },
       created() {
@@ -45,5 +114,7 @@
 </script>
 
 <style scoped>
-
+    table tbody tr {
+      cursor: pointer;
+    }
 </style>

@@ -17,7 +17,7 @@
         </ul>
 
         <!-- Tab panes -->
-        <div class="tab-content">
+        <div class="tab-content" style="margin-top:8px;">
             <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex!=0,active:user.roleIndex!=0}" v-if="user.roleIndex!=0" id="enrollment">
                 <content-enrollment></content-enrollment>
             </div>

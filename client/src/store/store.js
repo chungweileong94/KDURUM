@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         user: {
+            _id: "",
             name: "",
             thumnail: "",
             role: "",
@@ -19,6 +20,7 @@ export const store = new Vuex.Store({
         getUserData({ state }) {
             return new Promise((resolve, reject) => {
                 Vue.http.get("/auth/user").then(data => {
+                    state.user._id = data.body._id;
                     state.user.name = data.body.name;
                     state.user.thumnail = data.body.thumnail;
                     state.user.roleIndex = data.body.role;

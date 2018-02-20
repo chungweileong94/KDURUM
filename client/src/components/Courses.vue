@@ -90,7 +90,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteCourseCancel">Cancel</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal" :disabled="courseTitleDeleteInput!=selectedDeleteCourse.title" @click="deleteCourse(selectedDeleteCourse.id)">Delete</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal" :disabled="courseTitleDeleteInput!=selectedDeleteCourse.title" @click="deleteCourse(selectedDeleteCourse._id)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -104,10 +104,7 @@
         return {
           courseTitleInput: "",
           courseTitleDeleteInput: "",
-          selectedDeleteCourse: {
-            id: "",
-            title: ""
-          }
+          selectedDeleteCourse: {}
         };
       },
       methods: {
@@ -134,12 +131,10 @@
             });
         },
         deleteCourseAlert(course) {
-          this.selectedDeleteCourse.id = course._id;
-          this.selectedDeleteCourse.title = course.title;
+          this.selectedDeleteCourse = course;
         },
         deleteCourseCancel() {
-          this.selectedDeleteCourse.id = "";
-          this.selectedDeleteCourse.title = "";
+          this.selectedDeleteCourse = {};
           this.courseTitleDeleteInput = "";
         },
         deleteCourse(id) {
@@ -207,7 +202,6 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 8px;
     }
 
     .courseItem {
