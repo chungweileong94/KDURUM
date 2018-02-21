@@ -247,7 +247,8 @@
             });
         },
         exploreCourse(course) {
-          this.$store.commit("switchView", this.MainView);
+          this.$store.commit("changeCurrentSelectedCourse", course);
+          this.$store.commit("switchView", this.CourseView);
         }
       },
       computed: {

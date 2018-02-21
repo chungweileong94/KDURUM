@@ -20,6 +20,7 @@ export const store = new Vuex.Store({
         },
         courses: [],
         enrollment: [],
+        currentSelectedCourse: {},
         currentView: null,
         MainView: MainView,
         CourseView: CourseView,
@@ -28,6 +29,9 @@ export const store = new Vuex.Store({
     mutations: {
         switchView(state, view) {
             state.currentView = view;
+        },
+        changeCurrentSelectedCourse(state, course) {
+            state.currentSelectedCourse = course;
         }
     },
     actions: {
