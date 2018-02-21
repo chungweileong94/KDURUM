@@ -3,6 +3,8 @@ import Vuex from "vuex";
 
 // components
 import MainView from "./../components/MainView.vue";
+import CourseView from "./../components/CourseView.vue";
+import ForumView from "./../components/ForumView.vue";
 
 Vue.use(Vuex);
 
@@ -19,7 +21,9 @@ export const store = new Vuex.Store({
         courses: [],
         enrollment: [],
         currentView: null,
-        MainView: MainView
+        MainView: MainView,
+        CourseView: CourseView,
+        ForumView: ForumView
     },
     mutations: {
         switchView(state, view) {
