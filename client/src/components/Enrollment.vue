@@ -4,7 +4,21 @@
             <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in enrollment" :key="c._id">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        {{ c.title }}
+                        <h5>{{ c.title }}</h5>
+
+                        <div>
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-success" @click="exploreCourse(c)">Explore</a>
+                                <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#" @click="leaveCourse(c._id)">Leave</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -18,9 +32,39 @@
 
 <script>
     export default {
+      methods: {
+        refresCoursesAdnEnrollment() {
+          this.$store.dispatch("getUserData").then(() => {
+            this.$store.dispatch("getCoursesAndEnrollment");
+          });
+        },
+        leaveCourse(id) {
+          this.$http
+            .put(`/courses/leave/${id}`)
+            .then(data => {
+              return data.status;
+            })
+            .then(status => {
+              if (status == 200) {
+                this.refresCoursesAdnEnrollment();
+
+                alert("Left course");
+              } else {
+                alert("Error");
+              }
+            });
+        },
+        exploreCourse(course) {
+          this.$store.commit("changeCurrentSelectedCourse", course);
+          this.$store.commit("switchView", this.CourseView);
+        }
+      },
       computed: {
         enrollment() {
           return this.$store.state.enrollment;
+        },
+        CourseView() {
+          return this.$store.state.CourseView;
         }
       }
     };
@@ -31,7 +75,6 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 8px;
     }
 
     .courseItem {
@@ -43,13 +86,10 @@
     .courseItem .panel {
       margin: 0;
       transition: background-color 0.2s, color 0.2s;
-      line-height: 150px;
-      font-weight: bold;
     }
 
-    .courseItem .panel:hover {
-      background-color: #0c84e4;
-      color: white;
+    .courseItem h5 {
+      font-weight: 300;
     }
 </style>
 
