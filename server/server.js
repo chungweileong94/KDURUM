@@ -14,7 +14,8 @@ const usersRoute = require("./routes/users-route");
 const PORT = process.env.PORT || process.env.port || 8888;
 
 //connect to database
-mongoose.connect(keys.mongodb.databaseUri, () => {
+mongoose.connect(keys.mongodb.databaseUri, (err) => {
+    if (err) throw err;
     console.log("Connected to database");
 });
 
