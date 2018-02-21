@@ -10,7 +10,7 @@
                         <div v-if="user.roleIndex!=0">
                             <a href="#" class="btn btn-md btn-primary" v-if="!c.isJoined" @click="joinCourse((c._id))">Join</a>
                             <div class="btn-group" v-if="c.isJoined">
-                                <a href="#" class="btn btn-success">Explore</a>
+                                <a href="#" class="btn btn-success" @click="exploreCourse(c)">Explore</a>
                                 <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="caret"></span>
                                 </a>
@@ -24,8 +24,18 @@
 
                         <!-- admin buttons -->
                         <div v-else>
-                            <a href="#" class="btn btn-md btn-success">Explore</a>
-                            <a href="#" class="btn btn-md btn-danger" @click="deleteCourseAlert(c)" data-toggle="modal" data-target="#deleteCourseModal">Delete</a>
+                            <a href="#" class="btn btn-md btn-success" @click="exploreCourse(c)">Explore</a>
+                            <div class="btn-group">
+                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateCourseModal" @click="updateCourseSelect(c)">Edit</a>
+                                <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#" @click="deleteCourseSelect(c)" data-toggle="modal" data-target="#deleteCourseModal">Delete</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,6 +81,34 @@
             </div>
         </div>
 
+        <!-- update course dialog -->
+        <div id="updateCourseModal" class="modal fade" v-if="user.roleIndex==0">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Update Course</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="newCourseTitleInput">
+                                    <b>New Title</b>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="newCourseTitleInput" type="text" v-model="selectedUpdateCourse.title">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="!selectedUpdateCourse.title || selectedUpdateCourse.title.trim().length==0" @click="updateCourse">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- delete modal -->
         <div id="deleteCourseModal" class="modal fade" v-if="user.roleIndex==0">
             <div class="modal-dialog">
@@ -104,6 +142,7 @@
         return {
           courseTitleInput: "",
           courseTitleDeleteInput: "",
+          selectedUpdateCourse: {},
           selectedDeleteCourse: {}
         };
       },
@@ -126,11 +165,33 @@
                 this.refresCoursesAdnEnrollment();
                 alert("Course added");
               } else {
+                this.refresCoursesAdnEnrollment();
                 alert("Error");
               }
             });
         },
-        deleteCourseAlert(course) {
+        updateCourseSelect(course) {
+          this.selectedUpdateCourse = course;
+        },
+        updateCourse() {
+          this.$http
+            .put("/courses/update", {
+              course: this.selectedUpdateCourse
+            })
+            .then(data => {
+              console.log(data);
+              return data.status;
+            })
+            .then(status => {
+              if (status == 200) {
+                this.refresCoursesAdnEnrollment();
+                alert("Course updated");
+              } else {
+                alert("Error");
+              }
+            });
+        },
+        deleteCourseSelect(course) {
           this.selectedDeleteCourse = course;
         },
         deleteCourseCancel() {
@@ -184,6 +245,9 @@
                 alert("Error");
               }
             });
+        },
+        exploreCourse(course) {
+          this.$store.commit("switchView", this.MainView);
         }
       },
       computed: {
@@ -192,6 +256,9 @@
         },
         courses() {
           return this.$store.state.courses;
+        },
+        CourseView() {
+          return this.$store.state.CourseView;
         }
       }
     };

@@ -26,6 +26,20 @@ router.post("/add", (req, res) => {
     });
 });
 
+//update course
+router.put("/update", (req, res) => {
+    if (!req.user || req.user.role != 0) return res.sendStatus(401);
+    if (!req.body.course) return res.sendStatus(500);
+
+    let updatedCourse = req.body.course;
+
+    Course.findOneAndUpdate({ _id: updatedCourse._id }, { $set: { title: updatedCourse.title } }, (err, doc) => {
+        if (err) throw err;
+        res.sendStatus(200);
+    });
+})
+
+//delete course
 router.delete("/delete/:id", (req, res) => {
     if (!req.user || req.user.role != 0) return res.sendStatus(401);
     if (!req.params.id) return res.sendStatus(404);
