@@ -20,7 +20,9 @@
         <hr>
         <div class="row">
             <div class="col-sm-12" style="text-align: center;">
-                <a class="btn btn-md btn-danger" href="#" data-toggle="modal" data-target="#deleteProfileModal">Delete Account</a>
+                <a class="btn btn-md btn-danger" href="#" data-toggle="modal" data-target="#deleteProfileModal">
+                    <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete Account
+                </a>
             </div>
         </div>
 
@@ -30,7 +32,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCancelClick">&times;</button>
-                        <h4 class="modal-title">Delete Account</h4>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete Account
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <p>

@@ -25,7 +25,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">User's Detail</h4>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;User's Detail
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <img class="img-circle center-block" style="width:100px; margin-bottom:10px;" :src="selectedUser.thumnail">
@@ -83,7 +85,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCancelClick">&times;</button>
-                        <h4 class="modal-title">Delete "{{ selectedUser.name }}"</h4>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete "{{ selectedUser.name }}"
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <p>

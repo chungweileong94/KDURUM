@@ -26,7 +26,9 @@
                         <div v-else>
                             <a href="#" class="btn btn-md btn-success" @click="exploreCourse(c)">Explore</a>
                             <div class="btn-group">
-                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateCourseModal" @click="updateCourseSelect(c)">Edit</a>
+                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateCourseModal" @click="updateCourseSelect(c)">
+                                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+                                </a>
                                 <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="caret"></span>
                                 </a>
@@ -59,7 +61,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Add Course</h4>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-blackboard"></span>&nbsp;&nbsp;Add Course
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-horizontal">
@@ -87,7 +91,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Update Course</h4>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Update Course
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-horizontal">
@@ -115,7 +121,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCourseCancel">&times;</button>
-                        <h4 class="modal-title">Delete "{{ selectedDeleteCourse.title }}"</h4>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete "{{ selectedDeleteCourse.title }}"
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <p>
