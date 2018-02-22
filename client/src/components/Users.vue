@@ -10,7 +10,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="u in users" :key="u._id" data-toggle="modal" data-target="#userModal" @click="userSelected(u)">
+                    <tr v-for="u in users" :key="u._id" data-toggle="modal" data-target="#userModal" @click="user_Selected(u)">
                         <td>{{ u._id }}</td>
                         <td>{{ u.name }}</td>
                         <td>{{ u.role==0?"Administrator":u.role==1?"Lecture":"Student" }}</td>
@@ -84,7 +84,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCancelClick">&times;</button>
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteUserDialogDismiss_Click">&times;</button>
                         <h4 class="modal-title">
                             <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete "{{ selectedUser.name }}"
                         </h4>
@@ -99,8 +99,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteCancelClick">Cancel</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal" :disabled="!(deleteNameInput == selectedUser.name)" @click="deleteUser(selectedUser._id)">Delete</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteUserDialogDismiss_Click">Cancel</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal" :disabled="!(deleteNameInput == selectedUser.name)" @click="deleteUserDialog_Click(selectedUser._id)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@
         };
       },
       methods: {
-        getAllusers() {
+        getAllUsers() {
           this.$http
             .get("/users/all")
             .then(data => {
@@ -128,20 +128,20 @@
               this.users = data;
             });
         },
-        userSelected(user) {
+        user_Selected(user) {
           this.selectedUser = user;
         },
-        deleteUser(id) {
+        deleteUserDialog_Click(id) {
           this.$http.delete(`/users/delete/${id}`).then(data => {
             if (data.status == 200) {
               alert("Account deleted");
-              this.getAllusers();
+              this.getAllUsers();
             } else {
               alert("Error");
             }
           });
         },
-        deleteCancelClick() {
+        deleteUserDialogDismiss_Click() {
           this.deleteNameInput = "";
         }
       },
@@ -151,7 +151,7 @@
         }
       },
       created() {
-        this.getAllusers();
+        this.getAllUsers();
       }
     };
 </script>

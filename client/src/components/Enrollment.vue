@@ -8,13 +8,13 @@
 
                         <div>
                             <div class="btn-group">
-                                <a href="#" class="btn btn-success" @click="exploreCourse(c)">Explore</a>
+                                <a href="#" class="btn btn-success" @click="exploreCourse_Click(c)">Explore</a>
                                 <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" @click="leaveCourse(c._id)">Leave</a>
+                                        <a href="#" @click="leaveCourse_Click(c._id)">Leave</a>
                                     </li>
                                 </ul>
                             </div>
@@ -33,12 +33,12 @@
 <script>
     export default {
       methods: {
-        refresCoursesAdnEnrollment() {
+        refresCoursesAndEnrollment() {
           this.$store.dispatch("getUserData").then(() => {
             this.$store.dispatch("getCoursesAndEnrollment");
           });
         },
-        leaveCourse(id) {
+        leaveCourse_Click(id) {
           this.$http
             .put(`/courses/leave/${id}`)
             .then(data => {
@@ -46,7 +46,7 @@
             })
             .then(status => {
               if (status == 200) {
-                this.refresCoursesAdnEnrollment();
+                this.refresCoursesAndEnrollment();
 
                 alert("Left course");
               } else {
@@ -54,7 +54,7 @@
               }
             });
         },
-        exploreCourse(course) {
+        exploreCourse_Click(course) {
           this.$store.commit("changeCurrentSelectedCourse", course);
           this.$store.commit("switchView", this.CourseView);
         }

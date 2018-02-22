@@ -8,15 +8,15 @@
 
                         <!-- non-admin buttons -->
                         <div v-if="user.roleIndex!=0">
-                            <a href="#" class="btn btn-md btn-primary" v-if="!c.isJoined" @click="joinCourse((c._id))">Join</a>
+                            <a href="#" class="btn btn-md btn-primary" v-if="!c.isJoined" @click="joinCourse_Click((c._id))">Join</a>
                             <div class="btn-group" v-if="c.isJoined">
-                                <a href="#" class="btn btn-success" @click="exploreCourse(c)">Explore</a>
+                                <a href="#" class="btn btn-success" @click="exploreCourse_Click(c)">Explore</a>
                                 <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" @click="leaveCourse(c._id)">Leave</a>
+                                        <a href="#" @click="leaveCourse_Click(c._id)">Leave</a>
                                     </li>
                                 </ul>
                             </div>
@@ -24,9 +24,9 @@
 
                         <!-- admin buttons -->
                         <div v-else>
-                            <a href="#" class="btn btn-md btn-success" @click="exploreCourse(c)">Explore</a>
+                            <a href="#" class="btn btn-md btn-success" @click="exploreCourse_Click(c)">Explore</a>
                             <div class="btn-group">
-                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateCourseModal" @click="updateCourseSelect(c)">
+                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateCourseModal" @click="updateCourse_Click(c)">
                                     <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
                                 </a>
                                 <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -34,7 +34,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" @click="deleteCourseSelect(c)" data-toggle="modal" data-target="#deleteCourseModal">Delete</a>
+                                        <a href="#" @click="deleteCourse_Click(c)" data-toggle="modal" data-target="#deleteCourseModal">Delete</a>
                                     </li>
                                 </ul>
                             </div>
@@ -79,7 +79,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="courseTitleInput.trim().length==0" @click="addCourse">Add</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="courseTitleInput.trim().length==0" @click="addCourse_Click">Add</button>
                     </div>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="!selectedUpdateCourse.title || selectedUpdateCourse.title.trim().length==0" @click="updateCourse">Update</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="!selectedUpdateCourse.title || selectedUpdateCourse.title.trim().length==0" @click="updateCourseDialog_Click">Update</button>
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCourseCancel">&times;</button>
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCourseDialogDismiss_Click">&times;</button>
                         <h4 class="modal-title">
                             <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete "{{ selectedDeleteCourse.title }}"
                         </h4>
@@ -135,8 +135,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteCourseCancel">Cancel</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal" :disabled="courseTitleDeleteInput!=selectedDeleteCourse.title" @click="deleteCourse(selectedDeleteCourse._id)">Delete</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteCourseDialogDismiss_Click">Cancel</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal" :disabled="courseTitleDeleteInput!=selectedDeleteCourse.title" @click="deleteCourseDialog_Click(selectedDeleteCourse._id)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -155,12 +155,12 @@
         };
       },
       methods: {
-        refresCoursesAdnEnrollment() {
+        refresCoursesAndEnrollment() {
           this.$store.dispatch("getUserData").then(() => {
             this.$store.dispatch("getCoursesAndEnrollment");
           });
         },
-        addCourse() {
+        addCourse_Click() {
           this.$http
             .post("/courses/add", {
               title: this.courseTitleInput
@@ -170,18 +170,18 @@
             })
             .then(status => {
               if (status == 200) {
-                this.refresCoursesAdnEnrollment();
+                this.refresCoursesAndEnrollment();
                 alert("Course added");
               } else {
-                this.refresCoursesAdnEnrollment();
+                this.refresCoursesAndEnrollment();
                 alert("Error");
               }
             });
         },
-        updateCourseSelect(course) {
+        updateCourse_Click(course) {
           this.selectedUpdateCourse = course;
         },
-        updateCourse() {
+        updateCourseDialog_Click() {
           this.$http
             .put("/courses/update", {
               course: this.selectedUpdateCourse
@@ -192,21 +192,21 @@
             })
             .then(status => {
               if (status == 200) {
-                this.refresCoursesAdnEnrollment();
+                this.refresCoursesAndEnrollment();
                 alert("Course updated");
               } else {
                 alert("Error");
               }
             });
         },
-        deleteCourseSelect(course) {
+        deleteCourse_Click(course) {
           this.selectedDeleteCourse = course;
         },
-        deleteCourseCancel() {
+        deleteCourseDialogDismiss_Click() {
           this.selectedDeleteCourse = {};
           this.courseTitleDeleteInput = "";
         },
-        deleteCourse(id) {
+        deleteCourseDialog_Click(id) {
           this.$http
             .delete(`/courses/delete/${id}`)
             .then(data => {
@@ -214,15 +214,15 @@
             })
             .then(status => {
               if (status == 200) {
-                this.refresCoursesAdnEnrollment();
-                this.deleteCourseCancel();
+                this.refresCoursesAndEnrollment();
+                this.deleteCourseDialogDismiss_Click();
                 alert("Course deleted");
               } else {
                 alert("Error");
               }
             });
         },
-        joinCourse(id) {
+        joinCourse_Click(id) {
           this.$http
             .put(`/courses/join/${id}`)
             .then(data => {
@@ -230,7 +230,7 @@
             })
             .then(status => {
               if (status == 200) {
-                this.refresCoursesAdnEnrollment();
+                this.refresCoursesAndEnrollment();
 
                 alert("Joined course");
               } else {
@@ -238,7 +238,7 @@
               }
             });
         },
-        leaveCourse(id) {
+        leaveCourse_Click(id) {
           this.$http
             .put(`/courses/leave/${id}`)
             .then(data => {
@@ -246,7 +246,7 @@
             })
             .then(status => {
               if (status == 200) {
-                this.refresCoursesAdnEnrollment();
+                this.refresCoursesAndEnrollment();
 
                 alert("Left course");
               } else {
@@ -254,7 +254,7 @@
               }
             });
         },
-        exploreCourse(course) {
+        exploreCourse_Click(course) {
           this.$store.commit("changeCurrentSelectedCourse", course);
           this.$store.commit("switchView", this.CourseView);
         }

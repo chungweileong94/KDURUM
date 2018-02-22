@@ -31,7 +31,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteCancelClick">&times;</button>
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal" @click="deleteProfileDialogDismiss_Click">&times;</button>
                         <h4 class="modal-title">
                             <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete Account
                         </h4>
@@ -46,8 +46,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteCancelClick">Cancel</button>
-                        <button class="btn btn-danger" type="button" :disabled="!(deleteNameInput == user.name)" @click="deleteUser(user._id)">Delete</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal" @click="deleteProfileDialogDismiss_Click">Cancel</button>
+                        <button class="btn btn-danger" type="button" :disabled="!(deleteNameInput == user.name)" @click="deleteProfile_Click(user._id)">Delete</button>
                     </div>
                 </div>
             </div>
@@ -63,10 +63,10 @@
         };
       },
       methods: {
-        deleteCancelClick() {
+        deleteProfileDialogDismiss_Click() {
           this.deleteNameInput = "";
         },
-        deleteUser(id) {
+        deleteProfile_Click(id) {
           this.$http.delete(`/users/delete/${id}`).then(data => {
             if (data.status == 200) {
               alert("Account deleted");
