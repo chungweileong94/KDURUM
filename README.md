@@ -8,3 +8,11 @@ Software Engineering Assignment
 4. To run the app, press F5 in visual studio code
 5. Open your browser, and navigate to "http://locahost:8888" 
     > Note: The port number might be different on your device, you can find it on the command prompt.
+
+---------------
+# Tutorials
+1. [NodeJS](https://youtu.be/w-7RQ46RgxU)
+2. [PassportJS](https://youtu.be/sakQbeRjgwg)
+3. [VueJS](https://youtu.be/5LYrN_cAJoA)
+4. [Vuex](https://youtu.be/BGAu__J4xoc)
+5. [Bootstrap](https://youtu.be/xvfm7IpEkBk)
