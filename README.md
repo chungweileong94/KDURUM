@@ -11,8 +11,8 @@ Software Engineering Assignment
 
 ---------------
 # Tutorials
-1. [NodeJS](https://youtu.be/w-7RQ46RgxU)
-2. [PassportJS](https://youtu.be/sakQbeRjgwg)
-3. [VueJS](https://youtu.be/5LYrN_cAJoA)
-4. [Vuex](https://youtu.be/BGAu__J4xoc)
-5. [Bootstrap](https://youtu.be/xvfm7IpEkBk)
+1. [NodeJS](https://youtu.be/w-7RQ46RgxU) - Back-end
+3. [VueJS](https://youtu.be/5LYrN_cAJoA) - Front-end
+4. [Vuex](https://youtu.be/BGAu__J4xoc)- Front-end
+2. [PassportJS](https://youtu.be/sakQbeRjgwg) - OAuth
+5. [Bootstrap](https://youtu.be/xvfm7IpEkBk) - CSS/UX/UI
