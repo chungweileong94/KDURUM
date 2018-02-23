@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="flex-container" v-if="courses.length!=0">
-            <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in courses" :key="c._id">
+            <div class="course-item col-md-3 col-sm-5 col-xs-12" v-for="c in courses" :key="c._id">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h5>{{ c.title }}</h5>
@@ -26,7 +26,7 @@
                         <div v-else>
                             <a href="#" class="btn btn-md btn-success" @click="exploreCourse_Click(c)">Explore</a>
                             <div class="btn-group">
-                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#updateCourseModal" @click="updateCourse_Click(c)">
+                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#update-course-modal" @click="updateCourse_Click(c)">
                                     <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
                                 </a>
                                 <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -34,7 +34,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="#" @click="deleteCourse_Click(c)" data-toggle="modal" data-target="#deleteCourseModal">Delete</a>
+                                        <a href="#" @click="deleteCourse_Click(c)" data-toggle="modal" data-target="#delete-course-modal">Delete</a>
                                     </li>
                                 </ul>
                             </div>
@@ -51,12 +51,12 @@
             <p class="lead" v-else>There is no courses available yet</p>
         </div>
 
-        <button class="btn btn-success btn-lg roundButton" v-if="user.roleIndex==0" type="button" data-toggle="modal" data-target="#addCourseModal">
+        <button class="btn btn-success btn-lg round-button" v-if="user.roleIndex==0" type="button" data-toggle="modal" data-target="#add-course-modal">
             <span class="glyphicon glyphicon-plus"></span>
         </button>
 
         <!-- add course dialog -->
-        <div id="addCourseModal" class="modal fade" v-if="user.roleIndex==0">
+        <div id="add-course-modal" class="modal fade" v-if="user.roleIndex==0">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -68,11 +68,11 @@
                     <div class="modal-body">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="courseTitleInput">
+                                <label class="col-sm-2 control-label" for="course-title-input">
                                     <b>Title</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="courseTitleInput" type="text" v-model="courseTitleInput">
+                                    <input class="form-control" id="course-title-input" type="text" v-model="courseTitleInput">
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
         </div>
 
         <!-- update course dialog -->
-        <div id="updateCourseModal" class="modal fade" v-if="user.roleIndex==0">
+        <div id="update-course-modal" class="modal fade" v-if="user.roleIndex==0">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -98,11 +98,11 @@
                     <div class="modal-body">
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="newCourseTitleInput">
+                                <label class="col-sm-2 control-label" for="new-course-title-input">
                                     <b>New Title</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="newCourseTitleInput" type="text" v-model="selectedUpdateCourse.title">
+                                    <input class="form-control" id="new-course-title-input" type="text" v-model="selectedUpdateCourse.title">
                                 </div>
                             </div>
                         </div>
@@ -116,7 +116,7 @@
         </div>
 
         <!-- delete modal -->
-        <div id="deleteCourseModal" class="modal fade" v-if="user.roleIndex==0">
+        <div id="delete-course-modal" class="modal fade" v-if="user.roleIndex==0">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -130,8 +130,8 @@
                             <b>WARNING! This action will permanent delete course together with all the forum data.</b>
                         </p>
                         <div class="form-group">
-                            <label class="control-label" for="deleteNameInput">Please enter the course title</label>
-                            <input class="form-control" id="deleteNameInput" type="text" v-model="courseTitleDeleteInput">
+                            <label class="control-label" for="delete-name-input">Please enter the course title</label>
+                            <input class="form-control" id="delete-name-input" type="text" v-model="courseTitleDeleteInput">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -280,22 +280,22 @@
       justify-content: center;
     }
 
-    .courseItem {
+    .course-item {
       margin: 0;
       padding: 8px;
       text-align: center;
     }
 
-    .courseItem .panel {
+    .course-item .panel {
       margin: 0;
       transition: background-color 0.2s, color 0.2s;
     }
 
-    .courseItem h5 {
+    .course-item h5 {
       font-weight: 300;
     }
 
-    .roundButton {
+    .round-button {
       position: fixed;
       right: 30px;
       bottom: 30px;

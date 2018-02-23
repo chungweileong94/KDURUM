@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="flex-container" v-if="enrollment.length!=0">
-            <div class="courseItem col-md-3 col-sm-5 col-xs-12" v-for="c in enrollment" :key="c._id">
+            <div class="course-item col-md-3 col-sm-5 col-xs-12" v-for="c in enrollment" :key="c._id">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h5>{{ c.title }}</h5>
@@ -77,18 +77,18 @@
       justify-content: center;
     }
 
-    .courseItem {
+    .course-item {
       margin: 0;
       padding: 8px;
       text-align: center;
     }
 
-    .courseItem .panel {
+    .course-item .panel {
       margin: 0;
       transition: background-color 0.2s, color 0.2s;
     }
 
-    .courseItem h5 {
+    .course-item h5 {
       font-weight: 300;
     }
 </style>

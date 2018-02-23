@@ -1,13 +1,15 @@
 <template>
     <div class="container-fluid">
-        <div id="titleBar" class="well well-sm">
-            <a id="backButton" href="#" @click="back">
+        <div id="title-bar" class="well well-sm">
+            <a id="back-button" href="#" @click="back">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
             <p>
                 <b>{{ course.title }}</b>
             </p>
         </div>
+
+        <button id="create-button" class="btn btn-primary">Create Post</button>
     </div>
 </template>
 
@@ -30,14 +32,20 @@
 </script>
 
 <style scoped>
-    a#backButton {
+    a#back-button {
       text-decoration: none;
       padding: 0 8px;
     }
 
-    #titleBar span,
-    #titleBar p {
+    #title-bar span,
+    #title-bar p {
       font-size: 20px;
       display: inline;
+    }
+
+    #create-button {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
     }
 </style>

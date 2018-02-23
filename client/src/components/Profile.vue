@@ -20,14 +20,14 @@
         <hr>
         <div class="row">
             <div class="col-sm-12" style="text-align: center;">
-                <a class="btn btn-md btn-danger" href="#" data-toggle="modal" data-target="#deleteProfileModal">
+                <a class="btn btn-md btn-danger" href="#" data-toggle="modal" data-target="#delete-profile-modal">
                     <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete Account
                 </a>
             </div>
         </div>
 
         <!-- delete account dialog -->
-        <div id="deleteProfileModal" class="modal fade">
+        <div id="delete-profile-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -41,8 +41,8 @@
                             <b>WARNING! This action will permanent delete your account including your data.</b>
                         </p>
                         <div class="form-group">
-                            <label class="control-label" for="deleteNameInput">Please enter your name</label>
-                            <input class="form-control" id="deleteNameInput" type="text" v-model="deleteNameInput">
+                            <label class="control-label" for="delete-name-input">Please enter your name</label>
+                            <input class="form-control" id="delete-name-input" type="text" v-model="deleteNameInput">
                         </div>
                     </div>
                     <div class="modal-footer">

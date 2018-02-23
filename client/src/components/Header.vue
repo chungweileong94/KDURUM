@@ -15,7 +15,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">
-                            <img id="profileImage" class="img-circle" :src="user.thumnail"> {{ user.name }}
+                            <img id="profile-image" class="img-circle" :src="user.thumnail"> {{ user.name }}
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" role="menu">
@@ -53,7 +53,7 @@
       background-color: white !important;
     }
 
-    img#profileImage {
+    img#profile-image {
       max-width: 40px;
       margin: -10px 7px;
     }

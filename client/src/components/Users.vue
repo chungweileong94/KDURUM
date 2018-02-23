@@ -10,7 +10,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="u in users" :key="u._id" data-toggle="modal" data-target="#userModal" @click="user_Selected(u)">
+                    <tr v-for="u in users" :key="u._id" data-toggle="modal" data-target="#user-modal" @click="user_Selected(u)">
                         <td>{{ u._id }}</td>
                         <td>{{ u.name }}</td>
                         <td>{{ u.role==0?"Administrator":u.role==1?"Lecture":"Student" }}</td>
@@ -20,7 +20,7 @@
         </div>
 
         <!-- user detail modal -->
-        <div id="userModal" class="modal fade">
+        <div id="user-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -73,14 +73,14 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
-                        <button class="btn btn-danger" type="button" v-if="selectedUser._id!=user._id" data-dismiss="modal" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                        <button class="btn btn-danger" type="button" v-if="selectedUser._id!=user._id" data-dismiss="modal" data-toggle="modal" data-target="#delete-modal">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- delete account dialog -->
-        <div id="deleteModal" class="modal fade">
+        <div id="delete-modal" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -94,8 +94,8 @@
                             <b>WARNING! This action will permanent delete the account including the data.</b>
                         </p>
                         <div class="form-group">
-                            <label class="control-label" for="deleteNameInput">Please enter the user name</label>
-                            <input class="form-control" id="deleteNameInput" type="text" v-model="deleteNameInput">
+                            <label class="control-label" for="delete-name-input">Please enter the user name</label>
+                            <input class="form-control" id="delete-name-input" type="text" v-model="deleteNameInput">
                         </div>
                     </div>
                     <div class="modal-footer">
