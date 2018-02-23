@@ -17,7 +17,7 @@
         </ul>
 
         <!-- Tab panes -->
-        <div class="tab-content" style="margin-top:8px;">
+        <div class="tab-content">
             <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex!=0,active:user.roleIndex!=0}" v-if="user.roleIndex!=0" id="enrollment">
                 <content-enrollment></content-enrollment>
             </div>
@@ -58,5 +58,19 @@
 <style scoped>
     .nav-tabs li {
       width: 33.33%;
+    }
+
+    .nav {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 64px;
+      padding-top: 6px;
+      background: white;
+      z-index: 100;
+    }
+
+    .tab-content {
+      margin-top: 8px;
+      z-index: -1;
     }
 </style>
