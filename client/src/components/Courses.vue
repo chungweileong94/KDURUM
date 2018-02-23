@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="flex-container" v-if="courses.length!=0">
-            <div class="course-item col-md-3 col-sm-5 col-xs-12" v-for="c in courses" :key="c._id">
+            <div class="course-item col-md-4 col-sm-5 col-xs-12" v-for="c in courses" :key="c._id">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h5>{{ c.title }}</h5>
@@ -23,7 +23,7 @@
                         </div>
 
                         <!-- admin buttons -->
-                        <div v-else>
+                        <div class="btn-group" v-else>
                             <a href="#" class="btn btn-md btn-success" @click="exploreCourse_Click(c)">Explore</a>
                             <div class="btn-group">
                                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#update-course-modal" @click="updateCourse_Click(c)">
