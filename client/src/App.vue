@@ -2,11 +2,11 @@
     <div>
         <app-header :user="user"></app-header>
         <section class="container" style="margin-top: 70px;">
-            <keep-alive>
-                <transition name="fade">
-                    <component :is="currentView"></component>
-                </transition>
-            </keep-alive>
+            <!-- <keep-alive>
+                <transition name="fade"> -->
+            <component :is="currentView"></component>
+            <!-- </transition>
+            </keep-alive> -->
         </section>
     </div>
 </template>
@@ -41,15 +41,15 @@
 </script>
 
 <style scoped>
-    .fade-enter-active {
-      transition: all 0.5s ease;
-    }
+    /* .fade-enter-active {
+          transition: all 0.5s ease;
+        } */
     /* .fade-leave-active {
-      transition: all 0.2s ease;
-    } */
-    .fade-enter,
-    .fade-leave-to {
-      opacity: 0;
-    }
+              transition: all 0.2s ease;
+            } */
+    /* .fade-enter,
+        .fade-leave-to {
+          opacity: 0;
+        } */
 </style>
 
