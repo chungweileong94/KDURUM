@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Course = require("./../models/course-model");
 const User = require("./../models/user-model");
+const Forum = require("./../models/forum-model");
 
 //get all courses
 router.get("/all", (req, res) => {
@@ -49,19 +50,23 @@ router.delete("/delete/:id", (req, res) => {
     Course.findByIdAndRemove(id, (err, course) => {
         if (err) throw err;
 
-        User.find({ enrollment: id }, (err, users) => {
-            if (err) throw err;
+        //remove related forums
+        Forum.find({ courseId: id }).remove(err => {
+            //remove related user's enrollment
+            User.find({ enrollment: id }, (err, users) => {
+                if (err) throw err;
 
-            if (users.length == 0) return res.sendStatus(200);
+                if (users.length == 0) return res.sendStatus(200);
 
-            users.forEach(user => {
-                user.enrollment.splice(user.enrollment.indexOf(id), 1);
-                user.save((err, result) => {
-                    if (err) throw err;
-                    res.sendStatus(200);
+                users.forEach(user => {
+                    user.enrollment.splice(user.enrollment.indexOf(id), 1);
+                    user.save((err, result) => {
+                        if (err) throw err;
+                        res.sendStatus(200);
+                    });
                 });
             });
-        })
+        });
     })
 });
 

@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Forum = require("./../models/forum-model");
+const User = require("./../models/user-model");
 
 //get all forum with course ID
 router.get("/all/:id", (req, res) => {
@@ -8,11 +9,12 @@ router.get("/all/:id", (req, res) => {
 
     let courseId = req.params.id;
 
-    Forum.find({ courseId: courseId }, (err, data) => {
-        if (err) throw err;
-
-        res.status(200).json(data);
-    });
+    Forum.find({ courseId: courseId })
+        .populate("owner")
+        .exec((err, forums) => {
+            if (err) throw err;
+            res.status(200).json(forums);
+        });
 });
 
 //add new forum
@@ -25,7 +27,9 @@ router.post("/add", (req, res) => {
     new Forum({
         title: newForum.title,
         desc: newForum.desc,
-        courseId: newForum.courseId
+        createDateTime: Date.now(),
+        courseId: newForum.courseId,
+        owner: req.user._id
     }).save((err, result) => {
         if (err) throw err;
         res.sendStatus(200);

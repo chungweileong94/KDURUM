@@ -8,7 +8,9 @@ const commentScheme = new Schema({
 const forumScheme = new Schema({
     title: String,
     desc: String,
+    createDateTime: Date,
     courseId: String,
+    owner: { type: Schema.Types.ObjectId, ref: "user" },
     comments: [commentScheme]
 });
 
