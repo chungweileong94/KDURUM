@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
-        <div class="flex-container" v-if="enrollment.length!=0">
-            <div class="course-item col-md-3 col-sm-5 col-xs-12" v-for="c in enrollment" :key="c._id">
+        <div class="flex-container" v-if="user.enrollment.length!=0">
+            <div class="course-item col-md-3 col-sm-5 col-xs-12" v-for="c in user.enrollment" :key="c._id">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h5>{{ c.title }}</h5>
@@ -35,7 +35,7 @@
       methods: {
         refresCoursesAndEnrollment() {
           this.$store.dispatch("getUserData").then(() => {
-            this.$store.dispatch("getCoursesAndEnrollment");
+            this.$store.dispatch("getCourses");
           });
         },
         leaveCourse_Click(id) {
@@ -60,8 +60,8 @@
         }
       },
       computed: {
-        enrollment() {
-          return this.$store.state.enrollment;
+        user() {
+          return this.$store.state.user;
         },
         CourseView() {
           return this.$store.state.CourseView;

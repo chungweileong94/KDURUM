@@ -22,7 +22,7 @@
         init() {
           this.$store.commit("switchView", this.MainView);
           this.$store.dispatch("getUserData").then(() => {
-            this.$store.dispatch("getCoursesAndEnrollment");
+            this.$store.dispatch("getCourses");
           });
         }
       },

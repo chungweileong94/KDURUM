@@ -8,7 +8,7 @@ const userSchema = new Schema({
     email: String,
     thumnail: String,
     role: Number, //0: admin, 1: lecture, 2: student
-    enrollment: [String]
+    enrollment: [{ type: Schema.Types.ObjectId, ref: "course" }]
 });
 
 const User = mongoose.model("user", userSchema);

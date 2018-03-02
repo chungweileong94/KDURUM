@@ -19,7 +19,6 @@ export const store = new Vuex.Store({
             enrollment: []
         },
         courses: [],
-        enrollment: [],
         currentSelectedCourse: {},
         currentView: null,
         MainView: MainView,
@@ -60,7 +59,7 @@ export const store = new Vuex.Store({
                 });
             });
         },
-        getCoursesAndEnrollment({ state }) {
+        getCourses({ state }) {
             return new Promise((resolve, reject) => {
                 Vue.http
                     .get("/courses/all")
@@ -71,19 +70,19 @@ export const store = new Vuex.Store({
                         let coursesArray = [];
                         for (let key in data) {
                             if (state.user.roleIndex != 0) {
-                                data[key].isJoined = state.user.enrollment.includes(data[key]._id);
+                                data[key].isJoined = state.user.enrollment.find(c => { return c._id == data[key]._id; });
                             }
                             coursesArray.push(data[key]);
                         }
                         state.courses = coursesArray;
 
-                        if (state.user.enrollment.length != 0) {
-                            let ids = state.user.enrollment.join("|");
-                            let regex = new RegExp(ids, "g");
-                            state.enrollment = state.courses.filter(c => c._id.match(regex));
-                        } else {
-                            state.enrollment = [];
-                        }
+                        // if (state.user.enrollment.length != 0) {
+                        //     let ids = state.user.enrollment.join("|");
+                        //     let regex = new RegExp(ids, "g");
+                        //     state.enrollment = state.courses.filter(c => c._id.match(regex));
+                        // } else {
+                        //     state.enrollment = [];
+                        // }
                         resolve()
                     });
             });

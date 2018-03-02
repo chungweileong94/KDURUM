@@ -157,7 +157,7 @@
       methods: {
         refresCoursesAndEnrollment() {
           this.$store.dispatch("getUserData").then(() => {
-            this.$store.dispatch("getCoursesAndEnrollment");
+            this.$store.dispatch("getCourses");
           });
         },
         addCourse_Click() {

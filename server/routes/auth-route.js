@@ -1,11 +1,16 @@
 const router = require("express").Router();
 const path = require("path");
 const passport = require("passport");
+const User = require("./../models/user-model");
 
 //get user data
 router.get("/user", (req, res) => {
     if (req.user) {
-        res.json(req.user);
+        User.findOne({ _id: req.user })
+            .populate("enrollment")
+            .exec((err, data) => {
+                res.json(data);
+            });
     } else {
         null;
     }
