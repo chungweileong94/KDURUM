@@ -21,6 +21,7 @@
                             <i>by</i>
                         </b>
                         &nbsp;
+                        <img class="owner-image img-circle" :src="f.owner.thumnail">
                         <b>{{ f.owner.name }}</b>
                     </p>
                 </div>
@@ -180,6 +181,10 @@
       -ms-text-overflow: ellipsis;
       -o-text-overflow: ellipsis;
       overflow: hidden;
+    }
+
+    .forum-item .owner-image {
+      max-width: 30px;
     }
 
     #create-button {
