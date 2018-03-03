@@ -20,6 +20,7 @@ export const store = new Vuex.Store({
         },
         courses: [],
         currentSelectedCourse: {},
+        currentSelectedForum: {},
         currentView: null,
         MainView: MainView,
         CourseView: CourseView,
@@ -31,6 +32,9 @@ export const store = new Vuex.Store({
         },
         changeCurrentSelectedCourse(state, course) {
             state.currentSelectedCourse = course;
+        },
+        changeCurrentSelectectForum(state, forum) {
+            state.currentSelectedForum = forum;
         }
     },
     actions: {

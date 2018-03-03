@@ -11,7 +11,7 @@
 
         <div v-if="forums.length!=0">
             <div v-for="f in forums" :key="f._id">
-                <div class="forum-item">
+                <div class="forum-item" @click="forumItem_Click(f)">
                     <h4>{{ f.title }}</h4>
                     <p class="lead">{{ f.desc }}</p>
 
@@ -96,6 +96,7 @@
           return moment(date).fromNow();
         },
         back() {
+          this.$store.commit("changeCurrentSelectedCourse", {}); //clear selection
           this.$store.commit("switchView", this.MainView);
         },
         refreshForums() {
@@ -127,6 +128,10 @@
                 alert("Error");
               }
             });
+        },
+        forumItem_Click(forum) {
+          this.$store.commit("changeCurrentSelectedForum", forum);
+          this.$store.commit("switchView", this.ForumView);
         }
       },
       computed: {
@@ -135,6 +140,9 @@
         },
         MainView() {
           return this.$store.state.MainView;
+        },
+        ForumView() {
+          return this.$store.state.ForumView;
         }
       },
       created() {
