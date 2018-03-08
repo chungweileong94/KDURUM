@@ -73,6 +73,7 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="button" v-if="selectedUser._id!=user._id" data-dismiss="modal" data-toggle="modal" data-target="#change-role-modal">Change Role</button>
                         <button class="btn btn-danger" type="button" v-if="selectedUser._id!=user._id" data-dismiss="modal" data-toggle="modal" data-target="#delete-modal">Delete</button>
                     </div>
                 </div>
@@ -105,6 +106,36 @@
                 </div>
             </div>
         </div>
+
+        <!-- change account role dialog -->
+        <div id="change-role-modal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-refresh
+                            "></span>&nbsp;&nbsp;Change role - {{ selectedUser.name }}
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label" for="delete-name-input">Please select the role</label>
+                            <select class="form-control" v-model="roleSelected">
+                                <option disabled value="">Please enter a role</option>1
+                                <option value="0">Administrator</option>
+                                <option value="1">Lecture</option>
+                                <option value="2">Student</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="button" data-dismiss="modal" @click="changeUserRoleDialog_Click(selectedUser._id)">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -114,7 +145,8 @@
         return {
           users: [],
           selectedUser: {},
-          deleteNameInput: ""
+          deleteNameInput: "",
+          roleSelected: ""
         };
       },
       methods: {
@@ -143,6 +175,17 @@
         },
         deleteUserDialogDismiss_Click() {
           this.deleteNameInput = "";
+        },
+        changeUserRoleDialog_Click(id) {
+          console.log(this.roleSelected);
+          this.$http.put(`/users/role/${id}/${this.roleSelected}`).then(data => {
+            if (data.status == 200) {
+              alert("Account role changed");
+              this.getAllUsers();
+            } else {
+              alert("Error");
+            }
+          });
         }
       },
       computed: {
