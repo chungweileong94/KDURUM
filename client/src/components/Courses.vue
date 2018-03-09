@@ -176,7 +176,6 @@
     export default {
       data() {
         return {
-          lecturers: [],
           courseTitleInput: "",
           courseLecturerSelected: "",
           courseTitleDeleteInput: "",
@@ -185,16 +184,6 @@
         };
       },
       methods: {
-        getAllLecturers() {
-          this.$http
-            .get("/users/lecturers")
-            .then(data => {
-              return data.json();
-            })
-            .then(data => {
-              this.lecturers = data;
-            });
-        },
         refresCoursesAndEnrollment() {
           this.$store.dispatch("getUserData").then(() => {
             this.$store.dispatch("getCourses");
@@ -316,6 +305,9 @@
         user() {
           return this.$store.state.user;
         },
+        lecturers() {
+          return this.$store.state.lecturers;
+        },
         courses() {
           return this.$store.state.courses;
         },
@@ -324,7 +316,7 @@
         }
       },
       created() {
-        this.getAllLecturers();
+        this.$store.dispatch("getAllLecturers");
       }
     };
 </script>

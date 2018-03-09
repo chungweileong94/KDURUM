@@ -18,6 +18,7 @@ export const store = new Vuex.Store({
             roleIndex: -1,
             enrollment: []
         },
+        lecturers: [],
         courses: [],
         currentSelectedCourse: {},
         currentSelectedForum: {},
@@ -89,6 +90,15 @@ export const store = new Vuex.Store({
                         // }
                         resolve()
                     });
+            });
+        },
+        getAllLecturers({ state }) {
+            return new Promise((resolve, reject) => {
+                Vue.http.get("/users/lecturers").then(data => {
+                    return data.json();
+                }).then(data => {
+                    state.lecturers = data;
+                });
             });
         }
     }

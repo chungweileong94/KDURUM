@@ -160,16 +160,6 @@
               this.users = data;
             });
         },
-        getAllLecturers() {
-          this.$http
-            .get("/users/lecturers")
-            .then(data => {
-              return data.json();
-            })
-            .then(data => {
-              this.lecturers = data;
-            });
-        },
         user_Selected(user) {
           this.selectedUser = user;
         },
@@ -178,7 +168,7 @@
             if (data.status == 200) {
               alert("Account deleted");
               this.getAllUsers();
-              this.getAllLecturers();
+              this.$store.dispatch("getAllLecturers");
             } else {
               alert("Error");
             }
