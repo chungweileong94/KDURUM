@@ -67,12 +67,26 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-horizontal">
+                            <!-- Course title -->
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="course-title-input">
                                     <b>Title</b>
                                 </label>
                                 <div class="col-sm-10">
                                     <input class="form-control" id="course-title-input" type="text" v-model="courseTitleInput">
+                                </div>
+                            </div>
+
+                            <!-- Course lecturer -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="course-title-input">
+                                    <b>Lecturer</b>
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" v-model="courseLecturerSelected">
+                                        <option selected value="">None</option>
+                                        <option :value="lecturer._id" v-for="lecturer in lecturers" :key="lecturer._id">{{ lecturer.name }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -97,12 +111,26 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-horizontal">
+                            <!-- course title -->
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="new-course-title-input">
                                     <b>New Title</b>
                                 </label>
                                 <div class="col-sm-10">
                                     <input class="form-control" id="new-course-title-input" type="text" v-model="selectedUpdateCourse.title">
+                                </div>
+                            </div>
+
+                            <!-- Course lecturer -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="course-title-input">
+                                    <b>Lecturer</b>
+                                </label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" v-model="selectedUpdateCourse.lecturerId">
+                                        <option selected value="">None</option>
+                                        <option :value="lecturer._id" v-for="lecturer in lecturers" :key="lecturer._id">{{ lecturer.name }}</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -148,13 +176,25 @@
     export default {
       data() {
         return {
+          lecturers: [],
           courseTitleInput: "",
+          courseLecturerSelected: "",
           courseTitleDeleteInput: "",
           selectedUpdateCourse: {},
           selectedDeleteCourse: {}
         };
       },
       methods: {
+        getAllLecturers() {
+          this.$http
+            .get("/users/lecturers")
+            .then(data => {
+              return data.json();
+            })
+            .then(data => {
+              this.lecturers = data;
+            });
+        },
         refresCoursesAndEnrollment() {
           this.$store.dispatch("getUserData").then(() => {
             this.$store.dispatch("getCourses");
@@ -163,7 +203,11 @@
         addCourse_Click() {
           this.$http
             .post("/courses/add", {
-              title: this.courseTitleInput
+              title: this.courseTitleInput,
+              lecturerId:
+                this.courseLecturerSelected == ""
+                  ? null
+                  : this.courseLecturerSelected
             })
             .then(data => {
               return data.status;
@@ -179,12 +223,21 @@
             });
         },
         updateCourse_Click(course) {
-          this.selectedUpdateCourse = course;
+          this.selectedUpdateCourse = {
+            _id: course._id,
+            title: course.title,
+            lecturerId: !course.lecturer ? "" : course.lecturer._id
+          };
         },
         updateCourseDialog_Click() {
           this.$http
             .put("/courses/update", {
-              course: this.selectedUpdateCourse
+              _id: this.selectedUpdateCourse._id,
+              title: this.selectedUpdateCourse.title,
+              lecturerId:
+                this.selectedUpdateCourse.lecturerId == ""
+                  ? null
+                  : this.selectedUpdateCourse.lecturerId
             })
             .then(data => {
               console.log(data);
@@ -269,6 +322,9 @@
         CourseView() {
           return this.$store.state.CourseView;
         }
+      },
+      created() {
+        this.getAllLecturers();
       }
     };
 </script>

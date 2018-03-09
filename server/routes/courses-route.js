@@ -7,11 +7,13 @@ const Forum = require("./../models/forum-model");
 router.get("/all", (req, res) => {
     if (!req.user) return res.sendStatus(401);
 
-    Course.find({}, (err, data) => {
-        if (err) throw err;
+    Course.find({})
+        .populate("lecturer")
+        .exec((err, data) => {
+            if (err) throw err;
 
-        res.status(200).json(data);
-    });
+            res.status(200).json(data);
+        });
 });
 
 //add course
@@ -20,7 +22,8 @@ router.post("/add", (req, res) => {
     if (!req.body.title) return res.sendStatus(500);
 
     new Course({
-        title: req.body.title
+        title: req.body.title,
+        lecturer: (!req.body.lecturerId) ? null : req.body.lecturerId
     }).save((err, result) => {
         if (err) throw err;
         res.sendStatus(200);
@@ -30,15 +33,16 @@ router.post("/add", (req, res) => {
 //update course
 router.put("/update", (req, res) => {
     if (!req.user || req.user.role != 0) return res.sendStatus(401);
-    if (!req.body.course) return res.sendStatus(500);
+    if (!req.body.title) return res.sendStatus(500);
 
-    let updatedCourse = req.body.course;
-
-    Course.findOneAndUpdate({ _id: updatedCourse._id }, { $set: { title: updatedCourse.title } }, (err, doc) => {
-        if (err) throw err;
-        res.sendStatus(200);
-    });
-})
+    Course.findOneAndUpdate(
+        { _id: req.body._id },
+        { $set: { title: req.body.title, lecturer: (!req.body.lecturerId) ? null : req.body.lecturerId } },
+        (err, doc) => {
+            if (err) throw err;
+            res.sendStatus(200);
+        });
+});
 
 //delete course
 router.delete("/delete/:id", (req, res) => {

@@ -122,7 +122,7 @@
                         <div class="form-group">
                             <label class="control-label" for="delete-name-input">Please select the role</label>
                             <select class="form-control" v-model="roleSelected">
-                                <option disabled value="">Please enter a role</option>1
+                                <option disabled value="">Please enter a role</option>
                                 <option value="0">Administrator</option>
                                 <option value="1">Lecture</option>
                                 <option value="2">Student</option>
@@ -160,6 +160,16 @@
               this.users = data;
             });
         },
+        getAllLecturers() {
+          this.$http
+            .get("/users/lecturers")
+            .then(data => {
+              return data.json();
+            })
+            .then(data => {
+              this.lecturers = data;
+            });
+        },
         user_Selected(user) {
           this.selectedUser = user;
         },
@@ -168,6 +178,7 @@
             if (data.status == 200) {
               alert("Account deleted");
               this.getAllUsers();
+              this.getAllLecturers();
             } else {
               alert("Error");
             }
