@@ -52,7 +52,7 @@ export const store = new Vuex.Store({
                             break;
 
                         case 1:
-                            state.user.role = "Lecture";
+                            state.user.role = "Lecturer";
                             break;
 
                         case 2:

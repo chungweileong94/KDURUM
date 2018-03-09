@@ -13,7 +13,7 @@
                     <tr v-for="u in users" :key="u._id" data-toggle="modal" data-target="#user-modal" @click="user_Selected(u)">
                         <td>{{ u._id }}</td>
                         <td>{{ u.name }}</td>
-                        <td>{{ u.role==0?"Administrator":u.role==1?"Lecture":"Student" }}</td>
+                        <td>{{ u.role==0?"Administrator":u.role==1?"Lecturer":"Student" }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -66,7 +66,7 @@
                                     <b>Role</b>
                                 </label>
                                 <div class="col-sm-9">
-                                    <p class="form-control-static" id="role">{{ selectedUser.role==0?"Administrator":selectedUser.role==1?"Lecture":"Student" }}</p>
+                                    <p class="form-control-static" id="role">{{ selectedUser.role==0?"Administrator":selectedUser.role==1?"Lecturer":"Student" }}</p>
                                 </div>
                             </div>
                         </div>
