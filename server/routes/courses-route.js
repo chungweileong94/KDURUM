@@ -26,7 +26,18 @@ router.post("/add", (req, res) => {
         lecturer: (!req.body.lecturerId) ? null : req.body.lecturerId
     }).save((err, result) => {
         if (err) throw err;
-        res.sendStatus(200);
+
+        if (req.body.lecturerId) {
+            User.findByIdAndUpdate(
+                { _id: req.body.lecturerId },
+                { $set: { enrollment: [] } },
+                (err, user) => {
+                    if (err) throw err;
+                    return res.sendStatus(200);
+                });
+        } else {
+            return res.sendStatus(200);
+        }
     });
 });
 
@@ -40,7 +51,18 @@ router.put("/update", (req, res) => {
         { $set: { title: req.body.title, lecturer: (!req.body.lecturerId) ? null : req.body.lecturerId } },
         (err, doc) => {
             if (err) throw err;
-            res.sendStatus(200);
+
+            if (req.body.lecturerId) {
+                User.findByIdAndUpdate(
+                    { _id: req.body.lecturerId },
+                    { $set: { enrollment: [] } },
+                    (err, user) => {
+                        if (err) throw err;
+                        return res.sendStatus(200);
+                    });
+            } else {
+                return res.sendStatus(200);
+            }
         });
 });
 
