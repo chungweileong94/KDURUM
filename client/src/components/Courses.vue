@@ -2,55 +2,59 @@
     <div class="container-fluid">
         <div class="flex-container" v-if="(user.roleIndex==1 && coursesForLecture.length!=0) || (user.roleIndex!=1 && courses.length!=0)">
             <!-- lecture content -->
-            <div class="course-item col-md-4 col-sm-5 col-xs-12" v-if="user.roleIndex==1" v-for="c in coursesForLecture" :key="c._id">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h5>{{ c.title }}</h5>
+            <div v-if="user.roleIndex==1">
+                <div class="course-item col-md-4 col-sm-5 col-xs-12" v-for="c in coursesForLecture" :key="c._id">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h5>{{ c.title }}</h5>
 
-                        <div>
-                            <a href="#" class="btn btn-md btn-primary" @click="exploreCourse_Click(c)">Explore</a>
+                            <div>
+                                <a href="#" class="btn btn-md btn-primary" @click="exploreCourse_Click(c)">Explore</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- admin & student content -->
-            <div class="course-item col-md-4 col-sm-5 col-xs-12" v-else v-for="c in courses" :key="c._id">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h5>{{ c.title }}</h5>
+            <div v-else>
+                <div class="course-item col-md-4 col-sm-5 col-xs-12" v-for="c in courses" :key="c._id">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h5>{{ c.title }}</h5>
 
-                        <!-- student buttons -->
-                        <div v-if="user.roleIndex!=0">
-                            <a href="#" class="btn btn-md btn-primary" v-if="!c.isJoined" @click="joinCourse_Click((c._id))">Join</a>
-                            <div class="btn-group" v-if="c.isJoined">
-                                <a href="#" class="btn btn-success" @click="exploreCourse_Click(c)">Explore</a>
-                                <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#" @click="leaveCourse_Click(c._id)">Leave</a>
-                                    </li>
-                                </ul>
+                            <!-- student buttons -->
+                            <div v-if="user.roleIndex!=0">
+                                <a href="#" class="btn btn-md btn-primary" v-if="!c.isJoined" @click="joinCourse_Click((c._id))">Join</a>
+                                <div class="btn-group" v-if="c.isJoined">
+                                    <a href="#" class="btn btn-success" @click="exploreCourse_Click(c)">Explore</a>
+                                    <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#" @click="leaveCourse_Click(c._id)">Leave</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- admin buttons -->
-                        <div class="btn-group" v-else>
-                            <a href="#" class="btn btn-md btn-success" @click="exploreCourse_Click(c)">Explore</a>
-                            <div class="btn-group">
-                                <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#update-course-modal" @click="updateCourse_Click(c)">
-                                    <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
-                                </a>
-                                <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#" @click="deleteCourse_Click(c)" data-toggle="modal" data-target="#delete-course-modal">Delete</a>
-                                    </li>
-                                </ul>
+                            <!-- admin buttons -->
+                            <div class="btn-group" v-else>
+                                <a href="#" class="btn btn-md btn-success" @click="exploreCourse_Click(c)">Explore</a>
+                                <div class="btn-group">
+                                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#update-course-modal" @click="updateCourse_Click(c)">
+                                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+                                    </a>
+                                    <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="#" @click="deleteCourse_Click(c)" data-toggle="modal" data-target="#delete-course-modal">Delete</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -62,7 +66,7 @@
         <div class="text-center" style="padding-top: 150px;" v-else>
             <h3>Empty</h3>
             <p class="lead" v-if="user.roleIndex==0">You haven't add any courses yet</p>
-            <p class="lead" v-if="user.roleIndex==1">You haven't assign any courses yet</p>
+            <p class="lead" v-else-if="user.roleIndex==1">You haven't assign any courses yet</p>
             <p class="lead" v-else>There is no courses available yet</p>
         </div>
 
