@@ -1,22 +1,27 @@
 <template>
     <div>
         <app-header :user="user"></app-header>
-        <section class="container" style="margin-top: 70px;">
+        <!-- show the content only when user data is loaded -->
+        <section class="container" style="margin-top: 70px;" v-if="user._id.trim().length!=0">
             <!-- <keep-alive>
                 <transition name="fade"> -->
             <component :is="currentView"></component>
             <!-- </transition>
             </keep-alive> -->
         </section>
+
+        <app-loading v-if="user._id.trim().length==0" style="height:100%; width:100%; z-index:100;"></app-loading>
     </div>
 </template>
 
 <script>
     import Header from "./components/Header.vue";
+    import Loading from "./components/Loading.vue";
 
     export default {
       components: {
-        "app-header": Header
+        "app-header": Header,
+        "app-loading": Loading
       },
       methods: {
         init() {
@@ -39,6 +44,9 @@
         this.init();
       },
       computed: {
+        user() {
+          return this.$store.state.user;
+        },
         MainView() {
           return this.$store.state.MainView;
         },
@@ -51,14 +59,14 @@
 
 <style scoped>
     /* .fade-enter-active {
-                                      transition: all 0.5s ease;
-                                    } */
+                                                                                  transition: all 0.5s ease;
+                                                                                } */
     /* .fade-leave-active {
-                                          transition: all 0.2s ease;
-                                        } */
+                                                                                      transition: all 0.2s ease;
+                                                                                    } */
     /* .fade-enter,
-                                    .fade-leave-to {
-                                      opacity: 0;
-                                    } */
+                                                                                .fade-leave-to {
+                                                                                  opacity: 0;
+                                                                                } */
 </style>
 
