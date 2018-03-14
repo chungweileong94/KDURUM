@@ -88,7 +88,7 @@ export const store = new Vuex.Store({
                         // } else {
                         //     state.enrollment = [];
                         // }
-                        resolve()
+                        resolve();
                     });
             });
         },
