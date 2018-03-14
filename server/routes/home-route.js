@@ -8,7 +8,7 @@ const authCheck = (req, res, next) => {
     } else {
         next();
     }
-}
+};
 
 //home
 router.get("/", authCheck, (req, res) => {

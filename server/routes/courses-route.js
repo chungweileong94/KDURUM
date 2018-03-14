@@ -71,7 +71,7 @@ router.delete("/delete/:id", (req, res) => {
                 });
             });
         });
-    })
+    });
 });
 
 //join course

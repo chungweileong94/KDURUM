@@ -57,7 +57,7 @@ router.delete("/delete/:id", (req, res) => {
                 course.save((err, result) => {
                     if (err) throw err;
                     res.sendStatus(200);
-                })
+                });
             });
         }
 
