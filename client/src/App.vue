@@ -22,7 +22,16 @@
         init() {
           this.$store.commit("switchView", this.MainView);
           this.$store.dispatch("getUserData").then(() => {
-            this.$store.dispatch("getCourses");
+            //if the user is lecture
+            if (this.$store.state.user.roleIndex == 1) {
+              this.$store.dispatch("getCoursesForLecture");
+            } else {
+              //if the user is admin
+              if (this.$store.state.user.roleIndex == 0) {
+                this.$store.dispatch("getAllLecturers");
+              }
+              this.$store.dispatch("getCourses");
+            }
           });
         }
       },
@@ -42,14 +51,14 @@
 
 <style scoped>
     /* .fade-enter-active {
-          transition: all 0.5s ease;
-        } */
+                                      transition: all 0.5s ease;
+                                    } */
     /* .fade-leave-active {
-              transition: all 0.2s ease;
-            } */
+                                          transition: all 0.2s ease;
+                                        } */
     /* .fade-enter,
-        .fade-leave-to {
-          opacity: 0;
-        } */
+                                    .fade-leave-to {
+                                      opacity: 0;
+                                    } */
 </style>
 

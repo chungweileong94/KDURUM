@@ -1,12 +1,12 @@
 <template>
     <div>
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" :class="{active:user.roleIndex!=0}" v-if="user.roleIndex!=0">
+        <ul :class="{nav:true, 'nav-tabs':true, 'nav-tabs-lecture':user.roleIndex==1}" role="tablist">
+            <li role="presentation" :class="{active:user.roleIndex==2}" v-if="user.roleIndex==2">
                 <a class="text-center" href="#enrollment" aria-controls="enrollment" role="tab" data-toggle="tab">Enrollment</a>
             </li>
-            <li role="presentation" :class="{active:user.roleIndex==0}">
-                <a class="text-center" href="#courses" aria-controls="courses" role="tab" data-toggle="tab">Catalog</a>
+            <li role="presentation" :class="{active:user.roleIndex!=2}">
+                <a class="text-center" href="#courses" aria-controls="courses" role="tab" data-toggle="tab">{{user.roleIndex==1 ? "Courses" : "Catalog"}}</a>
             </li>
             <li role="presentation" v-if="user.roleIndex==0">
                 <a class="text-center" href="#users" aria-controls="users" role="tab" data-toggle="tab">Users</a>
@@ -18,10 +18,10 @@
 
         <!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex!=0,active:user.roleIndex!=0}" v-if="user.roleIndex!=0" id="enrollment">
+            <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex==2,active:user.roleIndex==2}" v-if="user.roleIndex!=0" id="enrollment">
                 <content-enrollment></content-enrollment>
             </div>
-            <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex==0,active:user.roleIndex==0}" id="courses">
+            <div role="tabpanel" class="tab-pane fade" :class="{in:user.roleIndex!=2,active:user.roleIndex!=2}" id="courses">
                 <content-courses></content-courses>
             </div>
             <div role="tabpanel" class="tab-pane fade" v-if="user.roleIndex==0" id="users">
@@ -58,6 +58,10 @@
 <style scoped>
     .nav-tabs li {
       width: 33.33%;
+    }
+
+    .nav-tabs-lecture li {
+      width: 50%;
     }
 
     .nav {

@@ -16,6 +16,18 @@ router.get("/all", (req, res) => {
         });
 });
 
+//get all courses for lecture
+router.get("/all/lecture/:lectureId", (req, res) => {
+    if (!req.user || req.user.role != 1) return res.sendStatus(401);
+    if (!req.params.lectureId) return res.sendStatus(500);
+
+    Course.find({ lecturer: req.params.lectureId }, (err, courses) => {
+        if (err) throw err;
+
+        res.status(200).json(courses);
+    });
+});
+
 //add course
 router.post("/add", (req, res) => {
     if (!req.user || req.user.role != 0) return res.sendStatus(401);

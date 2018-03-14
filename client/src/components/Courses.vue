@@ -1,12 +1,26 @@
 <template>
     <div class="container-fluid">
-        <div class="flex-container" v-if="courses.length!=0">
-            <div class="course-item col-md-4 col-sm-5 col-xs-12" v-for="c in courses" :key="c._id">
+        <div class="flex-container" v-if="(user.roleIndex==1 && coursesForLecture.length!=0) || (user.roleIndex!=1 && courses.length!=0)">
+            <!-- lecture content -->
+            <div class="course-item col-md-4 col-sm-5 col-xs-12" v-if="user.roleIndex==1" v-for="c in coursesForLecture" :key="c._id">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <h5>{{ c.title }}</h5>
 
-                        <!-- non-admin buttons -->
+                        <div>
+                            <a href="#" class="btn btn-md btn-primary" @click="exploreCourse_Click(c)">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- admin & student content -->
+            <div class="course-item col-md-4 col-sm-5 col-xs-12" v-else v-for="c in courses" :key="c._id">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h5>{{ c.title }}</h5>
+
+                        <!-- student buttons -->
                         <div v-if="user.roleIndex!=0">
                             <a href="#" class="btn btn-md btn-primary" v-if="!c.isJoined" @click="joinCourse_Click((c._id))">Join</a>
                             <div class="btn-group" v-if="c.isJoined">
@@ -48,6 +62,7 @@
         <div class="text-center" style="padding-top: 150px;" v-else>
             <h3>Empty</h3>
             <p class="lead" v-if="user.roleIndex==0">You haven't add any courses yet</p>
+            <p class="lead" v-if="user.roleIndex==1">You haven't assign any courses yet</p>
             <p class="lead" v-else>There is no courses available yet</p>
         </div>
 
@@ -229,7 +244,6 @@
                   : this.selectedUpdateCourse.lecturerId
             })
             .then(data => {
-              console.log(data);
               return data.status;
             })
             .then(status => {
@@ -308,15 +322,15 @@
         lecturers() {
           return this.$store.state.lecturers;
         },
+        coursesForLecture() {
+          return this.$store.state.coursesForLecture;
+        },
         courses() {
           return this.$store.state.courses;
         },
         Course() {
           return this.$store.state.Course;
         }
-      },
-      created() {
-        this.$store.dispatch("getAllLecturers");
       }
     };
 </script>

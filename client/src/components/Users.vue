@@ -183,6 +183,7 @@
             if (data.status == 200) {
               alert("Account role changed");
               this.getAllUsers();
+              this.$store.dispatch("getAllLecturers"); //refresh lecture list
             } else {
               alert("Error");
             }
