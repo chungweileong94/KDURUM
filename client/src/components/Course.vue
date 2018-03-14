@@ -21,8 +21,8 @@
                             <i>by</i>
                         </b>
                         &nbsp;
-                        <img class="owner-image img-circle" :src="f.owner.thumnail">
-                        <b>{{ f.owner.name }}</b>
+                        <img class="owner-image img-circle" :src="f.owner.thumnail" v-if="f.owner!=null">
+                        <b>{{ f.owner==null ? "Unknown" : f.owner.name }}</b>
                     </p>
                 </div>
                 <hr>
@@ -107,6 +107,7 @@
             })
             .then(data => {
               this.forums = data;
+              console.log(this.forums);
             });
         },
         addForum_Click() {

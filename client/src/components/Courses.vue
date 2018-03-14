@@ -298,7 +298,7 @@
         },
         exploreCourse_Click(course) {
           this.$store.commit("changeCurrentSelectedCourse", course);
-          this.$store.commit("switchView", this.CourseView);
+          this.$store.commit("switchView", this.Course);
         }
       },
       computed: {
@@ -311,8 +311,8 @@
         courses() {
           return this.$store.state.courses;
         },
-        CourseView() {
-          return this.$store.state.CourseView;
+        Course() {
+          return this.$store.state.Course;
         }
       },
       created() {
