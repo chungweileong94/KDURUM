@@ -9,7 +9,19 @@
             "options": {
                 "cwd": "${workspaceRoot}/client"
             },
-            "command": "npm run build",
+            "command": "npm run build && npm run lint",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Lint Server Code",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/server"
+            },
+            "command": "npm run lint",
             "group": {
                 "kind": "build",
                 "isDefault": true
