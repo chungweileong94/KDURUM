@@ -9,7 +9,7 @@
             "options": {
                 "cwd": "${workspaceRoot}/client"
             },
-            "command": "npm run build && npm run lint",
+            "command": "npm run build",
             "group": {
                 "kind": "build",
                 "isDefault": true
