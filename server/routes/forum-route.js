@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const Forum = require("./../models/forum-model");
-const User = require("./../models/user-model");
 
 //get all forum with course ID
 router.get("/all/:id", (req, res) => {
