@@ -2,21 +2,20 @@
     <div class="container-fluid">
         <div class="flex-container" v-if="(user.roleIndex==1 && coursesForLecture.length!=0) || (user.roleIndex!=1 && courses.length!=0)">
             <!-- lecture content -->
-            <div v-if="user.roleIndex==1">
-                <div class="course-item col-md-4 col-sm-5 col-xs-12" v-for="c in coursesForLecture" :key="c._id">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
-                            <h5>{{ c.title }}</h5>
+            <div class="course-item col-md-4 col-sm-5 col-xs-12" v-if="user.roleIndex==1" v-for="c in coursesForLecture" :key="c._id">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h5>{{ c.title }}</h5>
 
-                            <div>
-                                <a href="#" class="btn btn-md btn-primary" @click="exploreCourse_Click(c)">Explore</a>
-                            </div>
+                        <div>
+                            <a href="#" class="btn btn-md btn-primary" @click="exploreCourse_Click(c)">Explore</a>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- admin & student content -->
+            <!-- this wrapper is to fix the v-else and v-for bug -->
             <div v-else>
                 <div class="course-item col-md-4 col-sm-5 col-xs-12" v-for="c in courses" :key="c._id">
                     <div class="panel panel-default">
