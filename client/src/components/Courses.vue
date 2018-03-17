@@ -71,7 +71,7 @@
             <p class="lead" v-else>There is no courses available yet</p>
         </div>
 
-        <button class="btn btn-success btn-lg round-button" v-if="user.roleIndex==0" type="button" data-toggle="modal" data-target="#add-course-modal">
+        <button class="btn btn-success btn-lg round-button" v-if="user.roleIndex==0" type="button" data-toggle="modal" data-target="#add-course-modal" title="Add Course">
             <span class="glyphicon glyphicon-plus"></span>
         </button>
 
