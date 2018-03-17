@@ -8,6 +8,7 @@ router.get("/user", (req, res) => {
     if (req.user) {
         User.findOne({ _id: req.user })
             .populate("enrollment")
+            .populate("favorites")
             .exec((err, data) => {
                 res.json(data);
             });

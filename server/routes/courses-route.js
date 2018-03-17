@@ -110,7 +110,7 @@ router.delete("/delete/:id", (req, res) => {
 
 //join course
 router.put("/join/:id", (req, res) => {
-    if (!req.user || req.user.role == 0) return res.sendStatus(401);
+    if (!req.user || req.user.role != 2) return res.sendStatus(401);
     if (!req.params.id) return res.sendStatus(404);
 
     let courseId = req.params.id;
@@ -128,7 +128,7 @@ router.put("/join/:id", (req, res) => {
 
 //leave course
 router.put("/leave/:id", (req, res) => {
-    if (!req.user || req.user.role == 0) return res.sendStatus(401);
+    if (!req.user || req.user.role != 2) return res.sendStatus(401);
     if (!req.params.id) return res.sendStatus(404);
 
     let courseId = req.params.id;
@@ -137,6 +137,43 @@ router.put("/leave/:id", (req, res) => {
         if (err) throw err;
 
         obj.enrollment.splice(obj.enrollment.indexOf(courseId), 1);
+        obj.favorites.splice(obj.favorites.indexOf(courseId), 1);
+        obj.save((err, result) => {
+            if (err) throw err;
+            res.sendStatus(200);
+        });
+    });
+});
+
+//mark as favorite
+router.put("/favorites/add/:id", (req, res) => {
+    if (!req.user || req.user.role != 2) return res.sendStatus(401);
+    if (!req.params.id) return res.sendStatus(404);
+
+    let courseId = req.params.id;
+
+    User.findOne({ _id: req.user._id }, (err, obj) => {
+        if (err) throw err;
+
+        obj.favorites.push(courseId);
+        obj.save((err, result) => {
+            if (err) throw err;
+            res.sendStatus(200);
+        });
+    });
+});
+
+//remvoe from favorites
+router.put("/favorites/remove/:id", (req, res) => {
+    if (!req.user || req.user.role != 2) return res.sendStatus(401);
+    if (!req.params.id) return res.sendStatus(404);
+
+    let courseId = req.params.id;
+
+    User.findOne({ _id: req.user._id }, (err, obj) => {
+        if (err) throw err;
+
+        obj.favorites.splice(obj.favorites.indexOf(courseId), 1);
         obj.save((err, result) => {
             if (err) throw err;
             res.sendStatus(200);

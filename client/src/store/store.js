@@ -48,6 +48,7 @@ export const store = new Vuex.Store({
                     user.name = data.body.name;
                     user.thumnail = data.body.thumnail;
                     user.roleIndex = data.body.role;
+                    user.favorites = data.body.favorites;
                     user.enrollment = data.body.enrollment;
                     switch (data.body.role) {
                         case 0:

@@ -8,6 +8,7 @@ const userSchema = new Schema({
     email: String,
     thumnail: String,
     role: Number, //0: admin, 1: lecture, 2: student
+    favorites: [{ type: Schema.Types.ObjectId, ref: "course" }],
     enrollment: [{ type: Schema.Types.ObjectId, ref: "course" }]
 });
 
