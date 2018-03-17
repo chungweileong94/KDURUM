@@ -97,7 +97,16 @@ router.delete("/delete/:id", (req, res) => {
                 if (users.length == 0) return res.sendStatus(200);
 
                 users.forEach(user => {
-                    user.enrollment.splice(user.enrollment.indexOf(id), 1);
+                    //clean enrollment
+                    if (user.enrollment.find(c => c == id)) {
+                        user.enrollment.splice(user.enrollment.indexOf(id), 1);
+                    }
+
+                    //clean favorites
+                    if (user.favorites.find(c => c == id)) {
+                        user.favorites.splice(user.favorites.indexOf(id), 1);
+                    }
+
                     user.save((err, result) => {
                         if (err) throw err;
                         res.sendStatus(200);
@@ -137,7 +146,9 @@ router.put("/leave/:id", (req, res) => {
         if (err) throw err;
 
         obj.enrollment.splice(obj.enrollment.indexOf(courseId), 1);
-        obj.favorites.splice(obj.favorites.indexOf(courseId), 1);
+        if (obj.favorites.find(f => f == courseId)) {
+            obj.favorites.splice(obj.favorites.indexOf(courseId), 1);
+        }
         obj.save((err, result) => {
             if (err) throw err;
             res.sendStatus(200);
