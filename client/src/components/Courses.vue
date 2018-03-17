@@ -2,13 +2,15 @@
     <div class="container-fluid">
         <div class="flex-container" v-if="(user.roleIndex==1 && coursesForLecture.length!=0) || (user.roleIndex!=1 && courses.length!=0)">
             <!-- lecture content -->
-            <div class="course-item col-md-4 col-sm-5 col-xs-12" v-if="user.roleIndex==1" v-for="c in coursesForLecture" :key="c._id">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h5>{{ c.title }}</h5>
+            <div v-if="user.roleIndex==1">
+                <div class="course-item col-md-4 col-sm-5 col-xs-12" v-for="c in coursesForLecture" :key="c._id">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <h5>{{ c.title }}</h5>
 
-                        <div>
-                            <a href="#" class="btn btn-md btn-primary" @click="exploreCourse_Click(c)">Explore</a>
+                            <div>
+                                <a href="#" class="btn btn-md btn-primary" @click="exploreCourse_Click(c)">Explore</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -191,184 +193,184 @@
 </template>
 
 <script>
-    export default {
-      data() {
-        return {
-          courseTitleInput: "",
-          courseLecturerSelected: "",
-          courseTitleDeleteInput: "",
-          selectedUpdateCourse: {},
-          selectedDeleteCourse: {}
-        };
-      },
-      methods: {
-        refresCoursesAndEnrollment() {
-          this.$store.dispatch("getUserData").then(() => {
-            this.$store.dispatch("getCourses");
-          });
-        },
-        addCourse_Click() {
-          this.$http
-            .post("/courses/add", {
-              title: this.courseTitleInput,
-              lecturerId:
-                this.courseLecturerSelected == ""
-                  ? null
-                  : this.courseLecturerSelected
-            })
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
-                this.refresCoursesAndEnrollment();
-                alert("Course added");
-              } else {
-                this.refresCoursesAndEnrollment();
-                alert("Error");
-              }
-            });
-        },
-        updateCourse_Click(course) {
-          this.selectedUpdateCourse = {
-            _id: course._id,
-            title: course.title,
-            lecturerId: !course.lecturer ? "" : course.lecturer._id
-          };
-        },
-        updateCourseDialog_Click() {
-          this.$http
-            .put("/courses/update", {
-              _id: this.selectedUpdateCourse._id,
-              title: this.selectedUpdateCourse.title,
-              lecturerId:
-                this.selectedUpdateCourse.lecturerId == ""
-                  ? null
-                  : this.selectedUpdateCourse.lecturerId
-            })
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
-                this.refresCoursesAndEnrollment();
-                alert("Course updated");
-              } else {
-                alert("Error");
-              }
-            });
-        },
-        deleteCourse_Click(course) {
-          this.selectedDeleteCourse = course;
-        },
-        deleteCourseDialogDismiss_Click() {
-          this.selectedDeleteCourse = {};
-          this.courseTitleDeleteInput = "";
-        },
-        deleteCourseDialog_Click(id) {
-          this.$http
-            .delete(`/courses/delete/${id}`)
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
-                this.refresCoursesAndEnrollment();
-                this.deleteCourseDialogDismiss_Click();
-                alert("Course deleted");
-              } else {
-                alert("Error");
-              }
-            });
-        },
-        joinCourse_Click(id) {
-          this.$http
-            .put(`/courses/join/${id}`)
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
-                this.refresCoursesAndEnrollment();
-
-                alert("Joined course");
-              } else {
-                alert("Error");
-              }
-            });
-        },
-        leaveCourse_Click(id) {
-          this.$http
-            .put(`/courses/leave/${id}`)
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
-                this.refresCoursesAndEnrollment();
-
-                alert("Left course");
-              } else {
-                alert("Error");
-              }
-            });
-        },
-        exploreCourse_Click(course) {
-          this.$store.commit("changeCurrentSelectedCourse", course);
-          this.$store.commit("switchView", this.Course);
-        }
-      },
-      computed: {
-        user() {
-          return this.$store.state.user;
-        },
-        lecturers() {
-          return this.$store.state.lecturers;
-        },
-        coursesForLecture() {
-          return this.$store.state.coursesForLecture;
-        },
-        courses() {
-          return this.$store.state.courses;
-        },
-        Course() {
-          return this.$store.state.Course;
-        }
-      }
+export default {
+  data() {
+    return {
+      courseTitleInput: "",
+      courseLecturerSelected: "",
+      courseTitleDeleteInput: "",
+      selectedUpdateCourse: {},
+      selectedDeleteCourse: {}
     };
+  },
+  methods: {
+    refresCoursesAndEnrollment() {
+      this.$store.dispatch("getUserData").then(() => {
+        this.$store.dispatch("getCourses");
+      });
+    },
+    addCourse_Click() {
+      this.$http
+        .post("/courses/add", {
+          title: this.courseTitleInput,
+          lecturerId:
+            this.courseLecturerSelected == ""
+              ? null
+              : this.courseLecturerSelected
+        })
+        .then(data => {
+          return data.status;
+        })
+        .then(status => {
+          if (status == 200) {
+            this.refresCoursesAndEnrollment();
+            alert("Course added");
+          } else {
+            this.refresCoursesAndEnrollment();
+            alert("Error");
+          }
+        });
+    },
+    updateCourse_Click(course) {
+      this.selectedUpdateCourse = {
+        _id: course._id,
+        title: course.title,
+        lecturerId: !course.lecturer ? "" : course.lecturer._id
+      };
+    },
+    updateCourseDialog_Click() {
+      this.$http
+        .put("/courses/update", {
+          _id: this.selectedUpdateCourse._id,
+          title: this.selectedUpdateCourse.title,
+          lecturerId:
+            this.selectedUpdateCourse.lecturerId == ""
+              ? null
+              : this.selectedUpdateCourse.lecturerId
+        })
+        .then(data => {
+          return data.status;
+        })
+        .then(status => {
+          if (status == 200) {
+            this.refresCoursesAndEnrollment();
+            alert("Course updated");
+          } else {
+            alert("Error");
+          }
+        });
+    },
+    deleteCourse_Click(course) {
+      this.selectedDeleteCourse = course;
+    },
+    deleteCourseDialogDismiss_Click() {
+      this.selectedDeleteCourse = {};
+      this.courseTitleDeleteInput = "";
+    },
+    deleteCourseDialog_Click(id) {
+      this.$http
+        .delete(`/courses/delete/${id}`)
+        .then(data => {
+          return data.status;
+        })
+        .then(status => {
+          if (status == 200) {
+            this.refresCoursesAndEnrollment();
+            this.deleteCourseDialogDismiss_Click();
+            alert("Course deleted");
+          } else {
+            alert("Error");
+          }
+        });
+    },
+    joinCourse_Click(id) {
+      this.$http
+        .put(`/courses/join/${id}`)
+        .then(data => {
+          return data.status;
+        })
+        .then(status => {
+          if (status == 200) {
+            this.refresCoursesAndEnrollment();
+
+            alert("Joined course");
+          } else {
+            alert("Error");
+          }
+        });
+    },
+    leaveCourse_Click(id) {
+      this.$http
+        .put(`/courses/leave/${id}`)
+        .then(data => {
+          return data.status;
+        })
+        .then(status => {
+          if (status == 200) {
+            this.refresCoursesAndEnrollment();
+
+            alert("Left course");
+          } else {
+            alert("Error");
+          }
+        });
+    },
+    exploreCourse_Click(course) {
+      this.$store.commit("changeCurrentSelectedCourse", course);
+      this.$store.commit("switchView", this.Course);
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    },
+    lecturers() {
+      return this.$store.state.lecturers;
+    },
+    coursesForLecture() {
+      return this.$store.state.coursesForLecture;
+    },
+    courses() {
+      return this.$store.state.courses;
+    },
+    Course() {
+      return this.$store.state.Course;
+    }
+  }
+};
 </script>
 
 <style scoped>
-    .flex-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-    .course-item {
-      margin: 0;
-      padding: 8px;
-      text-align: center;
-    }
+.course-item {
+  margin: 0;
+  padding: 8px;
+  text-align: center;
+}
 
-    .course-item .panel {
-      margin: 0;
-      transition: background-color 0.2s, color 0.2s;
-    }
+.course-item .panel {
+  margin: 0;
+  transition: background-color 0.2s, color 0.2s;
+}
 
-    .course-item h5 {
-      font-weight: 300;
-    }
+.course-item h5 {
+  font-weight: 300;
+}
 
-    .round-button {
-      position: fixed;
-      right: 30px;
-      bottom: 30px;
-      height: 50px;
-      width: 50px;
-      border-radius: 100%;
-      padding: 0;
-      padding-top: 2px;
-      padding-left: 2px;
-    }
+.round-button {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+  height: 50px;
+  width: 50px;
+  border-radius: 100%;
+  padding: 0;
+  padding-top: 2px;
+  padding-left: 2px;
+}
 </style>
