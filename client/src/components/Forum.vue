@@ -1,10 +1,10 @@
 <template>
-    <div class="container-fluid">
+    <div>
         <div id="title-bar">
             <a id="back-button" href="#" @click="back">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
-            <div class="created-time">
+            <div class="created-time-wrapper">
                 <p>
                     created {{ moment(forum.createDateTime) }} &nbsp;
                     <b>
@@ -17,6 +17,15 @@
             </div>
             <hr>
         </div>
+
+        <div class="content">
+            <div id="forum-header">
+                <h4>
+                    <b>Title: </b>{{ forum.title }}
+                </h4>
+                <p class="lead" v-html="findAndConvertLink(forum.desc)"></p>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -28,9 +37,16 @@ export default {
     moment(date) {
       return moment(date).fromNow();
     },
+    findAndConvertLink(text) {
+      const exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+      return text.replace(exp, "<a target='_blank' href='$1'>$1</a>");
+    },
     back() {
       this.$store.commit("changeCurrentSelectedForum", {}); //clear selection
-      this.$store.commit("switchView", this.CourseView);
+      this.$store.commit("switchView", {
+        view: this.CourseView,
+        needRefresh: false
+      });
     }
   },
   computed: {
@@ -40,9 +56,6 @@ export default {
     CourseView() {
       return this.$store.state.Course;
     }
-  },
-  created() {
-    console.log(this.forum.owner);
   }
 };
 </script>
@@ -56,9 +69,20 @@ a#back-button {
 #title-bar {
   padding-top: 16px;
   background-color: white;
-  position: -webkit-sticky;
-  position: sticky;
+  /* position: -webkit-sticky;
+  position: sticky; */
+  position: fixed;
   top: 64px;
+  right: 10%;
+  left: 10%;
+}
+
+@media screen and (max-width: 1500px) {
+  #title-bar {
+    top: 64px;
+    right: 2%;
+    left: 2%;
+  }
 }
 
 #title-bar span,
@@ -69,23 +93,33 @@ a#back-button {
 
 #title-bar hr {
   border-top-width: 2px;
+  margin-bottom: 0;
 }
 
 #title-bar .owner-image {
   max-width: 30px;
 }
 
-.created-time {
+.content {
+  margin-top: 80px;
+}
+
+.created-time-wrapper {
   float: right;
 }
 
-.created-time p {
+.created-time-wrapper p {
   font-size: 13px !important;
 }
 
-.created-time::after {
+.created-time-wrapper::after {
   content: "";
   display: block;
   clear: both;
+}
+
+#forum-header p {
+  word-wrap: break-word;
+  font-size: 20px;
 }
 </style>

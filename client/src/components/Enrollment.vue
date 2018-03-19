@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div>
         <div v-if="user.enrollment.length!=0">
             <!-- favorite course -->
             <div v-if="user.favorites.length!=0">
@@ -131,7 +131,10 @@ export default {
     },
     exploreCourse_Click(course) {
       this.$store.commit("changeCurrentSelectedCourse", course);
-      this.$store.commit("switchView", this.CourseView);
+      this.$store.commit("switchView", {
+        view: this.CourseView,
+        needRefresh: true
+      });
     }
   },
   computed: {

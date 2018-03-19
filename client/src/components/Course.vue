@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div>
         <div id="title-bar">
             <a id="back-button" href="#" @click="back">
                 <span class="glyphicon glyphicon-chevron-left"></span>
@@ -10,30 +10,32 @@
             <hr>
         </div>
 
-        <div v-if="forums.length!=0">
-            <div v-for="f in forums" :key="f._id">
-                <div class="forum-item" @click="forumItem_Click(f)">
-                    <h4>{{ f.title }}</h4>
-                    <p class="lead">{{ f.desc }}</p>
+        <div class="content">
+            <div v-if="forums.length!=0">
+                <div v-for="f in forums" :key="f._id">
+                    <div class="forum-item" @click="forumItem_Click(f)">
+                        <h4>{{ f.title }}</h4>
+                        <p class="lead">{{ f.desc }}</p>
 
-                    <p class="text-right">
-                        created {{ moment(f.createDateTime) }} &nbsp;
-                        <b>
-                            <i>by</i>
-                        </b>
-                        &nbsp;
-                        <img class="owner-image img-circle" :src="f.owner.thumnail" v-if="f.owner!=null">
-                        <b>{{ f.owner==null ? "Unknown" : f.owner.name }}</b>
-                    </p>
+                        <p class="text-right">
+                            created {{ moment(f.createDateTime) }} &nbsp;
+                            <b>
+                                <i>by</i>
+                            </b>
+                            &nbsp;
+                            <img class="owner-image img-circle" :src="f.owner.thumnail" v-if="f.owner!=null">
+                            <b>{{ f.owner==null ? "Unknown" : f.owner.name }}</b>
+                        </p>
+                    </div>
+                    <hr>
                 </div>
-                <hr>
             </div>
-        </div>
 
-        <!-- empty message -->
-        <div class="text-center" style="padding-top: 150px;" v-else>
-            <h3>Empty</h3>
-            <p class="lead">There is no forum posted yet</p>
+            <!-- empty message -->
+            <div class="text-center" style="padding-top: 150px;" v-else>
+                <h3>Empty</h3>
+                <p class="lead">There is no forum posted yet</p>
+            </div>
         </div>
 
         <button id="create-button" class="btn btn-primary" data-toggle="modal" data-target="#add-forum-modal">Create Post</button>
@@ -98,7 +100,10 @@ export default {
     },
     back() {
       this.$store.commit("changeCurrentSelectedCourse", {}); //clear selection
-      this.$store.commit("switchView", this.MainView);
+      this.$store.commit("switchView", {
+        view: this.MainView,
+        needRefresh: true
+      });
     },
     refreshForums() {
       this.$http
@@ -132,7 +137,11 @@ export default {
     },
     forumItem_Click(forum) {
       this.$store.commit("changeCurrentSelectedForum", forum);
-      this.$store.commit("switchView", this.ForumView);
+      this.$store.commit("saveForumList", this.forums);
+      this.$store.commit("switchView", {
+        view: this.ForumView,
+        needRefresh: false
+      });
     }
   },
   computed: {
@@ -147,7 +156,11 @@ export default {
     }
   },
   created() {
-    this.refreshForums();
+    if (this.$store.state.needRefresh) {
+      this.refreshForums();
+    } else {
+      this.forums = this.$store.state.forums;
+    }
   }
 };
 </script>
@@ -161,9 +174,20 @@ a#back-button {
 #title-bar {
   padding-top: 16px;
   background-color: white;
-  position: -webkit-sticky;
-  position: sticky;
+  /* position: -webkit-sticky;
+  position: sticky; */
+  position: fixed;
   top: 64px;
+  right: 10%;
+  left: 10%;
+}
+
+@media screen and (max-width: 1500px) {
+  #title-bar {
+    top: 64px;
+    right: 2%;
+    left: 2%;
+  }
 }
 
 #title-bar span,
@@ -174,6 +198,11 @@ a#back-button {
 
 #title-bar hr {
   border-top-width: 2px;
+  margin-bottom: 0;
+}
+
+.content {
+  margin-top: 80px;
 }
 
 .forum-item {

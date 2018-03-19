@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div>
         <div class="flex-container" v-if="(user.roleIndex==1 && coursesForLecture.length!=0) || (user.roleIndex!=1 && courses.length!=0)">
             <!-- lecture content -->
             <div v-if="user.roleIndex==1">
@@ -317,7 +317,10 @@ export default {
     },
     exploreCourse_Click(course) {
       this.$store.commit("changeCurrentSelectedCourse", course);
-      this.$store.commit("switchView", this.CourseView);
+      this.$store.commit("switchView", {
+        view: this.CourseView,
+        needRefresh: true
+      });
     }
   },
   computed: {
