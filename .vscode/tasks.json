@@ -16,6 +16,18 @@
             }
         },
         {
+            "label": "Build Client (dev)",
+            "type": "shell",
+            "options": {
+                "cwd": "${workspaceRoot}/client"
+            },
+            "command": "npm run build-dev",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
             "label": "Lint Server Code",
             "type": "shell",
             "options": {
