@@ -8,7 +8,7 @@
                 </h5>
                 <hr>
                 <div class="flex-container">
-                    <div class="course-item col-md-3 col-sm-5 col-xs-12" v-for="c in user.favorites" :key="c._id">
+                    <div class="course-item col-md-3 col-sm-5 col-xs-12 animation-intro" v-for="c in user.favorites" :key="c._id">
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <h5>{{ c.title }}</h5>
@@ -39,7 +39,7 @@
             </h5>
             <hr>
             <div class="flex-container">
-                <div class="course-item col-md-3 col-sm-5 col-xs-12" v-for="c in user.enrollment" :key="c._id">
+                <div class="course-item col-md-3 col-sm-5 col-xs-12 animation-intro" v-for="c in user.enrollment" :key="c._id">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <h5>{{ c.title }}</h5>
@@ -66,7 +66,7 @@
         </div>
 
         <!-- Empty message -->
-        <div class="text-center" style="padding-top: 150px;" v-else>
+        <div class="text-center animation-intro" style="padding-top: 150px;" v-else>
             <h3>Empty</h3>
             <p class="lead">You haven't join any courses yet</p>
         </div>
@@ -74,100 +74,116 @@
 </template>
 
 <script>
-export default {
-  methods: {
-    refresCoursesAndEnrollment() {
-      this.$store.dispatch("getUserData").then(() => {
-        this.$store.dispatch("getCourses");
-      });
-    },
-    markAsFavorite(id) {
-      this.$http
-        .put(`/courses/favorites/add/${id}`)
-        .then(data => {
-          return data.status;
-        })
-        .then(status => {
-          if (status == 200) {
-            this.refresCoursesAndEnrollment();
+    export default {
+      methods: {
+        refresCoursesAndEnrollment() {
+          this.$store.dispatch("getUserData").then(() => {
+            this.$store.dispatch("getCourses");
+          });
+        },
+        markAsFavorite(id) {
+          this.$http
+            .put(`/courses/favorites/add/${id}`)
+            .then(data => {
+              return data.status;
+            })
+            .then(status => {
+              if (status == 200) {
+                this.refresCoursesAndEnrollment();
 
-            alert("The course is added to your favorite list");
-          } else {
-            alert("Error");
-          }
-        });
-    },
-    removeFromFavorites(id) {
-      this.$http
-        .put(`/courses/favorites/remove/${id}`)
-        .then(data => {
-          return data.status;
-        })
-        .then(status => {
-          if (status == 200) {
-            this.refresCoursesAndEnrollment();
+                alert("The course is added to your favorite list");
+              } else {
+                alert("Error");
+              }
+            });
+        },
+        removeFromFavorites(id) {
+          this.$http
+            .put(`/courses/favorites/remove/${id}`)
+            .then(data => {
+              return data.status;
+            })
+            .then(status => {
+              if (status == 200) {
+                this.refresCoursesAndEnrollment();
 
-            alert("The course is removed to your favorite list");
-          } else {
-            alert("Error");
-          }
-        });
-    },
-    leaveCourse_Click(id) {
-      this.$http
-        .put(`/courses/leave/${id}`)
-        .then(data => {
-          return data.status;
-        })
-        .then(status => {
-          if (status == 200) {
-            this.refresCoursesAndEnrollment();
+                alert("The course is removed to your favorite list");
+              } else {
+                alert("Error");
+              }
+            });
+        },
+        leaveCourse_Click(id) {
+          this.$http
+            .put(`/courses/leave/${id}`)
+            .then(data => {
+              return data.status;
+            })
+            .then(status => {
+              if (status == 200) {
+                this.refresCoursesAndEnrollment();
 
-            alert("Left course");
-          } else {
-            alert("Error");
-          }
-        });
-    },
-    exploreCourse_Click(course) {
-      this.$store.commit("changeCurrentSelectedCourse", course);
-      this.$store.commit("switchView", {
-        view: this.CourseView,
-        needRefresh: true
-      });
-    }
-  },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    },
-    CourseView() {
-      return this.$store.state.Course;
-    }
-  }
-};
+                alert("Left course");
+              } else {
+                alert("Error");
+              }
+            });
+        },
+        exploreCourse_Click(course) {
+          this.$store.commit("changeCurrentSelectedCourse", course);
+          this.$store.commit("switchView", {
+            view: this.CourseView,
+            needRefresh: true
+          });
+        }
+      },
+      computed: {
+        user() {
+          return this.$store.state.user;
+        },
+        CourseView() {
+          return this.$store.state.Course;
+        }
+      }
+    };
 </script>
 
 <style scoped>
-.flex-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
+    @keyframes intro {
+      from {
+        opacity: 0;
+        zoom: 0;
+      }
+      to {
+        opacity: 1;
+        zoom: 1;
+      }
+    }
 
-.course-item {
-  margin: 0;
-  padding: 8px;
-  text-align: center;
-}
+    .animation-intro {
+      animation-name: intro;
+      animation-duration: 0.5s;
+    }
 
-.course-item .panel {
-  margin: 0;
-  transition: background-color 0.2s, color 0.2s;
-}
+    .flex-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
 
-.course-item h5 {
-  font-weight: 300;
-}
+    .course-item {
+      margin: 0;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .course-item .panel {
+      margin: 0;
+      transition: background-color 0.2s, color 0.2s;
+    }
+
+    .course-item h5 {
+      font-weight: 300;
+    }
 </style>
 

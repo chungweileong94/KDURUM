@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="animation-intro">
         <div class="row">
             <div class="col-sm-12">
                 <img class="img-circle center-block" style="width:100px;" :src="user.thumnail">
@@ -86,6 +86,22 @@
 </script>
 
 <style scoped>
+    @keyframes intro {
+      from {
+        opacity: 0;
+        zoom: 0;
+      }
+      to {
+        opacity: 1;
+        zoom: 1;
+      }
+    }
+
+    .animation-intro {
+      animation-name: intro;
+      animation-duration: 0.5s;
+    }
+
     .container-fluid {
       margin-top: 20px;
     }

@@ -4,7 +4,7 @@
             <a id="back-button" href="#" @click="back">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
-            <p>
+            <p class="animation-intro">
                 <b>{{ course.title }}</b>
             </p>
             <hr>
@@ -13,7 +13,7 @@
         <div class="content">
             <div v-if="forums.length!=0">
                 <div v-for="f in forums" :key="f._id">
-                    <div class="forum-item" @click="forumItem_Click(f)">
+                    <div class="forum-item animation-intro" @click="forumItem_Click(f)">
                         <h4>{{ f.title }}</h4>
                         <p class="lead">{{ f.desc }}</p>
 
@@ -32,7 +32,7 @@
             </div>
 
             <!-- empty message -->
-            <div class="text-center" style="padding-top: 150px;" v-else>
+            <div class="text-center animation-intro" style="padding-top: 150px;" v-else>
                 <h3>Empty</h3>
                 <p class="lead">There is no forum posted yet</p>
             </div>
@@ -84,156 +84,172 @@
 </template>
 
 <script>
-const moment = require("moment");
+    const moment = require("moment");
 
-export default {
-  data() {
-    return {
-      forums: [],
-      forumTitleInput: "",
-      forumDescInput: ""
+    export default {
+      data() {
+        return {
+          forums: [],
+          forumTitleInput: "",
+          forumDescInput: ""
+        };
+      },
+      methods: {
+        moment(date) {
+          return moment(date).fromNow();
+        },
+        back() {
+          this.$store.commit("changeCurrentSelectedCourse", {}); //clear selection
+          this.$store.commit("switchView", {
+            view: this.MainView,
+            needRefresh: true
+          });
+        },
+        refreshForums() {
+          this.$http
+            .get(`/forum/all/${this.course._id}`)
+            .then(data => {
+              return data.json();
+            })
+            .then(data => {
+              this.forums = data;
+            });
+        },
+        addForum_Click() {
+          this.$http
+            .post("/forum/add", {
+              title: this.forumTitleInput,
+              desc: this.forumDescInput,
+              courseId: this.course._id
+            })
+            .then(data => {
+              return data.status;
+            })
+            .then(status => {
+              if (status == 200) {
+                this.refreshForums();
+                alert("Forum added");
+              } else {
+                this.refreshForums();
+                alert("Error");
+              }
+            });
+        },
+        forumItem_Click(forum) {
+          this.$store.commit("changeCurrentSelectedForum", forum);
+          this.$store.commit("saveForumList", this.forums);
+          this.$store.commit("switchView", {
+            view: this.ForumView,
+            needRefresh: false
+          });
+        }
+      },
+      computed: {
+        course() {
+          return this.$store.state.currentSelectedCourse;
+        },
+        MainView() {
+          return this.$store.state.MainView;
+        },
+        ForumView() {
+          return this.$store.state.Forum;
+        }
+      },
+      created() {
+        if (this.$store.state.needRefresh) {
+          this.refreshForums();
+        } else {
+          this.forums = this.$store.state.forums;
+        }
+      }
     };
-  },
-  methods: {
-    moment(date) {
-      return moment(date).fromNow();
-    },
-    back() {
-      this.$store.commit("changeCurrentSelectedCourse", {}); //clear selection
-      this.$store.commit("switchView", {
-        view: this.MainView,
-        needRefresh: true
-      });
-    },
-    refreshForums() {
-      this.$http
-        .get(`/forum/all/${this.course._id}`)
-        .then(data => {
-          return data.json();
-        })
-        .then(data => {
-          this.forums = data;
-        });
-    },
-    addForum_Click() {
-      this.$http
-        .post("/forum/add", {
-          title: this.forumTitleInput,
-          desc: this.forumDescInput,
-          courseId: this.course._id
-        })
-        .then(data => {
-          return data.status;
-        })
-        .then(status => {
-          if (status == 200) {
-            this.refreshForums();
-            alert("Forum added");
-          } else {
-            this.refreshForums();
-            alert("Error");
-          }
-        });
-    },
-    forumItem_Click(forum) {
-      this.$store.commit("changeCurrentSelectedForum", forum);
-      this.$store.commit("saveForumList", this.forums);
-      this.$store.commit("switchView", {
-        view: this.ForumView,
-        needRefresh: false
-      });
-    }
-  },
-  computed: {
-    course() {
-      return this.$store.state.currentSelectedCourse;
-    },
-    MainView() {
-      return this.$store.state.MainView;
-    },
-    ForumView() {
-      return this.$store.state.Forum;
-    }
-  },
-  created() {
-    if (this.$store.state.needRefresh) {
-      this.refreshForums();
-    } else {
-      this.forums = this.$store.state.forums;
-    }
-  }
-};
 </script>
 
 <style scoped>
-a#back-button {
-  text-decoration: none;
-  padding: 0 8px;
-}
+    @keyframes intro {
+      from {
+        opacity: 0;
+        zoom: 0;
+      }
+      to {
+        opacity: 1;
+        zoom: 1;
+      }
+    }
 
-#title-bar {
-  padding-top: 16px;
-  background-color: white;
-  /* position: -webkit-sticky;
-  position: sticky; */
-  position: fixed;
-  top: 64px;
-  right: 10%;
-  left: 10%;
-}
+    .animation-intro {
+      animation-name: intro;
+      animation-duration: 0.5s;
+    }
 
-@media screen and (max-width: 1500px) {
-  #title-bar {
-    top: 64px;
-    right: 2%;
-    left: 2%;
-  }
-}
+    a#back-button {
+      text-decoration: none;
+      padding: 0 8px;
+    }
 
-#title-bar span,
-#title-bar p {
-  font-size: 20px;
-  display: inline;
-}
+    #title-bar {
+      padding-top: 16px;
+      background-color: white;
+      /* position: -webkit-sticky;
+      position: sticky; */
+      position: fixed;
+      top: 64px;
+      right: 10%;
+      left: 10%;
+    }
 
-#title-bar hr {
-  border-top-width: 2px;
-  margin-bottom: 0;
-}
+    @media screen and (max-width: 1500px) {
+      #title-bar {
+        top: 64px;
+        right: 2%;
+        left: 2%;
+      }
+    }
 
-.content {
-  margin-top: 80px;
-}
+    #title-bar span,
+    #title-bar p {
+      font-size: 20px;
+      display: inline;
+    }
 
-.forum-item {
-  margin: 0;
-  padding: 4px 12px;
-  border-radius: 5px;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: all 0.2s;
-  -moz-transition: all 0.2s;
-}
+    #title-bar hr {
+      border-top-width: 2px;
+      margin-bottom: 0;
+    }
 
-.forum-item:hover {
-  background: lightgray;
-}
+    .content {
+      margin-top: 80px;
+    }
 
-.forum-item h4,
-.forum-item p {
-  text-overflow: ellipsis;
-  -ms-text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  overflow: hidden;
-}
+    .forum-item {
+      margin: 0;
+      padding: 4px 12px;
+      border-radius: 5px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+      -moz-transition: all 0.2s;
+    }
 
-.forum-item .owner-image {
-  max-width: 30px;
-}
+    .forum-item:hover {
+      background: lightgray;
+    }
 
-#create-button {
-  position: fixed;
-  right: 30px;
-  bottom: 30px;
-}
+    .forum-item h4,
+    .forum-item p {
+      text-overflow: ellipsis;
+      -ms-text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .forum-item .owner-image {
+      max-width: 30px;
+    }
+
+    #create-button {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+    }
 </style>

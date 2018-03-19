@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid">
+    <div class="animation-intro">
         <div class="row">
             <table class="table table-striped table-hover">
                 <thead>
@@ -202,6 +202,22 @@
 </script>
 
 <style scoped>
+    @keyframes intro {
+      from {
+        opacity: 0;
+        zoom: 0;
+      }
+      to {
+        opacity: 1;
+        zoom: 1;
+      }
+    }
+
+    .animation-intro {
+      animation-name: intro;
+      animation-duration: 0.5s;
+    }
+
     table tbody tr {
       cursor: pointer;
     }
