@@ -131,14 +131,14 @@ export default {
     },
     exploreCourse_Click(course) {
       this.$store.commit("changeCurrentSelectedCourse", course);
-      this.$store.commit("switchView", this.Course);
+      this.$store.commit("switchView", this.CourseView);
     }
   },
   computed: {
     user() {
       return this.$store.state.user;
     },
-    Course() {
+    CourseView() {
       return this.$store.state.Course;
     }
   }

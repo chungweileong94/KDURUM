@@ -35,7 +35,7 @@ export const store = new Vuex.Store({
         changeCurrentSelectedCourse(state, course) {
             state.currentSelectedCourse = course;
         },
-        changeCurrentSelectectForum(state, forum) {
+        changeCurrentSelectedForum(state, forum) {
             state.currentSelectedForum = forum;
         }
     },
