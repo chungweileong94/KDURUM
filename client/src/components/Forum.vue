@@ -41,7 +41,35 @@
             </div>
         </div>
 
-        <button id="comment-button" class="btn btn-warning" data-toggle="modal">Add Comment</button>
+        <button id="comment-button" class="btn btn-warning" data-toggle="modal" data-target="#add-comment-modal">Add Comment</button>
+
+        <!-- add comment dialog -->
+        <div id="add-comment-modal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Add Comment
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <!-- comment -->
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <textarea class="form-control" id="forum-desc-input" rows="3" v-model="commentInput"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="commentInput.trim().length==0" @click="addComment_Click">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -49,13 +77,20 @@
     const moment = require("moment");
 
     export default {
+      data() {
+        return {
+          commentInput: ""
+        };
+      },
       methods: {
         moment(date) {
           return moment(date).fromNow();
         },
         preProcessText(text) {
           const exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-          return text.replace(exp, "<a target='_blank' href='$1'>$1</a>").replace(/\n\r?/g, "<br />");
+          return text
+            .replace(exp, "<a target='_blank' href='$1'>$1</a>")
+            .replace(/\n\r?/g, "<br />");
         },
         back() {
           this.$store.commit("changeCurrentSelectedForum", {}); //clear selection
@@ -63,6 +98,9 @@
             view: this.CourseView,
             needRefresh: false
           });
+        },
+        addComment_Click() {
+          alert("Work in Progress...");
         }
       },
       computed: {
@@ -102,7 +140,7 @@
       padding-top: 16px;
       background-color: white;
       /* position: -webkit-sticky;
-                                      position: sticky; */
+                                                                  position: sticky; */
       position: fixed;
       top: 64px;
       right: 10%;
