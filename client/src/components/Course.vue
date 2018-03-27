@@ -7,6 +7,17 @@
             <p class="animation-intro">
                 <b>{{ course.title }}</b>
             </p>
+            <div class="lecturer-wrapper animation-intro" v-if="course.lecturer!=null">
+                <p>
+                    lecture&nbsp;
+                    <b>
+                        <i>by</i>
+                    </b>
+                    &nbsp;
+                    <img class="lecturer-image img-circle" :src="course.lecturer.thumnail" v-if="course.lecturer!=null">
+                    <b>{{ course.lecturer==null ? "Unknown" : course.lecturer.name }}</b>
+                </p>
+            </div>
             <hr>
         </div>
 
@@ -191,7 +202,7 @@
       padding-top: 16px;
       background-color: white;
       /* position: -webkit-sticky;
-      position: sticky; */
+                              position: sticky; */
       position: fixed;
       top: 64px;
       right: 10%;
@@ -212,9 +223,27 @@
       display: inline;
     }
 
+    #title-bar .lecturer-image {
+      max-width: 30px;
+    }
+
     #title-bar hr {
       border-top-width: 2px;
       margin-bottom: 0;
+    }
+
+    .lecturer-wrapper {
+      float: right;
+    }
+
+    .lecturer-wrapper p {
+      font-size: 13px !important;
+    }
+
+    .lecturer-wrapper::after {
+      content: "";
+      display: block;
+      clear: both;
     }
 
     .content {
