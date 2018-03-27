@@ -124,7 +124,7 @@
                             <select class="form-control" v-model="roleSelected">
                                 <option disabled value="">Please enter a role</option>
                                 <option value="0">Administrator</option>
-                                <option value="1">Lecture</option>
+                                <option value="1">Lecturer</option>
                                 <option value="2">Student</option>
                             </select>
                         </div>
