@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Forum = require("./../models/forum-model");
+const Comment = require("./../models/comment-model");
 
 //get all forum with course ID
 router.get("/all/:id", (req, res) => {
@@ -12,7 +13,7 @@ router.get("/all/:id", (req, res) => {
         .populate("owner")
         .exec((err, forums) => {
             if (err) throw err;
-            res.status(200).json(forums);
+            return res.status(200).json(forums);
         });
 });
 
@@ -31,7 +32,30 @@ router.post("/add", (req, res) => {
         owner: req.user._id
     }).save((err, result) => {
         if (err) throw err;
-        res.sendStatus(200);
+        return res.sendStatus(200);
+    });
+});
+
+router.post("/comment/add", (req, res) => {
+    if (!req.user) return res.sendStatus(401);
+    if (!req.body) return res.sendStatus(404);
+
+    let newComment = req.body;
+
+    new Comment({
+        user: req.user._id,
+        content: newComment.content,
+        createDateTime: Date.now()
+    }).save((err, result) => {
+        if (err) throw err;
+
+        Forum.findOne({ _id: newComment.courseId }, (error, forum) => {
+            forum.comments.push(result._id);
+            forum.save((forumErr, forumResult) => {
+                if (forumErr) throw forumErr;
+                return res.sendStatus(200);
+            });
+        });
     });
 });
 

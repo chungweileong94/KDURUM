@@ -100,7 +100,21 @@
           });
         },
         addComment_Click() {
-          alert("Work in Progress...");
+          this.$http
+            .post("/forum/comment/add", {
+              courseId: this.forum._id,
+              content: this.commentInput
+            })
+            .then(data => {
+              return data.status;
+            })
+            .then(status => {
+              if (status == 200) {
+                alert("Comment added");
+              } else {
+                alert("Error");
+              }
+            });
         }
       },
       computed: {
@@ -140,7 +154,7 @@
       padding-top: 16px;
       background-color: white;
       /* position: -webkit-sticky;
-                                                                  position: sticky; */
+                                                                              position: sticky; */
       position: fixed;
       top: 64px;
       right: 10%;
