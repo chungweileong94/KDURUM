@@ -36,6 +36,7 @@ router.post("/add", (req, res) => {
     });
 });
 
+//add comment
 router.post("/comment/add", (req, res) => {
     if (!req.user) return res.sendStatus(401);
     if (!req.body) return res.sendStatus(404);
@@ -43,19 +44,26 @@ router.post("/comment/add", (req, res) => {
     let newComment = req.body;
 
     new Comment({
+        forumId: newComment.forumId,
         user: req.user._id,
         content: newComment.content,
         createDateTime: Date.now()
     }).save((err, result) => {
         if (err) throw err;
+        return res.sendStatus(200);
+    });
+});
 
-        Forum.findOne({ _id: newComment.courseId }, (error, forum) => {
-            forum.comments.push(result._id);
-            forum.save((forumErr, forumResult) => {
-                if (forumErr) throw forumErr;
-                return res.sendStatus(200);
-            });
-        });
+//get comments
+router.get("/comment/all/:id", (req, res) => {
+    if (!req.user) return res.sendStatus(401);
+    if (!req.params.id) return res.sendStatus(404);
+
+    Comment.find({
+        forumId: req.params.id
+    }, (err, comments) => {
+        if (err) throw err;
+        return res.status(200).json(comments);
     });
 });
 
