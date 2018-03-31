@@ -27,16 +27,25 @@
                 <p class="lead" v-html="preProcessText(forum.desc)"></p>
             </div>
 
-            <div id="forum-comment">
+            <div id="forum-comments">
                 <h4 class="text-center">
                     <span class="glyphicon glyphicon-comment"></span>&nbsp;&nbsp;Comments
                 </h4>
                 <hr>
 
-                <div class="well">
-                    <p>Here is some comments......</p>
+                <div v-if="comments.length!=0">
+                    <div class="animation-intro" v-for="c in comments" :key="c._id">
+                        <div class="well">
+                            <p v-html="preProcessText(c.content)"></p>
 
-                    <p class="text-right">created 1 minute ago</p>
+                            <p class="text-right">commented {{moment(c.createDateTime)}}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- empty message -->
+                <div class="text-center" v-else>
+                    <h4 class="lead">- No Comments -</h4>
                 </div>
             </div>
         </div>
@@ -79,7 +88,8 @@
     export default {
       data() {
         return {
-          commentInput: ""
+          commentInput: "",
+          comments: ""
         };
       },
       methods: {
@@ -102,7 +112,7 @@
         addComment_Click() {
           this.$http
             .post("/forum/comment/add", {
-              courseId: this.forum._id,
+              forumId: this.forum._id,
               content: this.commentInput
             })
             .then(data => {
@@ -110,10 +120,22 @@
             })
             .then(status => {
               if (status == 200) {
+                this.refreshComments();
                 alert("Comment added");
               } else {
                 alert("Error");
               }
+            });
+        },
+        refreshComments() {
+          this.$http
+            .get(`/forum/comment/all/${this.forum._id}`)
+            .then(data => {
+              return data.json();
+            })
+            .then(data => {
+              this.comments = data;
+              console.log(this.comments);
             });
         }
       },
@@ -124,6 +146,9 @@
         CourseView() {
           return this.$store.state.Course;
         }
+      },
+      created() {
+        this.refreshComments();
       }
     };
 </script>
@@ -154,7 +179,7 @@
       padding-top: 16px;
       background-color: white;
       /* position: -webkit-sticky;
-                                                                              position: sticky; */
+                                                                                                                                                              position: sticky; */
       position: fixed;
       top: 64px;
       right: 10%;
@@ -211,7 +236,7 @@
       font-size: 20px;
     }
 
-    #forum-comment hr {
+    #forum-comments hr {
       border-top-width: 2px;
       width: 30%;
     }
