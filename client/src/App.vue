@@ -15,61 +15,63 @@
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Loading from "./components/Loading.vue";
+    import Header from "./components/Header.vue";
+    import Loading from "./components/Loading.vue";
 
-export default {
-  components: {
-    "app-header": Header,
-    "app-loading": Loading
-  },
-  methods: {
-    init() {
-      this.$store.commit("switchView", {
-        view: this.MainView,
-        needRefresh: true
-      });
-      this.$store.dispatch("getUserData").then(() => {
-        //if the user is lecture
-        if (this.$store.state.user.roleIndex == 1) {
-          this.$store.dispatch("getCoursesForLecture");
-        } else {
-          //if the user is admin
-          if (this.$store.state.user.roleIndex == 0) {
-            this.$store.dispatch("getAllLecturers");
-          }
-          this.$store.dispatch("getCourses");
+    export default {
+      components: {
+        "app-header": Header,
+        "app-loading": Loading
+      },
+      methods: {
+        init() {
+          this.$store.commit("switchView", {
+            view: this.MainView,
+            needRefresh: true
+          });
+          this.$store.dispatch("getUserData").then(() => {
+            //if the user is lecture
+            if (this.$store.state.user.roleIndex == 1) {
+              this.$store.dispatch("getCoursesForLecture");
+            } else {
+              //if the user is admin
+              if (this.$store.state.user.roleIndex == 0) {
+                this.$store.dispatch("getAllLecturers");
+              }
+              this.$store.dispatch("getCourses");
+            }
+          });
         }
-      });
-    }
-  },
-  created() {
-    this.init();
-  },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    },
-    MainView() {
-      return this.$store.state.MainView;
-    },
-    currentView() {
-      return this.$store.state.currentView;
-    }
-  }
-};
+      },
+      created() {
+        this.init();
+
+        window.onbeforeunload = () => "Are you sure to leave?";
+      },
+      computed: {
+        user() {
+          return this.$store.state.user;
+        },
+        MainView() {
+          return this.$store.state.MainView;
+        },
+        currentView() {
+          return this.$store.state.currentView;
+        }
+      }
+    };
 </script>
 
 <style scoped>
-/* .fade-enter-active {
-                                                                                  transition: all 0.5s ease;
-                                                                                } */
-/* .fade-leave-active {
-                                                                                      transition: all 0.2s ease;
-                                                                                    } */
-/* .fade-enter,
-                                                                                .fade-leave-to {
-                                                                                  opacity: 0;
-                                                                                } */
+    /* .fade-enter-active {
+                                                                                          transition: all 0.5s ease;
+                                                                                        } */
+    /* .fade-leave-active {
+                                                                                              transition: all 0.2s ease;
+                                                                                            } */
+    /* .fade-enter,
+                                                                                        .fade-leave-to {
+                                                                                          opacity: 0;
+                                                                                        } */
 </style>
 
