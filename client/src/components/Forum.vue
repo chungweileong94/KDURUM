@@ -36,6 +36,10 @@
                 <div v-if="comments.length!=0">
                     <div class="animation-intro" v-for="c in comments" :key="c._id">
                         <div class="well">
+                            <p>
+                                <img class="comment-user-image img-circle" :src="c.user.thumnail" v-if="c.user!=null">
+                                <b>{{ c.user==null ? "Unknown" : c.user.name }}</b>
+                            </p>
                             <p v-html="preProcessText(c.content)"></p>
 
                             <p class="text-right">commented {{moment(c.createDateTime)}}</p>
@@ -135,7 +139,6 @@
             })
             .then(data => {
               this.comments = data;
-              console.log(this.comments);
             });
         }
       },
@@ -179,7 +182,7 @@
       padding-top: 16px;
       background-color: white;
       /* position: -webkit-sticky;
-                                                                                                                                                              position: sticky; */
+                                                                                                                                                                          position: sticky; */
       position: fixed;
       top: 64px;
       right: 10%;
@@ -239,6 +242,10 @@
     #forum-comments hr {
       border-top-width: 2px;
       width: 30%;
+    }
+
+    .comment-user-image {
+      max-width: 30px;
     }
 
     #comment-button {

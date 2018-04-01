@@ -61,7 +61,7 @@ router.get("/comment/all/:id", (req, res) => {
 
     Comment.find({
         forumId: req.params.id
-    }, (err, comments) => {
+    }).populate("user").exec((err, comments) => {
         if (err) throw err;
         return res.status(200).json(comments);
     });
