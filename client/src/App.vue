@@ -45,8 +45,6 @@
       },
       created() {
         this.init();
-
-        window.onbeforeunload = () => "Are you sure to leave?";
       },
       computed: {
         user() {
