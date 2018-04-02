@@ -36,6 +36,27 @@ router.post("/add", (req, res) => {
     });
 });
 
+router.delete("/remove/:id", (req, res) => {
+    if (!req.user) return res.sendStatus(401);
+    if (!req.params.id) return res.sendStatus(404);
+
+    let id = req.params.id;
+
+    Forum.findByIdAndRemove(id, (err, forum) => {
+        if (!forum.owner.equals(req.user._id)) {
+            if (req.user.role != 0) {
+                return res.sendStatus(401);
+            }
+        }
+
+        Comment.find({ forumId: id }).remove(err_comments => {
+            if (err_comments) throw err_comments;
+
+            return res.sendStatus(200);
+        });
+    });
+});
+
 //add comment
 router.post("/comment/add", (req, res) => {
     if (!req.user) return res.sendStatus(401);

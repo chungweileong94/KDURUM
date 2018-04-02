@@ -25,6 +25,15 @@
                     <b>Title: </b>{{ forum.title }}
                 </h4>
                 <p class="lead" v-html="preProcessText(forum.desc)"></p>
+
+                <div class="container" v-if="(forum.owner!=null && forum.owner._id==user._id) || user.roleIndex==0">
+                    <div class="row">
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-forum-modal">Remove</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="forum-comments">
@@ -83,6 +92,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- delete modal -->
+        <div id="delete-forum-modal" class="modal fade" v-if="(forum.owner!=null && forum.owner._id==user._id) || user.roleIndex==0">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete post
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you to remove the post?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal">No</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal" @click="removeForum_Click">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -106,12 +136,29 @@
             .replace(exp, "<a target='_blank' href='$1'>$1</a>")
             .replace(/\n\r?/g, "<br />");
         },
-        back() {
+        back(needRefresh = false) {
           this.$store.commit("changeCurrentSelectedForum", {}); //clear selection
           this.$store.commit("switchView", {
             view: this.CourseView,
-            needRefresh: false
+            needRefresh: needRefresh
           });
+        },
+        removeForum_Click() {
+          this.$http
+            .delete(`/forum/remove/${this.forum._id}`)
+            .then(data => {
+              console.log(data);
+              return data.status;
+            })
+            .then(status => {
+              console.log(status);
+              if (status == 200) {
+                this.back(true);
+                alert("Post removed");
+              } else {
+                alert("Error");
+              }
+            });
         },
         addComment_Click() {
           this.$http
@@ -148,6 +195,9 @@
         },
         CourseView() {
           return this.$store.state.Course;
+        },
+        user() {
+          return this.$store.state.user;
         }
       },
       created() {
@@ -181,12 +231,12 @@
     #title-bar {
       padding-top: 16px;
       background-color: white;
-      /* position: -webkit-sticky;
-                                                                                                                                                                          position: sticky; */
+      /* position: -webkit-sticky;                                                                                                                                    position: sticky; */
       position: fixed;
       top: 64px;
       right: 10%;
       left: 10%;
+      z-index: 10;
     }
 
     @media screen and (max-width: 1500px) {

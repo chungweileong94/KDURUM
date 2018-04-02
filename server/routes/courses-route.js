@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Course = require("./../models/course-model");
 const User = require("./../models/user-model");
 const Forum = require("./../models/forum-model");
+const Comment = require("./../models/comment-model");
 
 //get all courses
 router.get("/all", (req, res) => {
@@ -89,27 +90,32 @@ router.delete("/delete/:id", (req, res) => {
         if (err) throw err;
 
         //remove related forums
-        Forum.find({ courseId: id }).remove(err => {
-            //remove related user's enrollment
-            User.find({ enrollment: id }, (err, users) => {
-                if (err) throw err;
+        Forum.find({ courseId: id }).remove(err_forum => {
+            //remove relate comments
+            Comment.find({ forumId: id }).remove(err_comments => {
+                if (err_comments) throw err_comments;
 
-                if (users.length == 0) return res.sendStatus(200);
+                //remove related user's enrollment
+                User.find({ enrollment: id }, (err_users, users) => {
+                    if (err_users) throw err_users;
 
-                users.forEach(user => {
-                    //clean enrollment
-                    if (user.enrollment.find(c => c == id)) {
-                        user.enrollment.splice(user.enrollment.indexOf(id), 1);
-                    }
+                    if (users.length == 0) return res.sendStatus(200);
 
-                    //clean favorites
-                    if (user.favorites.find(c => c == id)) {
-                        user.favorites.splice(user.favorites.indexOf(id), 1);
-                    }
+                    users.forEach(user => {
+                        //clean enrollment
+                        if (user.enrollment.find(c => c == id)) {
+                            user.enrollment.splice(user.enrollment.indexOf(id), 1);
+                        }
 
-                    user.save((err, result) => {
-                        if (err) throw err;
-                        res.sendStatus(200);
+                        //clean favorites
+                        if (user.favorites.find(c => c == id)) {
+                            user.favorites.splice(user.favorites.indexOf(id), 1);
+                        }
+
+                        user.save((err_user, result) => {
+                            if (err_user) throw err_user;
+                            res.sendStatus(200);
+                        });
                     });
                 });
             });
