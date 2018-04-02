@@ -1,7 +1,7 @@
 <template>
     <div>
         <div id="title-bar">
-            <a id="back-button" href="#" @click="back">
+            <a id="back-button" href="#" @click="back(false)">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
             <div class="created-time-wrapper animation-intro">
@@ -29,7 +29,7 @@
                 <div class="container" v-if="(forum.owner!=null && forum.owner._id==user._id) || user.roleIndex==0">
                     <div class="row">
                         <div class="btn-group pull-right">
-                            <button class="btn btn-sm btn-primary">Edit</button>
+                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#edit-forum-modal" @click="editForum_Click">Edit</button>
                             <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-forum-modal">Remove</button>
                         </div>
                     </div>
@@ -93,6 +93,47 @@
             </div>
         </div>
 
+        <!-- edit forum dialog -->
+        <div id="edit-forum-modal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">
+                            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Edit Post
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-horizontal">
+                            <!-- title -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="forum-title-input">
+                                    <b>Title</b>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="forum-title-input" type="text" v-model="forumTitleInput">
+                                </div>
+                            </div>
+
+                            <!-- desc -->
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="forum-desc-input">
+                                    <b>Description</b>
+                                </label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" id="forum-desc-input" rows="3" v-model="forumDescInput"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="forumTitleInput.trim().length==0 || forumDescInput.trim().length==0" @click="editForumDialog_Click">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- delete modal -->
         <div id="delete-forum-modal" class="modal fade" v-if="(forum.owner!=null && forum.owner._id==user._id) || user.roleIndex==0">
             <div class="modal-dialog">
@@ -122,8 +163,14 @@
     export default {
       data() {
         return {
+          comments: "",
           commentInput: "",
-          comments: ""
+          forumTitleInput: "",
+          forumDescInput: "",
+          bakForum: {
+            title: "",
+            desc: ""
+          }
         };
       },
       methods: {
@@ -136,22 +183,46 @@
             .replace(exp, "<a target='_blank' href='$1'>$1</a>")
             .replace(/\n\r?/g, "<br />");
         },
-        back(needRefresh = false) {
+        back(needRefresh) {
           this.$store.commit("changeCurrentSelectedForum", {}); //clear selection
           this.$store.commit("switchView", {
             view: this.CourseView,
             needRefresh: needRefresh
           });
         },
+        editForum_Click() {
+          this.forumTitleInput = this.bakForum.title = this.forum.title;
+          this.forumDescInput = this.bakForum.title = this.forum.desc;
+        },
+        editForumDialog_Click() {
+          this.$http
+            .put("/forum/update", {
+              id: this.forum._id,
+              title: this.forumTitleInput,
+              desc: this.forumDescInput
+            })
+            .then(data => {
+              return data.status;
+            })
+            .then(status => {
+              if (status == 200) {
+                this.forum.title = this.forumTitleInput;
+                this.forum.desc = this.forumDescInput;
+                alert("Post updated");
+              } else {
+                this.forum.title = this.bakForum.title;
+                this.forum.desc = this.bakForum.title;
+                alert("error");
+              }
+            });
+        },
         removeForum_Click() {
           this.$http
             .delete(`/forum/remove/${this.forum._id}`)
             .then(data => {
-              console.log(data);
               return data.status;
             })
             .then(status => {
-              console.log(status);
               if (status == 200) {
                 this.back(true);
                 alert("Post removed");
@@ -172,7 +243,6 @@
             .then(status => {
               if (status == 200) {
                 this.refreshComments();
-                alert("Comment added");
               } else {
                 alert("Error");
               }

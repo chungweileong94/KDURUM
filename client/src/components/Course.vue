@@ -58,7 +58,7 @@
                     <div class="modal-header">
                         <button class="close" aria-hidden="true" type="button" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">
-                            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Add Forum
+                            <span class="glyphicon glyphicon-th-list"></span>&nbsp;&nbsp;Add Post
                         </h4>
                     </div>
                     <div class="modal-body">
