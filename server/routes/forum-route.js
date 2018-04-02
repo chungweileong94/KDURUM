@@ -56,7 +56,7 @@ router.put("/update", (req, res) => {
         forum.save((err_forum_save, forum_save) => {
             if (err_forum_save) throw err_forum_save;
 
-            return res.sendStatus(200)
+            return res.sendStatus(200);
         });
     });
 });
