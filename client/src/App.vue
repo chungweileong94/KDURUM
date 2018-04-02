@@ -60,16 +60,10 @@
     };
 </script>
 
-<style scoped>
-    /* .fade-enter-active {
-                                                                                          transition: all 0.5s ease;
-                                                                                        } */
-    /* .fade-leave-active {
-                                                                                              transition: all 0.2s ease;
-                                                                                            } */
-    /* .fade-enter,
-                                                                                        .fade-leave-to {
-                                                                                          opacity: 0;
-                                                                                        } */
+<style>
+    .navbar-toggle {
+      border: none;
+    }
 </style>
+
 

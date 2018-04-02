@@ -1,7 +1,5 @@
-import jQuery from "jquery";
-global.jQuery = jQuery;
-let Bootstrap = require("bootstrap");
-import "bootstrap/dist/css/bootstrap.css";
+import "bootswatch/flatly/bootstrap.min.css";
+import "bootstrap";
 
 import Vue from "vue";
 import App from "./App.vue";
