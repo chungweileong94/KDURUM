@@ -133,7 +133,9 @@ router.put("/join/:id", (req, res) => {
     User.findOne({ _id: req.user._id }, (err, obj) => {
         if (err) throw err;
 
-        obj.enrollment.push(courseId);
+        if (!obj.enrollment.find(c => { return c == courseId; })) {
+            obj.enrollment.push(courseId);
+        }
         obj.save((err, result) => {
             if (err) throw err;
             res.sendStatus(200);
@@ -172,7 +174,9 @@ router.put("/favorites/add/:id", (req, res) => {
     User.findOne({ _id: req.user._id }, (err, obj) => {
         if (err) throw err;
 
-        obj.favorites.push(courseId);
+        if (!obj.favorites.find(c => { return c == courseId; })) {
+            obj.favorites.push(courseId);
+        }
         obj.save((err, result) => {
             if (err) throw err;
             res.sendStatus(200);

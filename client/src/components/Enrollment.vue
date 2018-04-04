@@ -90,8 +90,6 @@
             .then(status => {
               if (status == 200) {
                 this.refresCoursesAndEnrollment();
-
-                alert("The course is added to your favorite list");
               } else {
                 alert("Error");
               }
@@ -106,8 +104,6 @@
             .then(status => {
               if (status == 200) {
                 this.refresCoursesAndEnrollment();
-
-                alert("The course is removed to your favorite list");
               } else {
                 alert("Error");
               }
