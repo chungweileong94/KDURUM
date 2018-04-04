@@ -7,10 +7,9 @@ const User = require("./../models/user-model");
 router.get("/user", (req, res) => {
     if (req.user) {
         User.findOne({ _id: req.user })
-            .populate("enrollment")
-            .populate("favorites")
+            .deepPopulate(["enrollment", "favorites", "enrollment.lecturer", "favorites.lecturer"])
             .exec((err, data) => {
-                res.json(data);
+                return res.json(data);
             });
     } else {
         null;
