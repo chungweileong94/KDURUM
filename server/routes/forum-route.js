@@ -106,7 +106,7 @@ router.post("/comment/add", (req, res) => {
 });
 
 //like comment
-router.pul("/comment/like/:id", (req, res) => {
+router.put("/comment/like/:id", (req, res) => {
     if (!req.user) return res.sendStatus(401);
     if (!req.params.id) return res.sendStatus(500);
 
