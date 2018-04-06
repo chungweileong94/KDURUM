@@ -1,5 +1,7 @@
 <template>
     <div>
+        <input type="search" id="search-input" class="form-control" placeholder="Search" v-model="searchCourseInput">
+
         <div v-if="(user.roleIndex==1 && coursesForLecture.length!=0) || (user.roleIndex!=1 && courses.length!=0)">
             <!-- lecture content -->
             <div class="flex-container" v-if="user.roleIndex==1">
@@ -65,10 +67,17 @@
 
         <!-- empty message -->
         <div class="text-center animation-intro" style="padding-top: 150px;" v-else>
-            <h3>Empty</h3>
-            <p class="lead" v-if="user.roleIndex==0">You haven't add any courses yet</p>
-            <p class="lead" v-else-if="user.roleIndex==1">You haven't assign any courses yet</p>
-            <p class="lead" v-else>There is no courses available yet</p>
+            <div v-if="searchCourseInput.trim().length>0">
+                <h3>Not Found</h3>
+                <p class="lead">We can't find any course</p>
+            </div>
+
+            <div v-else>
+                <h3>Empty</h3>
+                <p class="lead" v-if="user.roleIndex==0">You haven't add any courses yet</p>
+                <p class="lead" v-else-if="user.roleIndex==1">You haven't assign any courses yet</p>
+                <p class="lead" v-else>There is no courses available yet</p>
+            </div>
         </div>
 
         <button class="btn btn-success btn-lg round-button" v-if="user.roleIndex==0" type="button" data-toggle="modal" data-target="#add-course-modal" title="Add Course">
@@ -196,6 +205,7 @@
     export default {
       data() {
         return {
+          searchCourseInput: "",
           courseTitleInput: "",
           courseLecturerSelected: "",
           courseTitleDeleteInput: "",
@@ -331,10 +341,20 @@
           return this.$store.state.lecturers;
         },
         coursesForLecture() {
-          return this.$store.state.coursesForLecture;
+          return this.$store.state.coursesForLecture.filter(c => {
+            return c.title
+              .toLowerCase()
+              .includes(this.searchCourseInput.trim().toLowerCase());
+          });
+          //   return this.$store.state.coursesForLecture;
         },
         courses() {
-          return this.$store.state.courses;
+          return this.$store.state.courses.filter(c => {
+            return c.title
+              .toLowerCase()
+              .includes(this.searchCourseInput.trim().toLowerCase());
+          });
+          //   return this.$store.state.courses;
         },
         CourseView() {
           return this.$store.state.Course;
