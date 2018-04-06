@@ -112,12 +112,32 @@ router.put("/comment/like/:id", (req, res) => {
 
     let id = req.params.id;
 
+    Comment.findById(id).populate("likes").exec((err, comment) => {
+        if (err) throw err;
+
+        if (!comment.likes.find(u => { return u._id.equals(req.user._id); })) {
+            comment.likes.push(req.user._id);
+        }
+
+        comment.save((err_save, comment_save) => {
+            if (err_save) throw err_save;
+
+            return res.sendStatus(200);
+        });
+    });
+});
+
+//unlike comment
+router.put("/comment/unlike/:id", (req, res) => {
+    if (!req.user) return res.sendStatus(401);
+    if (!req.params.id) return res.sendStatus(500);
+
+    let id = req.params.id;
+
     Comment.findById(id, (err, comment) => {
         if (err) throw err;
 
-        if (!comment.likes.find(c => { return c == req.user._id; })) {
-            comment.likes.push(req.user._id);
-        }
+        comment.likes.splice(comment.likes.indexOf(req.user._id), 1);
 
         comment.save((err_save, comment_save) => {
             if (err_save) throw err_save;
