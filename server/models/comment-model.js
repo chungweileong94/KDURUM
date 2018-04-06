@@ -5,7 +5,8 @@ const commentSchema = new Schema({
     forumId: String,
     user: { type: Schema.Types.ObjectId, ref: "user" },
     createDateTime: Date,
-    content: String
+    content: String,
+    likes: [{ type: Schema.Types.ObjectId, ref: "user" }]
 });
 
 const Comment = mongoose.model("comment", commentSchema);
