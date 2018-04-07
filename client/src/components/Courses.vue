@@ -1,6 +1,26 @@
 <template>
     <div>
-        <input type="search" id="search-input" class="form-control" placeholder="Search" v-model="searchCourseInput">
+        <div class="row">
+            <div class="col-sm-10">
+                <input type="search" id="search-input" class="form-control" placeholder="Search" v-model="searchCourseInput">
+            </div>
+            <div class="col-sm-2">
+                <div class="btn-group sort-button">
+                    <button class="btn btn-default dropdown-toggle" aria-expanded="false" data-toggle="dropdown">
+                        <span class="glyphicon glyphicon-sort"></span>&nbsp; {{sortAscending?"A - Z":"Z - A"}} &nbsp;
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="#" @click="sortToggle_Click(true)">A - Z</a>
+                        </li>
+                        <li>
+                            <a href="#" @click="sortToggle_Click(false)">Z - A</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
         <div v-if="(user.roleIndex==1 && coursesForLecture.length!=0) || (user.roleIndex!=1 && courses.length!=0)">
             <!-- lecture content -->
@@ -205,6 +225,7 @@
     export default {
       data() {
         return {
+          sortAscending: true,
           searchCourseInput: "",
           courseTitleInput: "",
           courseLecturerSelected: "",
@@ -331,6 +352,22 @@
             view: this.CourseView,
             needRefresh: true
           });
+        },
+        sortToggle_Click(isAscending) {
+          this.sortAscending = isAscending;
+        },
+        sortCourseList(list) {
+          return list.sort((a, b) => {
+            let titleA = a.title.toLowerCase();
+            let titleB = b.title.toLowerCase();
+            if (titleA < titleB) {
+              return this.sortAscending ? -1 : 1;
+            } else if (titleA > titleB) {
+              return this.sortAscending ? 1 : -1;
+            } else {
+              return 0;
+            }
+          });
         }
       },
       computed: {
@@ -341,20 +378,22 @@
           return this.$store.state.lecturers;
         },
         coursesForLecture() {
-          return this.$store.state.coursesForLecture.filter(c => {
+          let filteredList = this.$store.state.coursesForLecture.filter(c => {
             return c.title
               .toLowerCase()
               .includes(this.searchCourseInput.trim().toLowerCase());
           });
-          //   return this.$store.state.coursesForLecture;
+
+          return this.sortCourseList(filteredList);
         },
         courses() {
-          return this.$store.state.courses.filter(c => {
+          let filteredList = this.$store.state.courses.filter(c => {
             return c.title
               .toLowerCase()
               .includes(this.searchCourseInput.trim().toLowerCase());
           });
-          //   return this.$store.state.courses;
+
+          return this.sortCourseList(filteredList);
         },
         CourseView() {
           return this.$store.state.Course;
@@ -399,6 +438,18 @@
 
     .course-item h5 {
       font-weight: 300;
+    }
+
+    .sort-button,
+    .sort-button button,
+    .sort-button ul {
+      width: 100%;
+      border-color: rgba(128, 128, 128, 0.021);
+    }
+
+    .sort-button button {
+      background: transparent;
+      color: #149c82;
     }
 
     .round-button {
