@@ -185,9 +185,12 @@
           return moment(date).fromNow();
         },
         preProcessText(text) {
-          const exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+          const link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+          const email_exp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/gi;
+
           return text
-            .replace(exp, "<a target='_blank' href='$1'>$1</a>")
+            .replace(link_exp, "<a target='_blank' href='$1'>$1</a>")
+            .replace(email_exp, "<a target='_blank' href='mailto:$1@$2$6$7'>$1@$2$6$7</a>")
             .replace(/\n\r?/g, "<br />");
         },
         back(needRefresh) {
@@ -435,6 +438,7 @@
       text-decoration: none;
       cursor: pointer;
       border: none;
+      background-color: transparent;
     }
 
     .likedButton {
