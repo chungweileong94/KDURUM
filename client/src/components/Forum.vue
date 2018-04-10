@@ -26,7 +26,7 @@
                 </h4>
                 <p class="lead" v-html="preProcessText(forum.desc)"></p>
 
-                <div class="container" v-if="(forum.owner!=null && forum.owner._id==user._id) || user.roleIndex==0">
+                <div class="container" v-if="(forum.owner!=null && forum.owner._id==user._id) || user.roleIndex==0 || (course.lecturer!=null && course.lecturer._id==user._id && course.lecturer.role==1)">
                     <div class="row">
                         <div class="btn-group pull-right">
                             <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#edit-forum-modal" @click="editForum_Click">Edit</button>
@@ -190,7 +190,10 @@
 
           return text
             .replace(link_exp, "<a target='_blank' href='$1'>$1</a>")
-            .replace(email_exp, "<a target='_blank' href='mailto:$1@$2$6$7'>$1@$2$6$7</a>")
+            .replace(
+              email_exp,
+              "<a target='_blank' href='mailto:$1@$2$6$7'>$1@$2$6$7</a>"
+            )
             .replace(/\n\r?/g, "<br />");
         },
         back(needRefresh) {
@@ -318,6 +321,9 @@
         }
       },
       computed: {
+        course() {
+          return this.$store.state.currentSelectedCourse;
+        },
         forum() {
           return this.$store.state.currentSelectedForum;
         },

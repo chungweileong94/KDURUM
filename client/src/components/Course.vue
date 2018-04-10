@@ -7,7 +7,7 @@
             <p class="animation-intro">
                 <b>{{ course.title }}</b>
             </p>
-            <div class="lecturer-wrapper animation-intro" v-if="course.lecturer!=null">
+            <div class="lecturer-wrapper animation-intro" v-if="course.lecturer!=null && course.lecturer._id!=user._id && course.lecturer.role==1">
                 <p>
                     lecture&nbsp;
                     <b>
@@ -156,6 +156,9 @@
         }
       },
       computed: {
+        user() {
+          return this.$store.state.user;
+        },
         course() {
           return this.$store.state.currentSelectedCourse;
         },
@@ -202,7 +205,7 @@
       padding-top: 16px;
       background-color: white;
       /* position: -webkit-sticky;
-                              position: sticky; */
+                                      position: sticky; */
       position: fixed;
       top: 64px;
       right: 10%;
