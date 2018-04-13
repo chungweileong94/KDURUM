@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
 
 module.exports = {
     entry: "./src/main.js",
@@ -12,6 +13,13 @@ module.exports = {
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
+        }),
+        new SWPrecacheWebpackPlugin({
+            cacheId: "my-vue-app",
+            filename: "service-worker.js",
+            staticFileGlobs: ["dist/**/*"],
+            minify: true,
+            stripPrefix: "dist/"
         })
     ],
     module: {

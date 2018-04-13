@@ -7,6 +7,14 @@ import Login from "./Login.vue";
 import VueResource from "vue-resource";
 import { store } from "./store/store";
 
+if (navigator.serviceWorker) {
+    navigator.serviceWorker.register("/dist/service-worker.js").then(function () {
+        //console.log("Registration worked!");
+    }).catch(function () {
+        //console.log("Registration failed!");
+    });
+}
+
 Vue.use(VueResource);
 
 new Vue({
