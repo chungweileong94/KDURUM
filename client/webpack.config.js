@@ -17,9 +17,10 @@ module.exports = {
         new SWPrecacheWebpackPlugin({
             cacheId: "my-vue-app",
             filename: "service-worker.js",
-            staticFileGlobs: ["dist/**/*"],
+            staticFileGlobs: ["dist/**.*"],
             minify: true,
-            stripPrefix: "dist/"
+            stripPrefix: "dist/",
+            staticFileGlobsIgnorePatterns: [/\.map$/]
         })
     ],
     module: {
