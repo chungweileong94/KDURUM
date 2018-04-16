@@ -2,7 +2,8 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <button class="navbar-toggle collapsed" type="button" data-target="#bs-example-navbar-collapse-2" data-toggle="collapse">
+                <button class="navbar-toggle collapsed" type="button" data-target="#bs-example-navbar-collapse-2"
+                        data-toggle="collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -40,32 +41,36 @@
 
 <script>
     export default {
-      computed: {
-        user() {
-          return this.$store.state.user;
+        computed: {
+            user() {
+                return this.$store.state.user;
+            }
         }
-      }
     };
 </script>
 
 <style scoped>
+    .navbar {
+        box-shadow: 0 1px 10px grey;
+    }
+
     .navbar-inverse .navbar-toggle .icon-bar {
-      background-color: white !important;
+        background-color: white !important;
     }
 
     img#profile-image {
-      max-width: 40px;
-      margin: -10px 7px;
+        max-width: 40px;
+        margin: -10px 7px;
     }
 
     ul li h6 {
-      padding: 3px 20px;
+        padding: 3px 20px;
     }
 
     @media (max-width: 991px) {
-      .navbar-inverse .navbar-nav .open .dropdown-menu > li > h6 {
-        color: #b2dbfb;
-      }
+        .navbar-inverse .navbar-nav .open .dropdown-menu > li > h6 {
+            color: #b2dbfb;
+        }
     }
 </style>
 
