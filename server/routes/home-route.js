@@ -12,7 +12,7 @@ const authCheck = (req, res, next) => {
 
 //home
 router.get("/", authCheck, (req, res) => {
-    res.sendFile(path.join(__dirname, "../../client/views/index.html"));
+    res.sendFile(path.join(__dirname, "../../client/index.html"));
 });
 
 module.exports = router;

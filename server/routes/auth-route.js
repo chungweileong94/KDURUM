@@ -6,13 +6,22 @@ const User = require("./../models/user-model");
 //get user data
 router.get("/user", (req, res) => {
     if (req.user) {
-        User.findOne({ _id: req.user })
+        User.findOne({_id: req.user})
             .deepPopulate(["enrollment", "favorites", "enrollment.lecturer", "favorites.lecturer"])
             .exec((err, data) => {
                 return res.json(data);
             });
     } else {
-        null;
+        return null;
+    }
+});
+
+//check
+router.get("/check", (req, res) => {
+    if (!req.user) {
+        res.json(false);
+    } else {
+        res.json(true);
     }
 });
 
@@ -25,7 +34,8 @@ router.get("/login",
             next();
         }
     }, (req, res) => {
-        res.sendFile(path.join(__dirname, "../../client/views/login.html"));
+        res.redirect("/login.html");
+        //res.sendFile(path.join(__dirname, "../../client/dist/login.html"));
     }
 );
 

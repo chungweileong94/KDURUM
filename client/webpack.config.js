@@ -1,12 +1,14 @@
 const path = require("path");
 const webpack = require("webpack");
 const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: "./src/main.js",
     output: {
         path: path.resolve(__dirname, "./dist"),
-        publicPath: "/dist/",
+        publicPath: "/",
         filename: "build.js"
     },
     plugins: [
@@ -14,10 +16,18 @@ module.exports = {
             $: "jquery",
             jQuery: "jquery"
         }),
+        new HtmlWebpackPlugin({
+            filename: "index.html",
+            template: "static/index.html"
+        }),
+        new CopyWebpackPlugin([
+            {from: "static/Images", to: "Images/[name].[ext]"},
+            {from: "static/manifest.json", to: "manifest.json"}
+        ]),
         new SWPrecacheWebpackPlugin({
             cacheId: "my-vue-app",
             filename: "service-worker.js",
-            staticFileGlobs: ["dist/**.*"],
+            staticFileGlobs: ["dist/**.*", "dist/Images/**.*"],
             minify: true,
             stripPrefix: "dist/",
             staticFileGlobsIgnorePatterns: [/\.map$/]
@@ -40,8 +50,7 @@ module.exports = {
                 test: /\.vue$/,
                 loader: "vue-loader",
                 options: {
-                    loaders: {
-                    }
+                    loaders: {}
                     // other vue-loader options go here
                 }
             },

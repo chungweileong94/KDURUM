@@ -19,50 +19,64 @@
     import Loading from "./components/Loading.vue";
 
     export default {
-      components: {
-        "app-header": Header,
-        "app-loading": Loading
-      },
-      methods: {
-        init() {
-          this.$store.commit("switchView", {
-            view: this.MainView,
-            needRefresh: true
-          });
-          this.$store.dispatch("getUserData").then(() => {
-            //if the user is lecture
-            if (this.$store.state.user.roleIndex == 1) {
-              this.$store.dispatch("getCoursesForLecture");
-            } else {
-              //if the user is admin
-              if (this.$store.state.user.roleIndex == 0) {
-                this.$store.dispatch("getAllLecturers");
-              }
-              this.$store.dispatch("getCourses");
+        components: {
+            "app-header": Header,
+            "app-loading": Loading
+        },
+        methods: {
+            init() {
+                this.$store.commit("switchView", {
+                    view: this.MainView,
+                    needRefresh: true
+                });
+                this.$store.dispatch("getUserData").then(() => {
+                    //if the user is lecture
+                    if (this.$store.state.user.roleIndex == 1) {
+                        this.$store.dispatch("getCoursesForLecture");
+                    } else {
+                        //if the user is admin
+                        if (this.$store.state.user.roleIndex == 0) {
+                            this.$store.dispatch("getAllLecturers");
+                        }
+                        this.$store.dispatch("getCourses");
+                    }
+                });
             }
-          });
-        }
-      },
-      created() {
-        this.init();
-      },
-      computed: {
-        user() {
-          return this.$store.state.user;
         },
-        MainView() {
-          return this.$store.state.MainView;
+        created() {
+            this.$http.get("/auth/check").then(data => {
+                return data.json();
+            }).then(res => {
+                if (res) {
+                    window.onbeforeunload = () => "Are you sure to leave?";
+                    this.init();
+                } else {
+                    this.$root.currentRoute = "/login";
+                    window.history.pushState(
+                        null,
+                        "KDURUM",
+                        "/login"
+                    );
+                }
+            });
         },
-        currentView() {
-          return this.$store.state.currentView;
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
+            MainView() {
+                return this.$store.state.MainView;
+            },
+            currentView() {
+                return this.$store.state.currentView;
+            }
         }
-      }
     };
 </script>
 
 <style>
     .navbar-toggle {
-      border: none;
+        border: none;
     }
 </style>
 
