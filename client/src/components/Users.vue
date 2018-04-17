@@ -1,23 +1,25 @@
 <template>
     <div class="animation-intro">
         <div class="row">
-            <table class="table table-striped table-hover">
-                <thead>
-                <tr>
-                    <!--<th>ID</th>-->
-                    <th>Name</th>
-                    <th>Role</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="u in users" :key="u._id" data-toggle="modal" data-target="#user-modal"
-                    @click="user_Selected(u)">
-                    <!--<td>{{ u._id }}</td>-->
-                    <td>{{ u.name }}</td>
-                    <td>{{ u.role===0?"Administrator":u.role===1?"Lecturer":"Student" }}</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="col-md-12">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <!--<th>ID</th>-->
+                        <th>Name</th>
+                        <th>Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="u in users" :key="u._id" data-toggle="modal" data-target="#user-modal"
+                        @click="user_Selected(u)">
+                        <!--<td>{{ u._id }}</td>-->
+                        <td>{{ u.name }}</td>
+                        <td>{{ u.role===0?"Administrator":u.role===1?"Lecturer":"Student" }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- user detail modal -->

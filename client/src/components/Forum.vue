@@ -382,7 +382,7 @@
         background-color: white;
         /* position: -webkit-sticky;                                                                                                                                    position: sticky; */
         position: fixed;
-        top: 64px;
+        top: 62px;
         right: 10%;
         left: 10%;
         z-index: 10;
@@ -390,7 +390,7 @@
 
     @media screen and (max-width: 1500px) {
         #title-bar {
-            top: 64px;
+            top: 60px;
             right: 2%;
             left: 2%;
         }
