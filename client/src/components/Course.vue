@@ -7,7 +7,8 @@
             <p class="animation-intro">
                 <b>{{ course.title }}</b>
             </p>
-            <div class="lecturer-wrapper animation-intro" v-if="course.lecturer!=null && course.lecturer._id!=user._id && course.lecturer.role==1">
+            <div class="lecturer-wrapper animation-intro"
+                 v-if="course.lecturer!=null && course.lecturer._id!==user._id && course.lecturer.role===1">
                 <p>
                     lecture&nbsp;
                     <b>
@@ -22,7 +23,7 @@
         </div>
 
         <div class="content">
-            <div v-if="forums.length!=0">
+            <div v-if="forums.length!==0">
                 <div v-for="f in forums" :key="f._id">
                     <div class="forum-item animation-intro" @click="forumItem_Click(f)">
                         <h4>{{ f.title }}</h4>
@@ -49,7 +50,9 @@
             </div>
         </div>
 
-        <button id="create-button" class="btn btn-primary" data-toggle="modal" data-target="#add-forum-modal">Create Post</button>
+        <button id="create-button" class="btn btn-primary" data-toggle="modal" data-target="#add-forum-modal">Create
+            Post
+        </button>
 
         <!-- add forum dialog -->
         <div id="add-forum-modal" class="modal fade">
@@ -69,7 +72,8 @@
                                     <b>Title</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="forum-title-input" type="text" v-model="forumTitleInput">
+                                    <input class="form-control" id="forum-title-input" type="text"
+                                           v-model="forumTitleInput">
                                 </div>
                             </div>
 
@@ -79,14 +83,18 @@
                                     <b>Description</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" id="forum-desc-input" rows="3" v-model="forumDescInput"></textarea>
+                                    <textarea class="form-control" id="forum-desc-input" rows="3"
+                                              v-model="forumDescInput"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="forumTitleInput.trim().length==0 || forumDescInput.trim().length==0" @click="addForum_Click">Add</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal"
+                                :disabled="forumTitleInput.trim().length===0 || forumDescInput.trim().length===0"
+                                @click="addForum_Click">Add
+                        </button>
                     </div>
                 </div>
             </div>
@@ -98,190 +106,179 @@
     const moment = require("moment");
 
     export default {
-      data() {
-        return {
-          forums: [],
-          forumTitleInput: "",
-          forumDescInput: ""
-        };
-      },
-      methods: {
-        moment(date) {
-          return moment(date).fromNow();
+        data() {
+            return {
+                forums: [],
+                forumTitleInput: "",
+                forumDescInput: ""
+            };
         },
-        back() {
-          this.$store.commit("changeCurrentSelectedCourse", {}); //clear selection
-          this.$store.commit("switchView", {
-            view: this.MainView,
-            needRefresh: true
-          });
+        methods: {
+            moment(date) {
+                return moment(date).fromNow();
+            },
+            back() {
+                this.$store.commit("changeCurrentSelectedCourse", {}); //clear selection
+                this.$store.commit("switchView", {
+                    view: this.MainView,
+                    needRefresh: true
+                });
+            },
+            refreshForums() {
+                this.$http
+                    .get(`/forum/all/${this.course._id}`)
+                    .then(data => {
+                        return data.json();
+                    })
+                    .then(data => {
+                        this.forums = data;
+                    });
+            },
+            addForum_Click() {
+                this.$http
+                    .post("/forum/add", {
+                        title: this.forumTitleInput,
+                        desc: this.forumDescInput,
+                        courseId: this.course._id
+                    })
+                    .then(data => {
+                        return data.status;
+                    })
+                    .then(status => {
+                        if (status === 200) {
+                            this.refreshForums();
+                            alert("Forum added");
+                        } else {
+                            this.refreshForums();
+                            alert("Error");
+                        }
+                    });
+            },
+            forumItem_Click(forum) {
+                this.$store.commit("changeCurrentSelectedForum", forum);
+                this.$store.commit("saveForumList", this.forums);
+                this.$store.commit("switchView", {
+                    view: this.ForumView,
+                    needRefresh: false
+                });
+            }
         },
-        refreshForums() {
-          this.$http
-            .get(`/forum/all/${this.course._id}`)
-            .then(data => {
-              return data.json();
-            })
-            .then(data => {
-              this.forums = data;
-            });
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
+            course() {
+                return this.$store.state.currentSelectedCourse;
+            },
+            MainView() {
+                return this.$store.state.MainView;
+            },
+            ForumView() {
+                return this.$store.state.Forum;
+            }
         },
-        addForum_Click() {
-          this.$http
-            .post("/forum/add", {
-              title: this.forumTitleInput,
-              desc: this.forumDescInput,
-              courseId: this.course._id
-            })
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
+        created() {
+            if (this.$store.state.needRefresh) {
                 this.refreshForums();
-                alert("Forum added");
-              } else {
-                this.refreshForums();
-                alert("Error");
-              }
-            });
-        },
-        forumItem_Click(forum) {
-          this.$store.commit("changeCurrentSelectedForum", forum);
-          this.$store.commit("saveForumList", this.forums);
-          this.$store.commit("switchView", {
-            view: this.ForumView,
-            needRefresh: false
-          });
+            } else {
+                this.forums = this.$store.state.forums;
+            }
         }
-      },
-      computed: {
-        user() {
-          return this.$store.state.user;
-        },
-        course() {
-          return this.$store.state.currentSelectedCourse;
-        },
-        MainView() {
-          return this.$store.state.MainView;
-        },
-        ForumView() {
-          return this.$store.state.Forum;
-        }
-      },
-      created() {
-        if (this.$store.state.needRefresh) {
-          this.refreshForums();
-        } else {
-          this.forums = this.$store.state.forums;
-        }
-      }
     };
 </script>
 
 <style scoped>
-    @keyframes intro {
-      from {
-        opacity: 0;
-        zoom: 0;
-      }
-      to {
-        opacity: 1;
-        zoom: 1;
-      }
-    }
-
     .animation-intro {
-      animation-name: intro;
-      animation-duration: 0.5s;
+        animation-name: intro;
+        animation-duration: 0.5s;
     }
 
     a#back-button {
-      text-decoration: none;
-      padding: 0 8px;
+        text-decoration: none;
+        padding: 0 8px;
     }
 
     #title-bar {
-      padding-top: 16px;
-      background-color: white;
-      /* position: -webkit-sticky;
-                                      position: sticky; */
-      position: fixed;
-      top: 64px;
-      right: 10%;
-      left: 10%;
+        padding-top: 16px;
+        background-color: white;
+        /* position: -webkit-sticky;
+                                        position: sticky; */
+        position: fixed;
+        top: 64px;
+        right: 10%;
+        left: 10%;
     }
 
     @media screen and (max-width: 1500px) {
-      #title-bar {
-        top: 64px;
-        right: 2%;
-        left: 2%;
-      }
+        #title-bar {
+            top: 64px;
+            right: 2%;
+            left: 2%;
+        }
     }
 
     #title-bar span,
     #title-bar p {
-      font-size: 20px;
-      display: inline;
+        font-size: 20px;
+        display: inline;
     }
 
     #title-bar .lecturer-image {
-      max-width: 30px;
+        max-width: 30px;
     }
 
     #title-bar hr {
-      border-top-width: 2px;
-      margin-bottom: 0;
+        border-top-width: 2px;
+        margin-bottom: 0;
     }
 
     .lecturer-wrapper {
-      float: right;
+        float: right;
     }
 
     .lecturer-wrapper p {
-      font-size: 13px !important;
+        font-size: 13px !important;
     }
 
     .lecturer-wrapper::after {
-      content: "";
-      display: block;
-      clear: both;
+        content: "";
+        display: block;
+        clear: both;
     }
 
     .content {
-      margin-top: 80px;
+        margin-top: 80px;
     }
 
     .forum-item {
-      margin: 0;
-      padding: 4px 12px;
-      border-radius: 5px;
-      white-space: nowrap;
-      cursor: pointer;
-      transition: all 0.2s;
-      -moz-transition: all 0.2s;
+        margin: 0;
+        padding: 4px 12px;
+        border-radius: 5px;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: all 0.2s;
+        -moz-transition: all 0.2s;
     }
 
     .forum-item:hover {
-      background: lightgray;
+        background: lightgray;
     }
 
     .forum-item h4,
     .forum-item p {
-      text-overflow: ellipsis;
-      -ms-text-overflow: ellipsis;
-      -o-text-overflow: ellipsis;
-      overflow: hidden;
+        text-overflow: ellipsis;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     .forum-item .owner-image {
-      max-width: 30px;
+        max-width: 30px;
     }
 
     #create-button {
-      position: fixed;
-      right: 30px;
-      bottom: 30px;
+        position: fixed;
+        right: 30px;
+        bottom: 30px;
     }
 </style>

@@ -7,7 +7,6 @@ const cookieSession = require("cookie-session");
 const passportSetup = require("./config/passport-setup");
 const keys = require("./config/keys");
 const authRoute = require("./routes/auth-route");
-const homeRoute = require("./routes/home-route");
 const coursesRoute = require("./routes/courses-route");
 const usersRoute = require("./routes/users-route");
 const forumRoute = require("./routes/forum-route");
@@ -38,7 +37,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //setup route
-// app.use("/", homeRoute);
 app.use("/auth", authRoute);
 app.use("/courses", coursesRoute);
 app.use("/users", usersRoute);

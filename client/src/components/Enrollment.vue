@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div v-if="user.enrollment.length!=0">
+        <div v-if="user.enrollment.length!==0">
             <!-- favorite course -->
-            <div v-if="user.favorites.length!=0">
+            <div v-if="user.favorites.length!==0">
                 <h5>
                     <span class="glyphicon glyphicon-star"></span>&nbsp;&nbsp;Favorite
                 </h5>
@@ -52,7 +52,8 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="#" v-if="!user.favorites.find(f => f._id == c._id)" @click="markAsFavorite(c._id)">Mark as favorite</a>
+                                            <a href="#" v-if="!user.favorites.find(f => f._id === c._id)"
+                                               @click="markAsFavorite(c._id)">Mark as favorite</a>
                                             <a href="#" v-else @click="removeFromFavorites(c._id)">Remove from favorites</a>
                                             <a href="#" @click="leaveCourse_Click(c._id)">Leave</a>
                                         </li>
@@ -88,7 +89,7 @@
               return data.status;
             })
             .then(status => {
-              if (status == 200) {
+                if (status === 200) {
                 this.refresCoursesAndEnrollment();
               } else {
                 alert("Error");
@@ -102,7 +103,7 @@
               return data.status;
             })
             .then(status => {
-              if (status == 200) {
+                if (status === 200) {
                 this.refresCoursesAndEnrollment();
               } else {
                 alert("Error");
@@ -116,7 +117,7 @@
               return data.status;
             })
             .then(status => {
-              if (status == 200) {
+                if (status === 200) {
                 this.refresCoursesAndEnrollment();
 
                 alert("Left course");
@@ -145,17 +146,6 @@
 </script>
 
 <style scoped>
-    @keyframes intro {
-      from {
-        opacity: 0;
-        zoom: 0;
-      }
-      to {
-        opacity: 1;
-        zoom: 1;
-      }
-    }
-
     .animation-intro {
       animation-name: intro;
       animation-duration: 0.5s;

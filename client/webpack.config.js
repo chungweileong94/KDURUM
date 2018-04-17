@@ -25,7 +25,7 @@ module.exports = {
             {from: "static/manifest.json", to: "manifest.json"}
         ]),
         new SWPrecacheWebpackPlugin({
-            cacheId: "my-vue-app",
+            cacheId: "kdurum-app",
             filename: "service-worker.js",
             staticFileGlobs: ["dist/**.*", "dist/Images/**.*"],
             minify: true,

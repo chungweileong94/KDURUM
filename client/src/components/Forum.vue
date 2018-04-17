@@ -26,11 +26,16 @@
                 </h4>
                 <p class="lead" v-html="preProcessText(forum.desc)"></p>
 
-                <div class="container" v-if="(forum.owner!=null && forum.owner._id==user._id) || user.roleIndex==0 || (course.lecturer!=null && course.lecturer._id==user._id && course.lecturer.role==1)">
+                <div class="container"
+                     v-if="(forum.owner!=null && forum.owner._id===user._id) || user.roleIndex===0 || (course.lecturer!=null && course.lecturer._id===user._id && course.lecturer.role===1)">
                     <div class="row">
                         <div class="btn-group pull-right">
-                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#edit-forum-modal" @click="editForum_Click">Edit</button>
-                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-forum-modal">Remove</button>
+                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#edit-forum-modal"
+                                    @click="editForum_Click">Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-forum-modal">
+                                Remove
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -43,7 +48,7 @@
                 <hr>
 
                 <!-- comments section -->
-                <div v-if="comments.length!=0">
+                <div v-if="comments.length!==0">
                     <div class="animation-intro" v-for="c in comments" :key="c._id">
                         <div class="well">
                             <p>
@@ -53,7 +58,8 @@
                             <p v-html="preProcessText(c.content)"></p>
 
                             <div>
-                                <button :class="[{likedButton:c.isLiked}, 'like-button']" @click="likeComment($event, c)">
+                                <button :class="[{likedButton:c.isLiked}, 'like-button']"
+                                        @click="likeComment($event, c)">
                                     <span class="glyphicon glyphicon-thumbs-up text-left"></span> {{c.likes.length}}
                                 </button>
                                 <p style="float:right;">commented {{moment(c.createDateTime)}}</p>
@@ -69,7 +75,9 @@
             </div>
         </div>
 
-        <button id="comment-button" class="btn btn-warning" data-toggle="modal" data-target="#add-comment-modal">Add Comment</button>
+        <button id="comment-button" class="btn btn-warning" data-toggle="modal" data-target="#add-comment-modal">Add
+            Comment
+        </button>
 
         <!-- add comment dialog -->
         <div id="add-comment-modal" class="modal fade">
@@ -86,14 +94,17 @@
                             <!-- comment -->
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <textarea class="form-control" id="forum-desc-input" rows="3" v-model="commentInput"></textarea>
+                                    <textarea class="form-control" id="forum-comment-input" rows="3"
+                                              v-model="commentInput"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="commentInput.trim().length==0" @click="addComment_Click">Add</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal"
+                                :disabled="commentInput.trim().length===0" @click="addComment_Click">Add
+                        </button>
                     </div>
                 </div>
             </div>
@@ -117,7 +128,8 @@
                                     <b>Title</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="forum-title-input" type="text" v-model="forumTitleInput">
+                                    <input class="form-control" id="forum-title-input" type="text"
+                                           v-model="forumTitleInput">
                                 </div>
                             </div>
 
@@ -127,21 +139,26 @@
                                     <b>Description</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" id="forum-desc-input" rows="3" v-model="forumDescInput"></textarea>
+                                    <textarea class="form-control" id="forum-desc-input" rows="3"
+                                              v-model="forumDescInput"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="forumTitleInput.trim().length==0 || forumDescInput.trim().length==0" @click="editForumDialog_Click">Save</button>
+                        <button class="btn btn-success" type="button" data-dismiss="modal"
+                                :disabled="forumTitleInput.trim().length===0 || forumDescInput.trim().length===0"
+                                @click="editForumDialog_Click">Save
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- delete modal -->
-        <div id="delete-forum-modal" class="modal fade" v-if="(forum.owner!=null && forum.owner._id==user._id) || user.roleIndex==0">
+        <div id="delete-forum-modal" class="modal fade"
+             v-if="(forum.owner!=null && forum.owner._id===user._id) || user.roleIndex===0">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -155,7 +172,9 @@
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">No</button>
-                        <button class="btn btn-danger" type="button" data-dismiss="modal" @click="removeForum_Click">Yes</button>
+                        <button class="btn btn-danger" type="button" data-dismiss="modal" @click="removeForum_Click">
+                            Yes
+                        </button>
                     </div>
                 </div>
             </div>
@@ -167,287 +186,276 @@
     const moment = require("moment");
 
     export default {
-      data() {
-        return {
-          comments: "",
-          commentInput: "",
-          forumTitleInput: "",
-          forumDescInput: "",
-          bakForum: {
-            title: "",
-            desc: ""
-          },
-          isDisable: false
-        };
-      },
-      methods: {
-        moment(date) {
-          return moment(date).fromNow();
+        data() {
+            return {
+                comments: "",
+                commentInput: "",
+                forumTitleInput: "",
+                forumDescInput: "",
+                bakForum: {
+                    title: "",
+                    desc: ""
+                },
+                isDisable: false
+            };
         },
-        preProcessText(text) {
-          const link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-          const email_exp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/gi;
+        methods: {
+            moment(date) {
+                return moment(date).fromNow();
+            },
+            preProcessText(text) {
+                const link_exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+                const email_exp = /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)/gi;
 
-          return text
-            .replace(link_exp, "<a target='_blank' href='$1'>$1</a>")
-            .replace(
-              email_exp,
-              "<a target='_blank' href='mailto:$1@$2$6$7'>$1@$2$6$7</a>"
-            )
-            .replace(/\n\r?/g, "<br />");
-        },
-        back(needRefresh) {
-          this.$store.commit("changeCurrentSelectedForum", {}); //clear selection
-          this.$store.commit("switchView", {
-            view: this.CourseView,
-            needRefresh: needRefresh
-          });
-        },
-        editForum_Click() {
-          this.forumTitleInput = this.bakForum.title = this.forum.title;
-          this.forumDescInput = this.bakForum.title = this.forum.desc;
-        },
-        editForumDialog_Click() {
-          this.$http
-            .put("/forum/update", {
-              id: this.forum._id,
-              title: this.forumTitleInput,
-              desc: this.forumDescInput
-            })
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
-                this.forum.title = this.forumTitleInput;
-                this.forum.desc = this.forumDescInput;
-                alert("Post updated");
-              } else {
-                this.forum.title = this.bakForum.title;
-                this.forum.desc = this.bakForum.title;
-                alert("error");
-              }
-            });
-        },
-        removeForum_Click() {
-          this.$http
-            .delete(`/forum/remove/${this.forum._id}`)
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
-                this.back(true);
-                alert("Post removed");
-              } else {
-                alert("Error");
-              }
-            });
-        },
-        addComment_Click() {
-          this.$http
-            .post("/forum/comment/add", {
-              forumId: this.forum._id,
-              content: this.commentInput
-            })
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-              if (status == 200) {
-                this.refreshComments();
-              } else {
-                alert("Error");
-              }
-            });
-        },
-        likeComment(event, comment) {
-          if (this.isDisable) return;
-
-          this.isDisable = true;
-          if (comment.isLiked) {
-            this.$http
-              .put(`/forum/comment/unlike/${comment._id}`)
-              .then(data => {
-                return data.status;
-              })
-              .then(status => {
-                if (status == 200) {
-                  this.isDisable = false;
-                  comment.isLiked = false;
-                  comment.likes.splice(comment.likes.indexOf(this.user._id), 1);
-                  event.target.className.toggle("likedButton");
-                } else {
-                  this.isDisable = false;
-                  alert("Error");
-                }
-              });
-          } else {
-            this.$http
-              .put(`/forum/comment/like/${comment._id}`)
-              .then(data => {
-                return data.status;
-              })
-              .then(status => {
-                if (status == 200) {
-                  this.isDisable = false;
-                  comment.isLiked = true;
-                  comment.likes.push(this.user._id);
-                  event.target.className.toggle("likedButton");
-                } else {
-                  this.isDisable = false;
-                  alert("Error");
-                }
-              });
-          }
-        },
-        refreshComments() {
-          this.$http
-            .get(`/forum/comment/all/${this.forum._id}`)
-            .then(data => {
-              return data.json();
-            })
-            .then(data => {
-              this.comments = data;
-
-              this.comments.forEach((comment, index) => {
-                comment.isLiked = comment.likes.find(userId => {
-                  return userId == this.user._id;
+                return text
+                    .replace(link_exp, "<a target='_blank' href='$1'>$1</a>")
+                    .replace(
+                        email_exp,
+                        "<a target='_blank' href='mailto:$1@$2$6$7'>$1@$2$6$7</a>"
+                    )
+                    .replace(/\n\r?/g, "<br />");
+            },
+            back(needRefresh) {
+                this.$store.commit("changeCurrentSelectedForum", {}); //clear selection
+                this.$store.commit("switchView", {
+                    view: this.CourseView,
+                    needRefresh: needRefresh
                 });
+            },
+            editForum_Click() {
+                this.forumTitleInput = this.bakForum.title = this.forum.title;
+                this.forumDescInput = this.bakForum.title = this.forum.desc;
+            },
+            editForumDialog_Click() {
+                this.$http
+                    .put("/forum/update", {
+                        id: this.forum._id,
+                        title: this.forumTitleInput,
+                        desc: this.forumDescInput
+                    })
+                    .then(data => {
+                        return data.status;
+                    })
+                    .then(status => {
+                        if (status === 200) {
+                            this.forum.title = this.forumTitleInput;
+                            this.forum.desc = this.forumDescInput;
+                            alert("Post updated");
+                        } else {
+                            this.forum.title = this.bakForum.title;
+                            this.forum.desc = this.bakForum.title;
+                            alert("error");
+                        }
+                    });
+            },
+            removeForum_Click() {
+                this.$http
+                    .delete(`/forum/remove/${this.forum._id}`)
+                    .then(data => {
+                        return data.status;
+                    })
+                    .then(status => {
+                        if (status === 200) {
+                            this.back(true);
+                            alert("Post removed");
+                        } else {
+                            alert("Error");
+                        }
+                    });
+            },
+            addComment_Click() {
+                this.$http
+                    .post("/forum/comment/add", {
+                        forumId: this.forum._id,
+                        content: this.commentInput
+                    })
+                    .then(data => {
+                        return data.status;
+                    })
+                    .then(status => {
+                        if (status === 200) {
+                            this.refreshComments();
+                        } else {
+                            alert("Error");
+                        }
+                    });
+            },
+            likeComment(event, comment) {
+                if (this.isDisable) return;
 
-                if (comment.isLiked == undefined) comment.isLiked = false;
-              });
-            });
+                this.isDisable = true;
+                if (comment.isLiked) {
+                    this.$http
+                        .put(`/forum/comment/unlike/${comment._id}`)
+                        .then(data => {
+                            return data.status;
+                        })
+                        .then(status => {
+                            if (status === 200) {
+                                this.isDisable = false;
+                                comment.isLiked = false;
+                                comment.likes.splice(comment.likes.indexOf(this.user._id), 1);
+                                event.target.className.toggle("likedButton");
+                            } else {
+                                this.isDisable = false;
+                                alert("Error");
+                            }
+                        });
+                } else {
+                    this.$http
+                        .put(`/forum/comment/like/${comment._id}`)
+                        .then(data => {
+                            return data.status;
+                        })
+                        .then(status => {
+                            if (status === 200) {
+                                this.isDisable = false;
+                                comment.isLiked = true;
+                                comment.likes.push(this.user._id);
+                                event.target.className.toggle("likedButton");
+                            } else {
+                                this.isDisable = false;
+                                alert("Error");
+                            }
+                        });
+                }
+            },
+            refreshComments() {
+                this.$http
+                    .get(`/forum/comment/all/${this.forum._id}`)
+                    .then(data => {
+                        return data.json();
+                    })
+                    .then(data => {
+                        this.comments = data;
+
+                        this.comments.forEach((comment, index) => {
+                            comment.isLiked = comment.likes.find(userId => {
+                                return userId === this.user._id;
+                            });
+
+                            if (comment.isLiked === undefined) comment.isLiked = false;
+                        });
+                    });
+            }
+        },
+        computed: {
+            course() {
+                return this.$store.state.currentSelectedCourse;
+            },
+            forum() {
+                return this.$store.state.currentSelectedForum;
+            },
+            CourseView() {
+                return this.$store.state.Course;
+            },
+            user() {
+                return this.$store.state.user;
+            }
+        },
+        created() {
+            this.refreshComments();
         }
-      },
-      computed: {
-        course() {
-          return this.$store.state.currentSelectedCourse;
-        },
-        forum() {
-          return this.$store.state.currentSelectedForum;
-        },
-        CourseView() {
-          return this.$store.state.Course;
-        },
-        user() {
-          return this.$store.state.user;
-        }
-      },
-      created() {
-        this.refreshComments();
-      }
     };
 </script>
 
 <style scoped>
-    @keyframes intro {
-      from {
-        opacity: 0;
-        zoom: 0;
-      }
-      to {
-        opacity: 1;
-        zoom: 1;
-      }
-    }
-
     .animation-intro {
-      animation-name: intro;
-      animation-duration: 0.5s;
+        animation-name: intro;
+        animation-duration: 0.5s;
     }
 
     a#back-button {
-      text-decoration: none;
-      padding: 0 8px;
+        text-decoration: none;
+        padding: 0 8px;
     }
 
     #title-bar {
-      padding-top: 16px;
-      background-color: white;
-      /* position: -webkit-sticky;                                                                                                                                    position: sticky; */
-      position: fixed;
-      top: 64px;
-      right: 10%;
-      left: 10%;
-      z-index: 10;
+        padding-top: 16px;
+        background-color: white;
+        /* position: -webkit-sticky;                                                                                                                                    position: sticky; */
+        position: fixed;
+        top: 64px;
+        right: 10%;
+        left: 10%;
+        z-index: 10;
     }
 
     @media screen and (max-width: 1500px) {
-      #title-bar {
-        top: 64px;
-        right: 2%;
-        left: 2%;
-      }
+        #title-bar {
+            top: 64px;
+            right: 2%;
+            left: 2%;
+        }
     }
 
     #title-bar span,
     #title-bar p {
-      font-size: 20px;
-      display: inline;
+        font-size: 20px;
+        display: inline;
     }
 
     #title-bar hr {
-      border-top-width: 2px;
-      margin-bottom: 0;
+        border-top-width: 2px;
+        margin-bottom: 0;
     }
 
     #title-bar .owner-image {
-      max-width: 30px;
+        max-width: 30px;
     }
 
     .content {
-      margin-top: 80px;
+        margin-top: 80px;
     }
 
     .created-time-wrapper {
-      float: right;
+        float: right;
     }
 
     .created-time-wrapper p {
-      font-size: 13px !important;
+        font-size: 13px !important;
     }
 
     .created-time-wrapper::after {
-      content: "";
-      display: block;
-      clear: both;
+        content: "";
+        display: block;
+        clear: both;
     }
 
     #forum-header {
-      margin-bottom: 50px;
+        margin-bottom: 50px;
     }
 
     #forum-header p {
-      word-wrap: break-word;
-      font-size: 20px;
+        word-wrap: break-word;
+        font-size: 20px;
     }
 
     #forum-comments hr {
-      border-top-width: 2px;
-      width: 30%;
+        border-top-width: 2px;
+        width: 30%;
     }
 
     .comment-user-image {
-      max-width: 30px;
+        max-width: 30px;
     }
 
     #comment-button {
-      position: fixed;
-      right: 30px;
-      bottom: 30px;
+        position: fixed;
+        right: 30px;
+        bottom: 30px;
     }
 
     .like-button {
-      text-decoration-style: none;
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-      border: none;
-      background-color: transparent;
+        text-decoration-style: none;
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
     }
 
     .likedButton {
-      color: #149c82;
+        color: #149c82;
     }
 </style>
