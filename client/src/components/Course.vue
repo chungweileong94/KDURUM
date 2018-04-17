@@ -147,7 +147,7 @@
                     .then(status => {
                         if (status === 200) {
                             this.refreshForums();
-                            alert("Forum added");
+                            this.$store.commit("showMessage", "Forum added!");
                         } else {
                             this.refreshForums();
                             alert("Error");

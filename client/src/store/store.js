@@ -28,7 +28,11 @@ export const store = new Vuex.Store({
         MainView: MainView,
         Course: Course,
         Forum: Forum,
-        needRefresh: true
+        needRefresh: true,
+        alertState: {
+            message: "",
+            isShow: false
+        }
     },
     mutations: {
         switchView(state, payload) {
@@ -43,10 +47,15 @@ export const store = new Vuex.Store({
         },
         saveForumList(state, forums) {
             state.forums = forums;
+        },
+        showMessage(state, message) {
+            state.alertState.message = message;
+            state.alertState.isShow = true;
+            window.setTimeout(() => state.alertState.isShow = false, 2000);
         }
     },
     actions: {
-        getUserData({ state }) {
+        getUserData({state}) {
             return new Promise((resolve, reject) => {
                 Vue.http.get("/auth/user").then(data => {
                     let user = {};
@@ -75,7 +84,7 @@ export const store = new Vuex.Store({
                 });
             });
         },
-        getCourses({ state }) {
+        getCourses({state}) {
             return new Promise((resolve, reject) => {
                 Vue.http
                     .get("/courses/all")
@@ -86,7 +95,9 @@ export const store = new Vuex.Store({
                         let coursesArray = [];
                         for (let key in data) {
                             if (state.user.roleIndex != 0) {
-                                data[key].isJoined = state.user.enrollment.find(c => { return c._id == data[key]._id; });
+                                data[key].isJoined = state.user.enrollment.find(c => {
+                                    return c._id == data[key]._id;
+                                });
                             }
                             coursesArray.push(data[key]);
                         }
@@ -103,7 +114,7 @@ export const store = new Vuex.Store({
                     });
             });
         },
-        getCoursesForLecture({ state }) {
+        getCoursesForLecture({state}) {
             return new Promise((resolve, reject) => {
                 Vue.http.get(`/courses/all/lecture/${state.user._id}`).then(data => {
                     return data.json();
@@ -113,7 +124,7 @@ export const store = new Vuex.Store({
                 });
             });
         },
-        getAllLecturers({ state }) {
+        getAllLecturers({state}) {
             return new Promise((resolve, reject) => {
                 Vue.http.get("/users/lecturers").then(data => {
                     return data.json();

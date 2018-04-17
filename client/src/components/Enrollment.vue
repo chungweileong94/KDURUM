@@ -126,7 +126,7 @@
                         if (status === 200) {
                             this.refresCoursesAndEnrollment();
 
-                            alert("Left course");
+                            this.$store.commit("showMessage", "Left course");
                         } else {
                             alert("Error");
                         }

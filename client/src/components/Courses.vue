@@ -283,7 +283,7 @@
                     .then(status => {
                         if (status === 200) {
                             this.refresCoursesAndEnrollment();
-                            alert("Course added");
+                            this.$store.commit("showMessage", "Course added!");
                         } else {
                             this.refresCoursesAndEnrollment();
                             alert("Error");
@@ -313,7 +313,7 @@
                     .then(status => {
                         if (status === 200) {
                             this.refresCoursesAndEnrollment();
-                            alert("Course updated");
+                            this.$store.commit("showMessage", "Course updated!");
                         } else {
                             alert("Error");
                         }
@@ -336,7 +336,7 @@
                         if (status === 200) {
                             this.refresCoursesAndEnrollment();
                             this.deleteCourseDialogDismiss_Click();
-                            alert("Course deleted");
+                            this.$store.commit("showMessage", "Course deleted!");
                         } else {
                             alert("Error");
                         }

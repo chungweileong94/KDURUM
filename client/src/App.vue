@@ -10,6 +10,13 @@
             </keep-alive> -->
         </section>
 
+        <!--alert box-->
+        <div class="alert-wrapper" v-if="alertState.isShow">
+            <div class="alert alert-info col-md-6">
+                <strong>{{ alertState.message }}</strong>
+            </div>
+        </div>
+
         <app-loading v-if="user._id.trim().length===0" style="height:100%; width:100%; z-index:100;"></app-loading>
     </div>
 </template>
@@ -69,6 +76,9 @@
             },
             currentView() {
                 return this.$store.state.currentView;
+            },
+            alertState() {
+                return this.$store.state.alertState;
             }
         }
     };
@@ -88,6 +98,27 @@
 
     .navbar-toggle {
         border: none;
+    }
+
+    .alert-wrapper {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        padding: 8px;
+    }
+
+    .alert-wrapper .alert {
+        -webkit-animation-name: intro;
+        -moz-animation-name: intro;
+        -o-animation-name: intro;
+        animation-name: intro;
+
+        -webkit-animation-duration: 0.2s;
+        -moz-animation-duration: 0.2s;
+        -o-animation-duration: 0.2s;
+        animation-duration: 0.2s;
+        float: none;
+        margin: auto;
     }
 </style>
 

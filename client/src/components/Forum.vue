@@ -240,7 +240,7 @@
                         if (status === 200) {
                             this.forum.title = this.forumTitleInput;
                             this.forum.desc = this.forumDescInput;
-                            alert("Post updated");
+                            this.$store.commit("showMessage", "Post updated!");
                         } else {
                             this.forum.title = this.bakForum.title;
                             this.forum.desc = this.bakForum.title;
@@ -257,7 +257,7 @@
                     .then(status => {
                         if (status === 200) {
                             this.back(true);
-                            alert("Post removed");
+                            this.$store.commit("showMessage", "Post removed!");
                         } else {
                             alert("Error");
                         }

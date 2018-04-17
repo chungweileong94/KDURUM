@@ -199,7 +199,7 @@
                 console.log(this.roleSelected);
                 this.$http.put(`/users/role/${id}/${this.roleSelected}`).then(data => {
                     if (data.status === 200) {
-                        alert("Account role changed");
+                        this.$store.commit("showMessage", "Account role changed!");
                         this.getAllUsers();
                         this.$store.dispatch("getAllLecturers"); //refresh lecture list
                     } else {
