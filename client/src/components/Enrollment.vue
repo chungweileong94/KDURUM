@@ -8,7 +8,8 @@
                 </h5>
                 <hr>
                 <div class="flex-container">
-                    <div class="course-item col-md-3 col-sm-5 col-xs-12 animation-intro" v-for="c in user.favorites" :key="c._id">
+                    <div class="course-item col-md-3 col-sm-5 col-xs-12 animation-intro" v-for="c in user.favorites"
+                         :key="c._id">
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <h5>{{ c.title }}</h5>
@@ -16,12 +17,14 @@
                                 <div>
                                     <div class="btn-group">
                                         <a href="#" class="btn btn-success" @click="exploreCourse_Click(c)">Explore</a>
-                                        <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                                           aria-expanded="false">
                                             <span class="caret"></span>
                                         </a>
                                         <ul class="dropdown-menu">
                                             <li>
-                                                <a href="#" @click="removeFromFavorites(c._id)">Remove from favorites</a>
+                                                <a href="#" @click="removeFromFavorites(c._id)">Remove from
+                                                    favorites</a>
                                                 <a href="#" @click="leaveCourse_Click(c._id)">Leave</a>
                                             </li>
                                         </ul>
@@ -39,7 +42,8 @@
             </h5>
             <hr>
             <div class="flex-container">
-                <div class="course-item col-md-3 col-sm-5 col-xs-12 animation-intro" v-for="c in user.enrollment" :key="c._id">
+                <div class="course-item col-md-3 col-sm-5 col-xs-12 animation-intro" v-for="c in user.enrollment"
+                     :key="c._id">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <h5>{{ c.title }}</h5>
@@ -47,14 +51,16 @@
                             <div>
                                 <div class="btn-group">
                                     <a href="#" class="btn btn-success" @click="exploreCourse_Click(c)">Explore</a>
-                                    <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <a href="#" class="btn btn-success dropdown-toggle" data-toggle="dropdown"
+                                       aria-expanded="false">
                                         <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
                                             <a href="#" v-if="!user.favorites.find(f => f._id === c._id)"
                                                @click="markAsFavorite(c._id)">Mark as favorite</a>
-                                            <a href="#" v-else @click="removeFromFavorites(c._id)">Remove from favorites</a>
+                                            <a href="#" v-else @click="removeFromFavorites(c._id)">Remove from
+                                                favorites</a>
                                             <a href="#" @click="leaveCourse_Click(c._id)">Leave</a>
                                         </li>
                                     </ul>
@@ -76,100 +82,107 @@
 
 <script>
     export default {
-      methods: {
-        refresCoursesAndEnrollment() {
-          this.$store.dispatch("getUserData").then(() => {
-            this.$store.dispatch("getCourses");
-          });
-        },
-        markAsFavorite(id) {
-          this.$http
-            .put(`/courses/favorites/add/${id}`)
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-                if (status === 200) {
-                this.refresCoursesAndEnrollment();
-              } else {
-                alert("Error");
-              }
-            });
-        },
-        removeFromFavorites(id) {
-          this.$http
-            .put(`/courses/favorites/remove/${id}`)
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-                if (status === 200) {
-                this.refresCoursesAndEnrollment();
-              } else {
-                alert("Error");
-              }
-            });
-        },
-        leaveCourse_Click(id) {
-          this.$http
-            .put(`/courses/leave/${id}`)
-            .then(data => {
-              return data.status;
-            })
-            .then(status => {
-                if (status === 200) {
-                this.refresCoursesAndEnrollment();
+        methods: {
+            refresCoursesAndEnrollment() {
+                this.$store.dispatch("getUserData").then(() => {
+                    this.$store.dispatch("getCourses");
+                });
+            },
+            markAsFavorite(id) {
+                this.$http
+                    .put(`/courses/favorites/add/${id}`)
+                    .then(data => {
+                        return data.status;
+                    })
+                    .then(status => {
+                        if (status === 200) {
+                            this.refresCoursesAndEnrollment();
+                        } else {
+                            alert("Error");
+                        }
+                    });
+            },
+            removeFromFavorites(id) {
+                this.$http
+                    .put(`/courses/favorites/remove/${id}`)
+                    .then(data => {
+                        return data.status;
+                    })
+                    .then(status => {
+                        if (status === 200) {
+                            this.refresCoursesAndEnrollment();
+                        } else {
+                            alert("Error");
+                        }
+                    });
+            },
+            leaveCourse_Click(id) {
+                this.$http
+                    .put(`/courses/leave/${id}`)
+                    .then(data => {
+                        return data.status;
+                    })
+                    .then(status => {
+                        if (status === 200) {
+                            this.refresCoursesAndEnrollment();
 
-                alert("Left course");
-              } else {
-                alert("Error");
-              }
-            });
+                            alert("Left course");
+                        } else {
+                            alert("Error");
+                        }
+                    });
+            },
+            exploreCourse_Click(course) {
+                this.$store.commit("changeCurrentSelectedCourse", course);
+                this.$store.commit("switchView", {
+                    view: this.CourseView,
+                    needRefresh: true
+                });
+            }
         },
-        exploreCourse_Click(course) {
-          this.$store.commit("changeCurrentSelectedCourse", course);
-          this.$store.commit("switchView", {
-            view: this.CourseView,
-            needRefresh: true
-          });
+        computed: {
+            user() {
+                return this.$store.state.user;
+            },
+            CourseView() {
+                return this.$store.state.Course;
+            }
         }
-      },
-      computed: {
-        user() {
-          return this.$store.state.user;
-        },
-        CourseView() {
-          return this.$store.state.Course;
-        }
-      }
     };
 </script>
 
 <style scoped>
     .animation-intro {
-      animation-name: intro;
-      animation-duration: 0.5s;
+        -webkit-animation-name: intro;
+        -moz-animation-name: intro;
+        -o-animation-name: intro;
+        animation-name: intro;
+
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-duration: 0.5s;
+        -o-animation-duration: 0.5s;
+        animation-duration: 0.5s;
     }
 
     .flex-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-start;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
     }
 
     .course-item {
-      margin: 0;
-      padding: 8px;
-      text-align: center;
+        margin: 0;
+        padding: 8px;
+        text-align: center;
     }
 
     .course-item .panel {
-      margin: 0;
-      transition: background-color 0.2s, color 0.2s;
+        margin: 0;
+        transition: background-color 0.2s, color 0.2s;
     }
 
     .course-item h5 {
-      font-weight: 300;
+        font-weight: 300;
     }
 </style>
 

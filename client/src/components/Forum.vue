@@ -361,7 +361,14 @@
 
 <style scoped>
     .animation-intro {
+        -webkit-animation-name: intro;
+        -moz-animation-name: intro;
+        -o-animation-name: intro;
         animation-name: intro;
+
+        -webkit-animation-duration: 0.5s;
+        -moz-animation-duration: 0.5s;
+        -o-animation-duration: 0.5s;
         animation-duration: 0.5s;
     }
 
