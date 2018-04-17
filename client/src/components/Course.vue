@@ -27,7 +27,7 @@
                 <div v-for="f in forums" :key="f._id">
                     <div class="forum-item animation-intro" @click="forumItem_Click(f)">
                         <h4>{{ f.title }}</h4>
-                        <p class="lead">{{ f.desc }}</p>
+                        <p class="lead">{{ f.isMarkdown?"Click to view...":f.desc }}</p>
 
                         <p class="text-right">
                             created {{ moment(f.createDateTime) }} &nbsp;
@@ -87,6 +87,14 @@
                                               v-model="forumDescInput"></textarea>
                                 </div>
                             </div>
+
+                            <!-- isMarkdown -->
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-xs-10">
+                                    <input type="checkbox" id="forum-isMarkdown-input" v-model="forumIsMarkdownInput"
+                                           style="width: 16px; height: 16px;">&nbsp;&nbsp;<b>Markdown</b>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -110,7 +118,8 @@
             return {
                 forums: [],
                 forumTitleInput: "",
-                forumDescInput: ""
+                forumDescInput: "",
+                forumIsMarkdownInput: false
             };
         },
         methods: {
@@ -139,6 +148,7 @@
                     .post("/forum/add", {
                         title: this.forumTitleInput,
                         desc: this.forumDescInput,
+                        isMarkdown: this.forumIsMarkdownInput,
                         courseId: this.course._id
                     })
                     .then(data => {
