@@ -9,7 +9,7 @@ router.get("/all/:id", (req, res) => {
 
     let courseId = req.params.id;
 
-    Forum.find({ courseId: courseId })
+    Forum.find({courseId: courseId})
         .populate("owner")
         .exec((err, forums) => {
             if (err) throw err;
@@ -27,6 +27,7 @@ router.post("/add", (req, res) => {
     new Forum({
         title: newForum.title,
         desc: newForum.desc,
+        isMarkdown: newForum.isMarkdown,
         createDateTime: Date.now(),
         courseId: newForum.courseId,
         owner: req.user._id
@@ -52,6 +53,7 @@ router.put("/update", (req, res) => {
 
         forum.title = req.body.title;
         forum.desc = req.body.desc;
+        forum.isMarkdown = req.body.isMarkdown;
 
         forum.save((err_forum_save, forum_save) => {
             if (err_forum_save) throw err_forum_save;
@@ -78,7 +80,7 @@ router.delete("/remove/:id", (req, res) => {
         }
 
         forum.remove(err_forum => {
-            Comment.find({ forumId: id }).remove(err_comments => {
+            Comment.find({forumId: id}).remove(err_comments => {
                 if (err_comments) throw err_comments;
 
                 return res.sendStatus(200);
@@ -115,7 +117,9 @@ router.put("/comment/like/:id", (req, res) => {
     Comment.findById(id).populate("likes").exec((err, comment) => {
         if (err) throw err;
 
-        if (!comment.likes.find(u => { return u._id.equals(req.user._id); })) {
+        if (!comment.likes.find(u => {
+            return u._id.equals(req.user._id);
+        })) {
             comment.likes.push(req.user._id);
         }
 

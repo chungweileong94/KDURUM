@@ -24,7 +24,8 @@
                 <h4>
                     <b>Title: </b>{{ forum.title }}
                 </h4>
-                <p class="lead" v-html="preProcessText(forum.desc)"></p>
+                <p class="lead" v-html="preProcessText(forum.desc)" v-if="!forum.isMarkdown"></p>
+                <p class="lead" v-html="compiledMarkdown(forum.desc)" v-else></p>
 
                 <div class="container"
                      v-if="(forum.owner!=null && forum.owner._id===user._id) || user.roleIndex===0 || (course.lecturer!=null && course.lecturer._id===user._id && course.lecturer.role===1)">
@@ -143,6 +144,14 @@
                                               v-model="forumDescInput"></textarea>
                                 </div>
                             </div>
+
+                            <!-- isMarkdown -->
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-xs-10">
+                                    <input type="checkbox" id="forum-isMarkdown-input" v-model="forumIsMarkdownInput"
+                                           style="width: 16px; height: 16px;">&nbsp;&nbsp;<b>Markdown</b>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -183,7 +192,9 @@
 </template>
 
 <script>
-    const moment = require("moment");
+    import moment from "moment";
+    import marked from "marked";
+
 
     export default {
         data() {
@@ -192,9 +203,11 @@
                 commentInput: "",
                 forumTitleInput: "",
                 forumDescInput: "",
+                forumIsMarkdownInput: false,
                 bakForum: {
                     title: "",
-                    desc: ""
+                    desc: "",
+                    isMarkdown: false
                 },
                 isDisable: false
             };
@@ -215,6 +228,9 @@
                     )
                     .replace(/\n\r?/g, "<br />");
             },
+            compiledMarkdown(text) {
+                return marked(text, {sanitize: true});
+            },
             back(needRefresh) {
                 this.$store.commit("changeCurrentSelectedForum", {}); //clear selection
                 this.$store.commit("switchView", {
@@ -224,14 +240,16 @@
             },
             editForum_Click() {
                 this.forumTitleInput = this.bakForum.title = this.forum.title;
-                this.forumDescInput = this.bakForum.title = this.forum.desc;
+                this.forumDescInput = this.bakForum.desc = this.forum.desc;
+                this.forumIsMarkdownInput = this.bakForum.isMarkdown = this.forum.isMarkdown;
             },
             editForumDialog_Click() {
                 this.$http
                     .put("/forum/update", {
                         id: this.forum._id,
                         title: this.forumTitleInput,
-                        desc: this.forumDescInput
+                        desc: this.forumDescInput,
+                        isMarkdown: this.forumIsMarkdownInput
                     })
                     .then(data => {
                         return data.status;
@@ -240,10 +258,12 @@
                         if (status === 200) {
                             this.forum.title = this.forumTitleInput;
                             this.forum.desc = this.forumDescInput;
+                            this.forum.isMarkdown = this.forumIsMarkdownInput;
                             this.$store.commit("showMessage", "Post updated!");
                         } else {
                             this.forum.title = this.bakForum.title;
-                            this.forum.desc = this.bakForum.title;
+                            this.forum.desc = this.bakForum.desc;
+                            this.forum.isMarkdown = this.bakForum.isMarkdown;
                             alert("error");
                         }
                     });
@@ -380,7 +400,6 @@
     #title-bar {
         padding-top: 16px;
         background-color: white;
-        /* position: -webkit-sticky;                                                                                                                                    position: sticky; */
         position: fixed;
         top: 62px;
         right: 10%;
