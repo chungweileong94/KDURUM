@@ -483,8 +483,9 @@
         height: 50px;
         width: 50px;
         border-radius: 100%;
-        padding: 0;
-        padding-top: 2px;
-        padding-left: 2px;
+        padding: 2px 0 0 2px;
+        -webkit-box-shadow: 0 1px 10px gray;
+        -moz-box-shadow: 0 1px 10px gray;
+        box-shadow: 0 1px 10px gray;
     }
 </style>

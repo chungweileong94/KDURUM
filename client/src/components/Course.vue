@@ -92,7 +92,7 @@
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-xs-10">
                                     <input type="checkbox" id="forum-isMarkdown-input" v-model="forumIsMarkdownInput"
-                                           style="width: 16px; height: 16px;">&nbsp;&nbsp;<b>Markdown</b>
+                                           style="width: 16px; height: 16px;"><label for="forum-isMarkdown-input">&nbsp;&nbsp;<b>Markdown</b></label>
                                 </div>
                             </div>
                         </div>
@@ -297,5 +297,8 @@
         position: fixed;
         right: 30px;
         bottom: 30px;
+        -webkit-box-shadow: 0 1px 10px gray;
+        -moz-box-shadow: 0 1px 10px gray;
+        box-shadow: 0 1px 10px gray;
     }
 </style>

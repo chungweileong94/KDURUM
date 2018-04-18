@@ -120,6 +120,10 @@
         float: none;
         margin: auto;
     }
+
+    textarea.form-control {
+        height: 400px;
+    }
 </style>
 
 
