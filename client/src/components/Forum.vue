@@ -488,3 +488,12 @@
         color: #149c82;
     }
 </style>
+
+<style>
+    /*this has to be global*/
+    #forum-header img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+</style>
