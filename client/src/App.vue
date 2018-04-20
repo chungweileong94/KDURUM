@@ -85,44 +85,77 @@
 </script>
 
 <style>
+    @-o-keyframes intro {
+      from {
+        opacity: 0;
+        zoom: 0;
+      }
+      to {
+        opacity: 1;
+        zoom: 1;
+      }
+    }
+
+    @-webkit-keyframes intro {
+      from {
+        opacity: 0;
+        zoom: 0;
+      }
+      to {
+        opacity: 1;
+        zoom: 1;
+      }
+    }
+
+    @-moz-keyframes intro {
+      from {
+        opacity: 0;
+        zoom: 0;
+      }
+      to {
+        opacity: 1;
+        zoom: 1;
+      }
+    }
+
     @keyframes intro {
-        from {
-            opacity: 0;
-            zoom: 0;
-        }
-        to {
-            opacity: 1;
-            zoom: 1;
-        }
+      from {
+        opacity: 0;
+        zoom: 0;
+      }
+      to {
+        opacity: 1;
+        zoom: 1;
+      }
     }
 
     .navbar-toggle {
-        border: none;
+      border: none;
     }
 
     .alert-wrapper {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        padding: 8px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 8px;
     }
 
     .alert-wrapper .alert {
-        -webkit-animation-name: intro;
-        -moz-animation-name: intro;
-        -o-animation-name: intro;
-        animation-name: intro;
+      -webkit-animation-name: intro;
+      -moz-animation-name: intro;
+      -o-animation-name: intro;
+      animation-name: intro;
 
-        -webkit-animation-duration: 0.2s;
-        -moz-animation-duration: 0.2s;
-        -o-animation-duration: 0.2s;
-        animation-duration: 0.2s;
-        float: none;
-        margin: auto;
+      -webkit-animation-duration: 0.2s;
+      -moz-animation-duration: 0.2s;
+      -o-animation-duration: 0.2s;
+      animation-duration: 0.2s;
+      float: none;
+      margin: auto;
     }
 
     textarea.form-control {
-        height: 400px;
+      height: 400px;
     }
 </style>
 

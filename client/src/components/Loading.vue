@@ -53,12 +53,12 @@
       0%,
       100% {
         -webkit-transform: scale(0);
-        background-color: royalblue;
+        background-color: rgb(23, 48, 63);
       }
 
       50% {
         -webkit-transform: scale(1);
-        background-color: crimson;
+        background-color: rgb(25, 159, 177);
       }
     }
 </style>
