@@ -1,8 +1,8 @@
 const path = require("path");
 const webpack = require("webpack");
 const SWPrecacheWebpackPlugin = require("sw-precache-webpack-plugin");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: "./src/main.js",
@@ -21,11 +21,11 @@ module.exports = {
             template: "static/index.html"
         }),
         new CopyWebpackPlugin([
-            {from: "static/Images", to: "Images/[name].[ext]"},
-            {from: "static/manifest.json", to: "manifest.json"}
+            { from: "static/Images", to: "Images/[name].[ext]" },
+            { from: "static/manifest.json", to: "manifest.json" }
         ]),
         new SWPrecacheWebpackPlugin({
-            cacheId: "kdurum-app-v6",
+            cacheId: "kdurum-app-v7",
             filename: "service-worker.js",
             staticFileGlobs: ["dist/**.*", "dist/Images/**.*"],
             minify: true,
