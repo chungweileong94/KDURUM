@@ -24,15 +24,14 @@
                 <h4>
                     <b>Title: </b>{{ forum.title }}
                 </h4>
+                <hr>
                 <p class="lead" v-html="preProcessText(forum.desc)" v-if="!forum.isMarkdown"></p>
                 <p class="lead" v-html="compiledMarkdown(forum.desc)" v-else></p>
 
-                <div class="container"
-                     v-if="(forum.owner!=null && forum.owner._id===user._id) || user.roleIndex===0 || (course.lecturer!=null && course.lecturer._id===user._id && course.lecturer.role===1)">
+                <div class="container" v-if="(forum.owner!=null && forum.owner._id===user._id) || user.roleIndex===0 || (course.lecturer!=null && course.lecturer._id===user._id && course.lecturer.role===1)">
                     <div class="row">
                         <div class="btn-group pull-right">
-                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#edit-forum-modal"
-                                    @click="editForum_Click">Edit
+                            <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#edit-forum-modal" @click="editForum_Click">Edit
                             </button>
                             <button class="btn btn-sm btn-danger" data-toggle="modal" data-target="#delete-forum-modal">
                                 Remove
@@ -59,8 +58,7 @@
                             <p v-html="preProcessText(c.content)"></p>
 
                             <div>
-                                <button :class="[{likedButton:c.isLiked}, 'like-button']"
-                                        @click="likeComment($event, c)">
+                                <button :class="[{likedButton:c.isLiked}, 'like-button']" @click="likeComment($event, c)">
                                     <span class="glyphicon glyphicon-thumbs-up text-left"></span> {{c.likes.length}}
                                 </button>
                                 <p style="float:right;">commented {{moment(c.createDateTime)}}</p>
@@ -76,8 +74,7 @@
             </div>
         </div>
 
-        <button id="comment-button" class="btn btn-warning" data-toggle="modal" data-target="#add-comment-modal">Add
-            Comment
+        <button id="comment-button" class="btn btn-warning" data-toggle="modal" data-target="#add-comment-modal">Add Comment
         </button>
 
         <!-- add comment dialog -->
@@ -95,16 +92,14 @@
                             <!-- comment -->
                             <div class="form-group">
                                 <div class="col-sm-12">
-                                    <textarea class="form-control" id="forum-comment-input" rows="3"
-                                              v-model="commentInput"></textarea>
+                                    <textarea class="form-control" id="forum-comment-input" rows="3" v-model="commentInput"></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal"
-                                :disabled="commentInput.trim().length===0" @click="addComment_Click">Add
+                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="commentInput.trim().length===0" @click="addComment_Click">Add
                         </button>
                     </div>
                 </div>
@@ -129,8 +124,7 @@
                                     <b>Title</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="forum-title-input" type="text"
-                                           v-model="forumTitleInput">
+                                    <input class="form-control" id="forum-title-input" type="text" v-model="forumTitleInput">
                                 </div>
                             </div>
 
@@ -140,25 +134,24 @@
                                     <b>Description</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" id="forum-desc-input" rows="3"
-                                              v-model="forumDescInput"></textarea>
+                                    <textarea class="form-control" id="forum-desc-input" rows="3" v-model="forumDescInput"></textarea>
                                 </div>
                             </div>
 
                             <!-- isMarkdown -->
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-xs-10">
-                                    <input type="checkbox" id="forum-isMarkdown-input" v-model="forumIsMarkdownInput"
-                                           style="width: 16px; height: 16px;"><label for="forum-isMarkdown-input">&nbsp;&nbsp;<b>Markdown</b></label>
+                                    <input type="checkbox" id="forum-isMarkdown-input" v-model="forumIsMarkdownInput" style="width: 16px; height: 16px;">
+                                    <label for="forum-isMarkdown-input">&nbsp;&nbsp;
+                                        <b>Markdown</b>
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal"
-                                :disabled="forumTitleInput.trim().length===0 || forumDescInput.trim().length===0"
-                                @click="editForumDialog_Click">Save
+                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="forumTitleInput.trim().length===0 || forumDescInput.trim().length===0" @click="editForumDialog_Click">Save
                         </button>
                     </div>
                 </div>
@@ -166,8 +159,7 @@
         </div>
 
         <!-- delete modal -->
-        <div id="delete-forum-modal" class="modal fade"
-             v-if="(forum.owner!=null && forum.owner._id===user._id) || user.roleIndex===0">
+        <div id="delete-forum-modal" class="modal fade" v-if="(forum.owner!=null && forum.owner._id===user._id) || user.roleIndex===0">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -223,13 +215,13 @@
                 return text
                     .replace(link_exp, "<a target='_blank' href='$1'>$1</a>")
                     .replace(
-                        email_exp,
-                        "<a target='_blank' href='mailto:$1@$2$6$7'>$1@$2$6$7</a>"
+                    email_exp,
+                    "<a target='_blank' href='mailto:$1@$2$6$7'>$1@$2$6$7</a>"
                     )
                     .replace(/\n\r?/g, "<br />");
             },
             compiledMarkdown(text) {
-                return marked(text, {sanitize: true});
+                return marked(text, { sanitize: true });
             },
             back(needRefresh) {
                 this.$store.commit("changeCurrentSelectedForum", {}); //clear selection
@@ -381,119 +373,119 @@
 
 <style scoped>
     .animation-intro {
-        -webkit-animation-name: intro;
-        -moz-animation-name: intro;
-        -o-animation-name: intro;
-        animation-name: intro;
+      -webkit-animation-name: intro;
+      -moz-animation-name: intro;
+      -o-animation-name: intro;
+      animation-name: intro;
 
-        -webkit-animation-duration: 0.5s;
-        -moz-animation-duration: 0.5s;
-        -o-animation-duration: 0.5s;
-        animation-duration: 0.5s;
+      -webkit-animation-duration: 0.5s;
+      -moz-animation-duration: 0.5s;
+      -o-animation-duration: 0.5s;
+      animation-duration: 0.5s;
     }
 
     a#back-button {
-        text-decoration: none;
-        padding: 0 8px;
+      text-decoration: none;
+      padding: 0 8px;
     }
 
     #title-bar {
-        padding-top: 16px;
-        background-color: white;
-        position: fixed;
-        top: 62px;
-        right: 10%;
-        left: 10%;
-        z-index: 10;
+      padding-top: 16px;
+      background-color: white;
+      position: fixed;
+      top: 62px;
+      right: 10%;
+      left: 10%;
+      z-index: 10;
     }
 
     @media screen and (max-width: 1500px) {
-        #title-bar {
-            top: 60px;
-            right: 2%;
-            left: 2%;
-        }
+      #title-bar {
+        top: 60px;
+        right: 2%;
+        left: 2%;
+      }
     }
 
     #title-bar span,
     #title-bar p {
-        font-size: 20px;
-        display: inline;
+      font-size: 20px;
+      display: inline;
     }
 
     #title-bar hr {
-        border-top-width: 2px;
-        margin-bottom: 0;
+      border-top-width: 2px;
+      margin-bottom: 0;
     }
 
     #title-bar .owner-image {
-        max-width: 30px;
+      max-width: 30px;
     }
 
     .content {
-        margin-top: 80px;
+      margin-top: 80px;
     }
 
     .created-time-wrapper {
-        float: right;
+      float: right;
     }
 
     .created-time-wrapper p {
-        font-size: 13px !important;
+      font-size: 13px !important;
     }
 
     .created-time-wrapper::after {
-        content: "";
-        display: block;
-        clear: both;
+      content: "";
+      display: block;
+      clear: both;
     }
 
     #forum-header {
-        margin-bottom: 50px;
+      margin-bottom: 50px;
     }
 
     #forum-header p {
-        word-wrap: break-word;
-        font-size: 20px;
+      word-wrap: break-word;
+      font-size: 20px;
     }
 
     #forum-comments hr {
-        border-top-width: 2px;
-        width: 30%;
+      border-top-width: 2px;
+      width: 30%;
     }
 
     .comment-user-image {
-        max-width: 30px;
+      max-width: 30px;
     }
 
     #comment-button {
-        position: fixed;
-        right: 30px;
-        bottom: 30px;
-        -webkit-box-shadow: 0 1px 10px gray;
-        -moz-box-shadow: 0 1px 10px gray;
-        box-shadow: 0 1px 10px gray;
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      -webkit-box-shadow: 0 1px 10px gray;
+      -moz-box-shadow: 0 1px 10px gray;
+      box-shadow: 0 1px 10px gray;
     }
 
     .like-button {
-        text-decoration-style: none;
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-        border: none;
-        background-color: transparent;
+      text-decoration-style: none;
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      background-color: transparent;
     }
 
     .likedButton {
-        color: #149c82;
+      color: #149c82;
     }
 </style>
 
 <style>
     /*this has to be global*/
     #forum-header img {
-        max-width: 100%;
-        height: auto;
-        display: block;
+      max-width: 100%;
+      height: auto;
+      display: block;
     }
 </style>

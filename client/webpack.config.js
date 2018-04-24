@@ -25,7 +25,7 @@ module.exports = {
             { from: "static/manifest.json", to: "manifest.json" }
         ]),
         new SWPrecacheWebpackPlugin({
-            cacheId: "kdurum-app-v8",
+            cacheId: "kdurum-app-v9",
             filename: "service-worker.js",
             staticFileGlobs: ["dist/**.*", "dist/Images/**.*"],
             minify: true,

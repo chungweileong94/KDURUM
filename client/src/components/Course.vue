@@ -7,8 +7,7 @@
             <p class="animation-intro">
                 <b>{{ course.title }}</b>
             </p>
-            <div class="lecturer-wrapper animation-intro"
-                 v-if="course.lecturer!=null && course.lecturer._id!==user._id && course.lecturer.role===1">
+            <div class="lecturer-wrapper animation-intro" v-if="course.lecturer!=null && course.lecturer._id!==user._id && course.lecturer.role===1">
                 <p>
                     lecture&nbsp;
                     <b>
@@ -50,8 +49,7 @@
             </div>
         </div>
 
-        <button id="create-button" class="btn btn-primary" data-toggle="modal" data-target="#add-forum-modal">Create
-            Post
+        <button id="create-button" class="btn btn-primary" data-toggle="modal" data-target="#add-forum-modal">Create Post
         </button>
 
         <!-- add forum dialog -->
@@ -72,8 +70,7 @@
                                     <b>Title</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" id="forum-title-input" type="text"
-                                           v-model="forumTitleInput">
+                                    <input class="form-control" id="forum-title-input" type="text" v-model="forumTitleInput">
                                 </div>
                             </div>
 
@@ -83,25 +80,24 @@
                                     <b>Description</b>
                                 </label>
                                 <div class="col-sm-10">
-                                    <textarea class="form-control" id="forum-desc-input" rows="3"
-                                              v-model="forumDescInput"></textarea>
+                                    <textarea class="form-control" id="forum-desc-input" rows="3" v-model="forumDescInput"></textarea>
                                 </div>
                             </div>
 
                             <!-- isMarkdown -->
                             <div class="form-group">
                                 <div class="col-md-offset-2 col-xs-10">
-                                    <input type="checkbox" id="forum-isMarkdown-input" v-model="forumIsMarkdownInput"
-                                           style="width: 16px; height: 16px;"><label for="forum-isMarkdown-input">&nbsp;&nbsp;<b>Markdown</b></label>
+                                    <input type="checkbox" id="forum-isMarkdown-input" v-model="forumIsMarkdownInput" style="width: 16px; height: 16px;">
+                                    <label for="forum-isMarkdown-input">&nbsp;&nbsp;
+                                        <b>Markdown</b>
+                                    </label>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-default" type="button" data-dismiss="modal">Cancel</button>
-                        <button class="btn btn-success" type="button" data-dismiss="modal"
-                                :disabled="forumTitleInput.trim().length===0 || forumDescInput.trim().length===0"
-                                @click="addForum_Click">Add
+                        <button class="btn btn-success" type="button" data-dismiss="modal" :disabled="forumTitleInput.trim().length===0 || forumDescInput.trim().length===0" @click="addForum_Click">Add
                         </button>
                     </div>
                 </div>
@@ -199,106 +195,111 @@
 
 <style scoped>
     .animation-intro {
-        -webkit-animation-name: intro;
-        -moz-animation-name: intro;
-        -o-animation-name: intro;
-        animation-name: intro;
+      -webkit-animation-name: intro;
+      -moz-animation-name: intro;
+      -o-animation-name: intro;
+      animation-name: intro;
 
-        -webkit-animation-duration: 0.5s;
-        -moz-animation-duration: 0.5s;
-        -o-animation-duration: 0.5s;
-        animation-duration: 0.5s;
+      -webkit-animation-duration: 0.5s;
+      -moz-animation-duration: 0.5s;
+      -o-animation-duration: 0.5s;
+      animation-duration: 0.5s;
     }
 
     a#back-button {
-        text-decoration: none;
-        padding: 0 8px;
+      text-decoration: none;
+      padding: 0 8px;
     }
 
     #title-bar {
-        padding-top: 16px;
-        background-color: white;
-        /* position: -webkit-sticky;
-                                        position: sticky; */
-        position: fixed;
-        top: 62px;
-        right: 10%;
-        left: 10%;
+      padding-top: 16px;
+      background-color: white;
+      /* position: -webkit-sticky;
+                                                position: sticky; */
+      position: fixed;
+      top: 62px;
+      right: 10%;
+      left: 10%;
     }
 
     @media screen and (max-width: 1500px) {
-        #title-bar {
-            top: 60px;
-            right: 2%;
-            left: 2%;
-        }
+      #title-bar {
+        top: 60px;
+        right: 2%;
+        left: 2%;
+      }
     }
 
     #title-bar span,
     #title-bar p {
-        font-size: 20px;
-        display: inline;
+      font-size: 20px;
+      display: inline;
     }
 
     #title-bar .lecturer-image {
-        max-width: 30px;
+      max-width: 30px;
     }
 
     #title-bar hr {
-        border-top-width: 2px;
-        margin-bottom: 0;
+      border-top-width: 2px;
+      margin-bottom: 0;
     }
 
     .lecturer-wrapper {
-        float: right;
+      float: right;
     }
 
     .lecturer-wrapper p {
-        font-size: 13px !important;
+      font-size: 13px !important;
     }
 
     .lecturer-wrapper::after {
-        content: "";
-        display: block;
-        clear: both;
+      content: "";
+      display: block;
+      clear: both;
     }
 
     .content {
-        margin-top: 80px;
+      margin-top: 80px;
     }
 
     .forum-item {
-        margin: 0;
-        padding: 4px 12px;
-        border-radius: 5px;
-        white-space: nowrap;
-        cursor: pointer;
-        transition: all 0.2s;
-        -moz-transition: all 0.2s;
+      margin: 0;
+      padding: 4px 12px;
+      border-radius: 5px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+      -moz-transition: all 0.2s;
     }
 
     .forum-item:hover {
-        background: lightgray;
+      background: lightgray;
     }
 
     .forum-item h4,
     .forum-item p {
-        text-overflow: ellipsis;
-        -ms-text-overflow: ellipsis;
-        -o-text-overflow: ellipsis;
-        overflow: hidden;
+      text-overflow: ellipsis;
+      -ms-text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      overflow: hidden;
     }
 
     .forum-item .owner-image {
-        max-width: 30px;
+      max-width: 30px;
+    }
+
+    .forum-item .lead {
+      color: grey;
+      font-size: 1.2em;
     }
 
     #create-button {
-        position: fixed;
-        right: 30px;
-        bottom: 30px;
-        -webkit-box-shadow: 0 1px 10px gray;
-        -moz-box-shadow: 0 1px 10px gray;
-        box-shadow: 0 1px 10px gray;
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      -webkit-box-shadow: 0 1px 10px gray;
+      -moz-box-shadow: 0 1px 10px gray;
+      box-shadow: 0 1px 10px gray;
     }
 </style>
