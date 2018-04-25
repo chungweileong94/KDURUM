@@ -1,4 +1,4 @@
-# KDURUM
+# KDURUM - Improve Version
 Software Engineering Assignment
 
 # How to run the app
