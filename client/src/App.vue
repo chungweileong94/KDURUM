@@ -52,6 +52,7 @@
         },
         created() {
             this.$http.get("/auth/check").then(data => {
+                console.log(data.json());
                 return data.json();
             }).then(res => {
                 if (res) {
