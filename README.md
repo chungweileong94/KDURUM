@@ -1,4 +1,4 @@
-# KDURUM - Improve Version
+# KDURUM - VueJS
 ## How to run the app
 1. Install [Visual Studio Code](https://code.visualstudio.com/)
 2. Install [Nodejs](https://nodejs.org)
